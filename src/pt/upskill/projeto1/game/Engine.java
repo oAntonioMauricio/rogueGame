@@ -51,29 +51,33 @@ public class Engine {
             System.out.println("User pressed down key!");
 
             hero.setPosition(hero.getPosition().plus(Direction.DOWN.asVector()), this.tiles);
-            checkIfHeroOnEnemy();
+
             moveEnemy();
+            checkIfHeroOnEnemy();
         }
         if (keyPressed == KeyEvent.VK_UP) {
             System.out.println("User pressed up key!");
 
             hero.setPosition(hero.getPosition().plus(Direction.UP.asVector()), this.tiles);
-            checkIfHeroOnEnemy();
+
             moveEnemy();
+            checkIfHeroOnEnemy();
         }
         if (keyPressed == KeyEvent.VK_LEFT) {
             System.out.println("User pressed left key!");
 
             hero.setPosition(hero.getPosition().plus(Direction.LEFT.asVector()), this.tiles);
-            checkIfHeroOnEnemy();
+
             moveEnemy();
+            checkIfHeroOnEnemy();
         }
         if (keyPressed == KeyEvent.VK_RIGHT) {
             System.out.println("User pressed right key!");
 
             hero.setPosition(hero.getPosition().plus(Direction.RIGHT.asVector()), this.tiles);
-            checkIfHeroOnEnemy();
+
             moveEnemy();
+            checkIfHeroOnEnemy();
         }
     }
 

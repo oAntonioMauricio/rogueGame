@@ -36,33 +36,42 @@ public abstract class Enemy implements ImageTile {
     }
 
     public Vector2D moveToHero(Hero hero) {
-        int xSkeleton = getPosition().getX();
-        int ySkeleton = getPosition().getY();
+        int xEnemy = getPosition().getX();
+        int yEnemy = getPosition().getY();
         int xHero = hero.getPosition().getX();
         int yHero = hero.getPosition().getY();
 
-        int subtractX = xSkeleton - xHero;
-        int subtrackY = ySkeleton - yHero;
+        int subtractX = xEnemy - xHero;
+        int subtractY = yEnemy - yHero;
 
-        if (subtractX <= 2 && subtractX >= -2 && subtrackY <= 2 && subtrackY >= -2) {
-            if (ySkeleton == yHero && xSkeleton == xHero) {
+        if (subtractX <= 2 && subtractX >= -2 && subtractY <= 2 && subtractY >= -2) {
+            System.out.println("close!");
+
+            if (yEnemy == yHero && xEnemy == xHero) {
                 return new Vector2D(0, 0);
             }
-            System.out.println("close!");
             // if enemy on the same y-axis
-            if (ySkeleton == yHero) {
-                if (xSkeleton < xHero) {
+            if (yEnemy == yHero) {
+                if (xEnemy < xHero) {
                     return Direction.RIGHT.asVector();
                 } else {
                     return Direction.LEFT.asVector();
                 }
             }
             // if enemy on the same x-axis
-            else if (xSkeleton == xHero) {
-                if (ySkeleton < yHero) {
+            else if (xEnemy == xHero) {
+                if (yEnemy < yHero) {
                     return Direction.DOWN.asVector();
                 } else {
                     return Direction.UP.asVector();
+                }
+            }
+            // if enemy not on x-axis or y-axis
+            else {
+                if (xEnemy < xHero) {
+                    return Direction.RIGHT.asVector();
+                } else {
+                    return Direction.LEFT.asVector();
                 }
             }
         }
