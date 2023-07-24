@@ -10,6 +10,8 @@ public class Hero implements ImageTile {
 
     private Position position;
 
+    private int Power = 100;
+
     public Hero(Position position) {
         this.position = position;
     }
@@ -29,7 +31,6 @@ public class Hero implements ImageTile {
 
         for (ImageTile tile : tileList) {
             if (position.getX() == tile.getPosition().getX() && position.getY() == tile.getPosition().getY()) {
-                System.out.println("You stepped on: " + tile.getName());
                 if (Objects.equals(tile.getName(), "Wall")) {
                     move = !move;
                 }
@@ -40,5 +41,13 @@ public class Hero implements ImageTile {
             this.position = position;
         }
 
+    }
+
+    public int getPower() {
+        return Power;
+    }
+
+    public void setPower(int power) {
+        Power = power;
     }
 }

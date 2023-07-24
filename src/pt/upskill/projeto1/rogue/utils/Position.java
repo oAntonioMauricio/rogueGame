@@ -64,4 +64,12 @@ public class Position {
     public String toString() {
         return "(" + x + ", " + y + ")";
     }
+
+    public boolean isItSamePosition(Position other) {
+        if (this.x == other.getX() && this.y == other.getY()) {
+            return true;
+        }
+
+        return false;
+    }
 }
