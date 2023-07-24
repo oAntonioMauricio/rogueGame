@@ -29,22 +29,12 @@ public class Skeleton extends Enemy {
         return position;
     }
 
-
     @Override
-    public void setPosition(Position position, List<ImageTile> tileList) {
-        boolean move = true;
-
-        for (ImageTile tile : tileList) {
-            if (position.getX() == tile.getPosition().getX() && position.getY() == tile.getPosition().getY()) {
-                if (Objects.equals(tile.getName(), "Wall")) {
-                    move = !move;
-                }
-            }
-        }
-
-        if (move) {
-            this.position = position;
-        }
+    public int getPower() {
+        return this.power;
     }
 
+    public void setPosition(Position position) {
+        this.position = position;
+    }
 }

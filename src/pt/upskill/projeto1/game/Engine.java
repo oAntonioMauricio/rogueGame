@@ -17,12 +17,15 @@ public class Engine {
         engine.init();
     }
 
+    // 1-  perguntar se inciar o gui aqui está ok
+    // 2 - perguntar se o controlo de movimentos no notify está okay
+    private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
     private List<ImageTile> tiles = new ArrayList<>();
-    private Hero hero = new Hero(new Position(8, 8));
+    private Hero hero = new Hero(new Position(1, 3));
     private List<Enemy> enemyList = new ArrayList<>();
+    private String status = "O jogo começou!";
 
     public void init() {
-        ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
         gui.setEngine(this);
 
         // add floor and walls
@@ -32,14 +35,14 @@ public class Engine {
         tiles.add(this.hero);
 
         // add the enemys
-        enemyList.add(new Skeleton(new Position(2, 2), 20));
-        enemyList.add(new Skeleton(new Position(3, 4), 20));
+        enemyList.add(new Skeleton(new Position(1, 1), 20));
+        // enemyList.add(new Skeleton(new Position(3, 4), 20));
         tiles.addAll(enemyList);
 
-        gui.newImages(tiles);
+        gui.newImages(this.tiles);
         gui.go();
 
-        gui.setStatus("O jogo começou!");
+        gui.setStatus(status);
 
         while (true) {
             gui.update();
@@ -101,20 +104,42 @@ public class Engine {
             tiles.add(new Wall(new Position(0, i)));
             tiles.add(new Wall(new Position(9, i)));
         }
+
+        //entrance
+        /*
+        for (int i = 3; i < 9; i++) {
+            tiles.add(new Wall(new Position(7, i)));
+        }
+
+         */
     }
 
     public void moveEnemy() {
         // move enemy in random direction
         for (Enemy enemy : enemyList) {
-            enemy.setPosition(enemy.getPosition().plus(enemy.moveToHero(this.hero)), this.tiles);
+            enemy.setNewPosition(enemy.getPosition().plus(enemy.moveToHero(this.hero)), this.tiles);
         }
     }
 
     public void checkIfHeroOnEnemy() {
+        boolean removeEnemy = false;
+        Enemy toRemove = null;
+
         for (Enemy enemy : enemyList) {
             if (this.hero.getPosition().isItSamePosition(enemy.getPosition())) {
                 System.out.println("SAME POSITION!");
+                if (this.hero.getPower() >= enemy.getPower()) {
+                    gui.setStatus("You destroyed: " + enemy.getName());
+                    removeEnemy = true;
+                    toRemove = enemy;
+                }
             }
+        }
+
+        if (removeEnemy) {
+            System.out.println("enemy removed");
+            enemyList.remove(toRemove);
+            gui.removeImage(toRemove);
         }
     }
 

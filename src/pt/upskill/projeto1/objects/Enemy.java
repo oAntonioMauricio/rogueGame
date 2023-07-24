@@ -6,11 +6,30 @@ import pt.upskill.projeto1.rogue.utils.Position;
 import pt.upskill.projeto1.rogue.utils.Vector2D;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Enemy implements ImageTile {
 
-    public abstract void setPosition(Position position, List<ImageTile> tileList);
+    public abstract int getPower();
+
+    public abstract void setPosition(Position position);
+
+    public void setNewPosition(Position newPosition, List<ImageTile> tileList) {
+        boolean move = true;
+
+        for (ImageTile tile : tileList) {
+            if (newPosition.getX() == tile.getPosition().getX() && newPosition.getY() == tile.getPosition().getY()) {
+                if (Objects.equals(tile.getName(), "Wall")) {
+                    move = !move;
+                }
+            }
+        }
+
+        if (move) {
+            setPosition(newPosition);
+        }
+    }
 
     public Vector2D randomPosition() {
 
@@ -52,7 +71,7 @@ public abstract class Enemy implements ImageTile {
             }
             // if enemy on the same y-axis
             if (yEnemy == yHero) {
-                if (xEnemy < xHero) {
+                if (xHero > xEnemy) {
                     return Direction.RIGHT.asVector();
                 } else {
                     return Direction.LEFT.asVector();
@@ -60,10 +79,10 @@ public abstract class Enemy implements ImageTile {
             }
             // if enemy on the same x-axis
             else if (xEnemy == xHero) {
-                if (yEnemy < yHero) {
-                    return Direction.DOWN.asVector();
-                } else {
+                if (yHero < yEnemy) {
                     return Direction.UP.asVector();
+                } else {
+                    return Direction.DOWN.asVector();
                 }
             }
             // if enemy not on x-axis or y-axis
@@ -79,7 +98,5 @@ public abstract class Enemy implements ImageTile {
         // move random if not close
         return randomPosition();
     }
-
-    ;
 
 }
