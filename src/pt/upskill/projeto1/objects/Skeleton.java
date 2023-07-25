@@ -42,4 +42,6 @@ public class Skeleton extends Enemy {
     public void setPosition(Position position) {
         this.position = position;
     }
+
+
 }

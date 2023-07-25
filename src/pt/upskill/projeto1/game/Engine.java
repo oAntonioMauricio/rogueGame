@@ -9,10 +9,9 @@ import pt.upskill.projeto1.rogue.utils.Position;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+
+import static java.lang.Character.isDigit;
 
 public class Engine {
 
@@ -21,15 +20,18 @@ public class Engine {
         engine.init();
     }
 
-    // TODO: colocar um boolean na wall para verificar se pode andar
-    // TODO: https://wumbo.net/formulas/distance-between-two-points-2d/
-    // test git!
+    //
+    // TODO: melhorar algoritmo de perseguição https://wumbo.net/formulas/distance-between-two-points-2d/
+    //
+    // perguntar sobre a func readFile (demasiado grande?, posso simplificar?); construção das portas correta?
+    //
 
-    private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
-    private List<ImageTile> statusBar = new ArrayList<>();
-    private List<ImageTile> tiles = new ArrayList<>();
-    private Hero hero = new Hero(new Position(1, 3), 100);
-    private List<Enemy> enemyList = new ArrayList<>();
+    private final ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
+    private final List<ImageTile> statusBar = new ArrayList<>();
+    private final List<ImageTile> tiles = new ArrayList<>();
+    private final List<Door> doorList = new ArrayList<>();
+    private final Hero hero = new Hero(new Position(8, 8), 100);
+    private final List<Enemy> enemyList = new ArrayList<>();
 
     public void init() {
         gui.setEngine(this);
@@ -39,15 +41,17 @@ public class Engine {
         addStatusInitial();
 
         // add floor and walls
-        addFloorAndWallsOnTiles();
+        addFloor();
         readFile("rooms/room0.txt");
 
         // add hero
         tiles.add(this.hero);
 
         // add the enemies
-        enemyList.add(new Skeleton(new Position(1, 1), 30));
         tiles.addAll(enemyList);
+
+        // add the doors
+        tiles.addAll(doorList);
 
         gui.newImages(this.tiles);
         gui.go();
@@ -59,79 +63,31 @@ public class Engine {
         }
     }
 
-    public void readFile(String fileName) {
-        try {
-            Scanner fileScanner = new Scanner(new File(fileName));
-
-            while (fileScanner.hasNext()) {
-                String linha = fileScanner.nextLine();
-                if (linha.contains("#")) {
-                    continue;
-                }
-
-                String[] chars = linha.split("");
-
-                for (int i = 0, x = 0, y = 0; i < 10; i++) {
-                    switch (chars[i]) {
-                        case "W":
-                            tiles.add(new Wall(new Position(x, y)));
-                        case "0":
-                            tiles.add(new Wall(new Position(x, y)));
-                        case "S":
-                            tiles.add(new Skeleton(new Position(x, y), 20));
-                        case "H":
-                            System.out.println("hammer here");
-                        default:// code block
-                    }
-                    x++;
-                    if (x == 9) {
-                        x = 0;
-                        y++;
-                    }
-                }
-            }
-
-            fileScanner.close();
-        } catch (FileNotFoundException e) {
-            System.out.println(e.getMessage());
-        }
-
-    }
-
     public void notify(int keyPressed) {
         if (keyPressed == KeyEvent.VK_DOWN) {
-            System.out.println("User pressed down key!");
+            // System.out.println("User pressed down key!");
 
             hero.setPosition(hero.getPosition().plus(Direction.DOWN.asVector()), this.tiles);
             turn();
         }
         if (keyPressed == KeyEvent.VK_UP) {
-            System.out.println("User pressed up key!");
+            // System.out.println("User pressed up key!");
 
             hero.setPosition(hero.getPosition().plus(Direction.UP.asVector()), this.tiles);
             turn();
         }
         if (keyPressed == KeyEvent.VK_LEFT) {
-            System.out.println("User pressed left key!");
+            // System.out.println("User pressed left key!");
 
             hero.setPosition(hero.getPosition().plus(Direction.LEFT.asVector()), this.tiles);
             turn();
         }
         if (keyPressed == KeyEvent.VK_RIGHT) {
-            System.out.println("User pressed right key!");
+            // System.out.println("User pressed right key!");
 
             hero.setPosition(hero.getPosition().plus(Direction.RIGHT.asVector()), this.tiles);
             turn();
         }
-    }
-
-    public void turn() {
-        checkIfHeroOnEnemy(false);
-
-        moveEnemy();
-        checkIfHeroOnEnemy(true);
-
-        updateHerohealth();
     }
 
     public void addStatusBackground() {
@@ -142,6 +98,7 @@ public class Engine {
     }
 
     public void addStatusInitial() {
+        System.out.println("building default status");
         // fireballs
         for (int i = 0; i < 3; i++) {
             gui.addStatusImage(new Fire(new Position(i, 0)));
@@ -153,29 +110,89 @@ public class Engine {
         }
     }
 
-    public void addFloorAndWallsOnTiles() {
-        System.out.println("building walls");
-        // draw floor
+    public void addFloor() {
+        System.out.println("building floor");
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 tiles.add(new Floor(new Position(i, j)));
             }
         }
+    }
 
-        // draw walls horizontal
-        /*
-        for (int i = 0; i < 10; i++) {
-            tiles.add(new Wall(new Position(i, 0)));
-            tiles.add(new Wall(new Position(i, 9)));
+    public void readFile(String fileName) {
+        System.out.println("building " + fileName);
+        try {
+            Scanner fileScanner = new Scanner(new File(fileName));
+            int col = 0;
+
+            while (fileScanner.hasNextLine()) {
+                String linha = fileScanner.nextLine();
+
+                if (linha.contains("#")) {
+                    List<String> chars = List.of(linha.split(" "));
+                    // continue if only contains the "#"
+                    if (chars.size() == 1) continue;
+                    // catch doors
+                    System.out.println(chars);
+                    if (isNumber(chars.get(1))) {
+                        System.out.println("Got a door");
+                        int doorIndex = Integer.parseInt(chars.get(1));
+                        String nextRoom = chars.get(3);
+                        int nextIndex = Integer.parseInt(chars.get(4));
+                        switch (chars.get(2)) {
+                            case "D" -> {
+                                if (chars.size() > 5) {
+                                    // System.out.println("Create DoorClosed");
+                                    doorList.add(new DoorClosed(doorIndex, nextRoom, nextIndex, false, chars.get(4)));
+                                } else {
+                                    // System.out.println("Create DoorOpen");
+                                    doorList.add(new DoorOpen(doorIndex, nextRoom, nextIndex, true));
+                                }
+                            }
+                            case "E" ->
+                                // System.out.println("Create DoorWay");
+                                    doorList.add(new DoorWay(doorIndex, nextRoom, nextIndex, true));
+                            default -> System.out.println("Invalid door type on .txt");
+                        }
+                    }
+
+                    //ignore next steps for # fields
+                    continue;
+                }
+
+                // build map
+                String[] chars = linha.split("");
+                for (int i = 0; i < 10; i++) {
+                    if (Objects.equals(chars[i], "W")) {
+                        tiles.add(new Wall(new Position(i, col)));
+                    } else if (isNumber(chars[i])) {
+                        doorList.get(Integer.parseInt(chars[i])).setPosition(new Position(i, col));
+                    } else if (Objects.equals(chars[i], "S")) {
+                        enemyList.add(new Skeleton(new Position(i, col), 30));
+                    }
+                }
+                // go to next column
+                col++;
+            }
+
+            for (Door myDoor : doorList) {
+                System.out.println(myDoor);
+            }
+
+            fileScanner.close();
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
         }
 
-        // draw walls vertical
-        for (int i = 0; i < 10; i++) {
-            tiles.add(new Wall(new Position(0, i)));
-            tiles.add(new Wall(new Position(9, i)));
-        }
+    }
 
-         */
+    public void turn() {
+        checkIfHeroOnEnemy(false);
+
+        moveEnemy();
+        checkIfHeroOnEnemy(true);
+
+        updateHerohealth();
     }
 
     public void moveEnemy() {
@@ -209,7 +226,7 @@ public class Engine {
                     this.hero.setHealth(this.hero.getHealth() - enemy.getPower());
                     System.out.println("Life: " + this.hero.getHealth());
 
-                    gui.setStatus("" + enemy.getName() + " attacked you. You lost: " + enemy.getPower() + " health.");
+                    gui.setStatus(enemy.getName() + " attacked you. You lost: " + enemy.getPower() + " health.");
                     removeEnemy = true;
                     toRemove = enemy;
                 }
@@ -229,7 +246,13 @@ public class Engine {
         }
     }
 
-    public List<ImageTile> getTiles() {
-        return tiles;
+    // get this out of here ASAP
+    public boolean isNumber(String str) {
+        try {
+            Integer.parseInt(str); // or Double.parseDouble(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 }

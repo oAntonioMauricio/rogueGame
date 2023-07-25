@@ -11,6 +11,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Enemy implements ImageTile {
 
+    private String test = "Hey;";
+
     public abstract int getPower();
 
     public abstract void setPosition(Position position);
