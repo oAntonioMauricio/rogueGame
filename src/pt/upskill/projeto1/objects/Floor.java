@@ -20,4 +20,10 @@ public class Floor implements ImageTile {
     public Position getPosition() {
         return position;
     }
+
+    @Override
+    public Boolean isPossibleToWalk() {
+        return true;
+    }
+
 }

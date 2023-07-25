@@ -20,4 +20,9 @@ public class Wall implements ImageTile {
     public Position getPosition() {
         return position;
     }
+
+    @Override
+    public Boolean isPossibleToWalk() {
+        return false;
+    }
 }

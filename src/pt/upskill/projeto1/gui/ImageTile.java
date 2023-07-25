@@ -35,5 +35,10 @@ public interface ImageTile {
 	 * @return A position.
 	 */
 	Position getPosition();
-
+	/**
+	 * Getter to check if the chracetrs can walk on this tile.
+	 *
+	 * @return A boolean.
+	 */
+	Boolean isPossibleToWalk();
 }
