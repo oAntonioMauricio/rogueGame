@@ -17,7 +17,7 @@ public class Engine {
     }
 
     // TODO: melhorar algoritmo de perseguição https://wumbo.net/formulas/distance-between-two-points-2d/
-    // TODO: mudar vefificação da próxima posição ( passar do heroi para a engine)
+    // TODO: mudar vefificação da próxima posição dos ENEMIES!
     // testing new branch at home :D
 
     // atributes 🔽
@@ -50,7 +50,7 @@ public class Engine {
     }
 
     public void loadRoom(int newRoomIndex) {
-        this.roomIndex = newRoomIndex;
+        setRoomIndex(newRoomIndex);
         // reset tiles and clear gui
         tiles.removeAll(tiles);
         gui.clearImages();
@@ -75,47 +75,6 @@ public class Engine {
         tiles.addAll(roomList.get(roomIndex).getEnemyList());
 
         gui.newImages(this.tiles);
-    }
-
-    public void notify(int keyPressed) {
-        if (keyPressed == KeyEvent.VK_DOWN) {
-            // System.out.println("User pressed down key!");
-
-            hero.setPosition(hero.getPosition().plus(Objects.requireNonNull(Direction.DOWN.asVector())), this.tiles);
-            turn();
-        }
-        if (keyPressed == KeyEvent.VK_UP) {
-            // System.out.println("User pressed up key!");
-
-            hero.setPosition(hero.getPosition().plus(Objects.requireNonNull(Direction.UP.asVector())), this.tiles);
-            turn();
-        }
-        if (keyPressed == KeyEvent.VK_LEFT) {
-            // System.out.println("User pressed left key!");
-
-            hero.setPosition(hero.getPosition().plus(Objects.requireNonNull(Direction.LEFT.asVector())), this.tiles);
-            turn();
-        }
-        if (keyPressed == KeyEvent.VK_RIGHT) {
-            // System.out.println("User pressed right key!");
-
-            hero.setPosition(hero.getPosition().plus(Objects.requireNonNull(Direction.RIGHT.asVector())), this.tiles);
-            turn();
-        }
-        if (keyPressed == KeyEvent.VK_SPACE) {
-            // use this to move between room 0 and 1
-            System.out.println("Space pressed");
-
-            int test = 0;
-
-            if (this.roomIndex == 0) {
-                test = 1;
-            } else {
-                test = 0;
-            }
-
-            loadRoom(test);
-        }
     }
 
     public void addStatusBackground() {
@@ -147,12 +106,65 @@ public class Engine {
         }
     }
 
+    public void notify(int keyPressed) {
+        if (keyPressed == KeyEvent.VK_DOWN) {
+            // System.out.println("User pressed down key!");
+            Position nextPosition = hero.getPosition().plus(Direction.DOWN.asVector());
+            move(nextPosition);
+
+            turn();
+        }
+        if (keyPressed == KeyEvent.VK_UP) {
+            // System.out.println("User pressed up key!");
+            Position nextPosition = hero.getPosition().plus(Direction.UP.asVector());
+            move(nextPosition);
+
+            turn();
+        }
+        if (keyPressed == KeyEvent.VK_LEFT) {
+            // System.out.println("User pressed left key!");
+            Position nextPosition = hero.getPosition().plus(Direction.LEFT.asVector());
+            move(nextPosition);
+
+            turn();
+        }
+        if (keyPressed == KeyEvent.VK_RIGHT) {
+            // System.out.println("User pressed right key!");
+            Position nextPosition = hero.getPosition().plus(Direction.RIGHT.asVector());
+            move(nextPosition);
+
+            turn();
+        }
+        if (keyPressed == KeyEvent.VK_SPACE) {
+            System.out.println("Space pressed");
+        }
+    }
+
+    public void move(Position nextPosition) {
+        /**
+         * receives the next position for the hero and checks if the move is possible.
+         * if not the hero stays in its previous place
+         */
+        boolean move = true;
+
+        for (ImageTile tile : tiles) {
+            if (nextPosition.getX() == tile.getPosition().getX() && nextPosition.getY() == tile.getPosition().getY()) {
+                if (tile instanceof Wall) {
+                    move = false;
+                    break;
+                }
+            }
+        }
+
+        if (move) {
+            hero.setPosition(nextPosition);
+        }
+    }
+
     public void turn() {
-        // test
         checkIfHeroOnDoor();
 
         checkIfHeroOnEnemy(false);
-
         moveEnemy();
         checkIfHeroOnEnemy(true);
 
@@ -166,16 +178,19 @@ public class Engine {
                 int nextRoom = door.nextRoomInt();
                 int nextDoorIndex = door.getNextIndex();
                 loadRoom(nextRoom);
-                this.hero.setPosition(roomList.get(nextRoom).getDoorList().get(nextDoorIndex).getPosition(), this.tiles);
 
+                // move to the right door on the map
+                move(roomList.get(nextRoom).getDoorList().get(nextDoorIndex).getPosition());
+
+                // move 1 step away from the door
                 if (this.hero.getPosition().getY() == 9) {
-                    this.hero.setPosition(hero.getPosition().plus(Objects.requireNonNull(Direction.UP.asVector())), this.tiles);
+                    move(hero.getPosition().plus(Objects.requireNonNull(Direction.UP.asVector())));
                 } else if (this.hero.getPosition().getY() == 0) {
-                    this.hero.setPosition(hero.getPosition().plus(Objects.requireNonNull(Direction.DOWN.asVector())), this.tiles);
+                    move(hero.getPosition().plus(Objects.requireNonNull(Direction.DOWN.asVector())));
                 } else if (this.hero.getPosition().getX() == 0) {
-                    this.hero.setPosition(hero.getPosition().plus(Objects.requireNonNull(Direction.RIGHT.asVector())), this.tiles);
+                    move(hero.getPosition().plus(Objects.requireNonNull(Direction.RIGHT.asVector())));
                 } else if (this.hero.getPosition().getX() == 9) {
-                    this.hero.setPosition(hero.getPosition().plus(Objects.requireNonNull(Direction.LEFT.asVector())), this.tiles);
+                    move(hero.getPosition().plus(Objects.requireNonNull(Direction.LEFT.asVector())));
                 }
             }
         }

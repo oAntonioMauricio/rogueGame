@@ -32,7 +32,8 @@ public class Hero implements ImageTile {
         return true;
     }
 
-    public void setPosition(Position position, List<ImageTile> tileList) {
+    public void setPosition(Position position) {
+        /*
         boolean move = true;
 
         for (ImageTile tile : tileList) {
@@ -47,6 +48,10 @@ public class Hero implements ImageTile {
         if (move) {
             this.position = position;
         }
+
+         */
+
+        this.position = position;
 
     }
 
