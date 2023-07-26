@@ -1,5 +1,6 @@
 package pt.upskill.projeto1.objects;
 
+import pt.upskill.projeto1.game.Engine;
 import pt.upskill.projeto1.gui.ImageTile;
 import pt.upskill.projeto1.rogue.utils.Position;
 
@@ -36,7 +37,7 @@ public class Hero implements ImageTile {
 
         for (ImageTile tile : tileList) {
             if (position.getX() == tile.getPosition().getX() && position.getY() == tile.getPosition().getY()) {
-                if (!tile.isPossibleToWalk()) {
+                if (tile instanceof Wall) {
                     move = false;
                     break;
                 }

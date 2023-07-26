@@ -4,7 +4,6 @@ import pt.upskill.projeto1.gui.ImageTile;
 import pt.upskill.projeto1.rogue.utils.Position;
 
 public abstract class Door implements ImageTile {
-
     private Position position;
     private int doorIndex;
     private String nextRoom;
@@ -28,6 +27,10 @@ public abstract class Door implements ImageTile {
 
     public String getNextRoom() {
         return nextRoom;
+    }
+
+    public int nextRoomInt() {
+        return Integer.parseInt(getNextRoom().replaceAll("[^0-9]", ""));
     }
 
     public void setNextRoom(String nextRoom) {

@@ -22,7 +22,7 @@ public abstract class Enemy implements ImageTile {
 
         for (ImageTile tile : tileList) {
             if (newPosition.getX() == tile.getPosition().getX() && newPosition.getY() == tile.getPosition().getY()) {
-                if (Objects.equals(tile.getName(), "Wall")) {
+                if (tile instanceof Wall || tile instanceof Door) {
                     move = !move;
                 }
             }
