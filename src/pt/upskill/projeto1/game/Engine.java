@@ -7,8 +7,6 @@ import pt.upskill.projeto1.rogue.utils.Direction;
 import pt.upskill.projeto1.rogue.utils.Position;
 
 import java.awt.event.KeyEvent;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.*;
 
 public class Engine {
@@ -21,8 +19,11 @@ public class Engine {
     //
     // TODO: melhorar algoritmo de perseguição https://wumbo.net/formulas/distance-between-two-points-2d/
     //
-    // perguntar sobre a func readFile (demasiado grande?, posso simplificar?); construção das portas correta?
+    // perguntar sobre a class ReadRooms
+    // testing new branch ;)
     //
+
+    // atributes 🔽
 
     private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
     private ReadRooms readRooms = new ReadRooms();
@@ -33,6 +34,8 @@ public class Engine {
     private List<Door> doorList = new ArrayList<>();
     private Hero hero = new Hero(new Position(8, 8), 100);
     private List<Enemy> enemyList = new ArrayList<>();
+
+    // methods 🔽
 
     public void init() {
         gui.setEngine(this);
@@ -196,7 +199,7 @@ public class Engine {
         moveEnemy();
         checkIfHeroOnEnemy(true);
 
-        updateHerohealth();
+        updateHeroHealth();
     }
 
     public void moveEnemy() {
@@ -244,19 +247,9 @@ public class Engine {
         }
     }
 
-    public void updateHerohealth() {
+    public void updateHeroHealth() {
         if (this.hero.getHealth() <= 75) {
             gui.addStatusImage(new Red(new Position(6, 0)));
-        }
-    }
-
-    // get this out of here ASAP
-    public boolean isNumber(String str) {
-        try {
-            Integer.parseInt(str); // or Double.parseDouble(str);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
         }
     }
 }
