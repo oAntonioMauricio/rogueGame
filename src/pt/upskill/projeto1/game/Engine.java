@@ -16,29 +16,27 @@ public class Engine {
         engine.init();
     }
 
-    //
     // TODO: melhorar algoritmo de perseguição https://wumbo.net/formulas/distance-between-two-points-2d/
-    //
-    // perguntar sobre a class ReadRooms
-    // testing new branch ;)
-    //
+    // testing new branch :)
 
     // atributes 🔽
 
     private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
-    private ReadRooms readRooms = new ReadRooms();
-
-    // private final List<ImageTile> statusBar = new ArrayList<>();
-
+    int roomIndex = 0;
     private List<ImageTile> tiles = new ArrayList<>();
+    private List<Room> roomList = new ArrayList<>();
     private List<Door> doorList = new ArrayList<>();
-    private Hero hero = new Hero(new Position(8, 8), 100);
     private List<Enemy> enemyList = new ArrayList<>();
+    private Hero hero = new Hero(new Position(8, 8), 100);
 
     // methods 🔽
 
     public void init() {
         gui.setEngine(this);
+
+        // read file and draw room
+        roomList.add(new Room("rooms/room0.txt"));
+        roomList.add(new Room("rooms/room1.txt"));
 
         // add status bar
         addStatusBackground();
@@ -47,17 +45,19 @@ public class Engine {
         // add floor
         addFloor();
 
-        // read file and draw room
-        readRooms.readFile("rooms/room2.txt", doorList, enemyList, tiles);
-
         // add hero
         tiles.add(this.hero);
 
-        // add the enemies
-        tiles.addAll(enemyList);
+        // add walls
+        tiles.addAll(roomList.get(roomIndex).getWallList());
 
         // add the doors
-        tiles.addAll(doorList);
+        tiles.addAll(roomList.get(roomIndex).getDoorList());
+        // doorList = room.getDoorList();
+
+        // add the enemies
+        tiles.addAll(roomList.get(roomIndex).getEnemyList());
+        // enemyList = room.getEnemyList();
 
         gui.newImages(this.tiles);
         gui.go();
@@ -93,6 +93,42 @@ public class Engine {
 
             hero.setPosition(hero.getPosition().plus(Direction.RIGHT.asVector()), this.tiles);
             turn();
+        }
+        if (keyPressed == KeyEvent.VK_SPACE) {
+            // use this to move between room 0 and 1
+            System.out.println("Space pressed");
+
+            if (this.roomIndex == 0) {
+                setRoomIndex(1);
+            } else {
+                setRoomIndex(0);
+            }
+
+            tiles.removeAll(tiles);
+            gui.clearImages();
+
+            // add status bar
+            addStatusBackground();
+            addStatusInitial();
+
+            // add floor
+            addFloor();
+
+            // add hero
+            tiles.add(this.hero);
+
+            // add walls
+            tiles.addAll(roomList.get(roomIndex).getWallList());
+
+            // add the doors
+            tiles.addAll(roomList.get(roomIndex).getDoorList());
+            // doorList = room.getDoorList();
+
+            // add the enemies
+            tiles.addAll(roomList.get(roomIndex).getEnemyList());
+            // enemyList = room.getEnemyList();
+
+            gui.newImages(this.tiles);
         }
     }
 
@@ -204,7 +240,7 @@ public class Engine {
 
     public void moveEnemy() {
         // move enemy in random direction
-        for (Enemy enemy : enemyList) {
+        for (Enemy enemy : roomList.get(roomIndex).getEnemyList()) {
             enemy.setNewPosition(enemy.getPosition().plus(enemy.moveToHero(this.hero)), this.tiles);
         }
     }
@@ -214,7 +250,7 @@ public class Engine {
         Enemy toRemove = null;
 
         if (!reverseHeroAndEnemy) {
-            for (Enemy enemy : enemyList) {
+            for (Enemy enemy : roomList.get(roomIndex).getEnemyList()) {
                 if (this.hero.getPosition().isItSamePosition(enemy.getPosition())) {
                     System.out.println("HIT ON ENEMY!");
                     if (this.hero.getPower() >= enemy.getPower()) {
@@ -227,7 +263,7 @@ public class Engine {
         }
 
         if (reverseHeroAndEnemy) {
-            for (Enemy enemy : enemyList) {
+            for (Enemy enemy : roomList.get(roomIndex).getEnemyList()) {
                 if (this.hero.getPosition().isItSamePosition(enemy.getPosition())) {
                     System.out.println("ENEMY ATTACK!");
                     this.hero.setHealth(this.hero.getHealth() - enemy.getPower());
@@ -242,7 +278,7 @@ public class Engine {
 
         if (removeEnemy) {
             System.out.println("enemy removed");
-            enemyList.remove(toRemove);
+            roomList.get(roomIndex).getEnemyList().remove(toRemove);
             gui.removeImage(toRemove);
         }
     }
@@ -251,5 +287,9 @@ public class Engine {
         if (this.hero.getHealth() <= 75) {
             gui.addStatusImage(new Red(new Position(6, 0)));
         }
+    }
+
+    public void setRoomIndex(int roomIndex) {
+        this.roomIndex = roomIndex;
     }
 }

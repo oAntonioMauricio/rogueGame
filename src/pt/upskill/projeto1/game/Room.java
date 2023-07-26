@@ -6,13 +6,21 @@ import pt.upskill.projeto1.rogue.utils.Position;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
-public class ReadRooms {
+public class Room {
+    private List<Wall> wallList = new ArrayList<>();
+    private List<Door> doorList = new ArrayList<>();
+    private List<Enemy> enemyList = new ArrayList<>();
 
-    public void readFile(String fileName, List<Door> doorList, List<Enemy> enemyList, List<ImageTile> tiles) {
+    public Room(String fileName) {
+        readFile(fileName);
+    }
+
+    public void readFile(String fileName) {
         System.out.println("building " + fileName);
         try {
             Scanner fileScanner = new Scanner(new File(fileName));
@@ -57,7 +65,7 @@ public class ReadRooms {
                 String[] chars = linha.split("");
                 for (int i = 0; i < 10; i++) {
                     if (Objects.equals(chars[i], "W")) {
-                        tiles.add(new Wall(new Position(i, col)));
+                        wallList.add(new Wall(new Position(i, col)));
                     } else if (isNumber(chars[i])) {
                         doorList.get(Integer.parseInt(chars[i])).setPosition(new Position(i, col));
                     } else if (Objects.equals(chars[i], "S")) {
@@ -88,4 +96,15 @@ public class ReadRooms {
         }
     }
 
+    public List<Wall> getWallList() {
+        return wallList;
+    }
+
+    public List<Door> getDoorList() {
+        return doorList;
+    }
+
+    public List<Enemy> getEnemyList() {
+        return enemyList;
+    }
 }
