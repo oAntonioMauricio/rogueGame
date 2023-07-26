@@ -11,8 +11,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
 
-import static java.lang.Character.isDigit;
-
 public class Engine {
 
     public static void main(String[] args) {
@@ -26,12 +24,15 @@ public class Engine {
     // perguntar sobre a func readFile (demasiado grande?, posso simplificar?); construção das portas correta?
     //
 
-    private final ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
-    private final List<ImageTile> statusBar = new ArrayList<>();
-    private final List<ImageTile> tiles = new ArrayList<>();
-    private final List<Door> doorList = new ArrayList<>();
-    private final Hero hero = new Hero(new Position(8, 8), 100);
-    private final List<Enemy> enemyList = new ArrayList<>();
+    private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
+    private ReadRooms readRooms = new ReadRooms();
+
+    // private final List<ImageTile> statusBar = new ArrayList<>();
+
+    private List<ImageTile> tiles = new ArrayList<>();
+    private List<Door> doorList = new ArrayList<>();
+    private Hero hero = new Hero(new Position(8, 8), 100);
+    private List<Enemy> enemyList = new ArrayList<>();
 
     public void init() {
         gui.setEngine(this);
@@ -40,9 +41,11 @@ public class Engine {
         addStatusBackground();
         addStatusInitial();
 
-        // add floor and walls
+        // add floor
         addFloor();
-        readFile("rooms/room0.txt");
+
+        // read file and draw room
+        readRooms.readFile("rooms/room2.txt", doorList, enemyList, tiles);
 
         // add hero
         tiles.add(this.hero);
@@ -119,6 +122,7 @@ public class Engine {
         }
     }
 
+    /*
     public void readFile(String fileName) {
         System.out.println("building " + fileName);
         try {
@@ -135,7 +139,7 @@ public class Engine {
                     // catch doors
                     System.out.println(chars);
                     if (isNumber(chars.get(1))) {
-                        System.out.println("Got a door");
+                        System.out.println("🔼 Got a door");
                         int doorIndex = Integer.parseInt(chars.get(1));
                         String nextRoom = chars.get(3);
                         int nextIndex = Integer.parseInt(chars.get(4));
@@ -184,7 +188,7 @@ public class Engine {
             System.out.println(e.getMessage());
         }
 
-    }
+    } */
 
     public void turn() {
         checkIfHeroOnEnemy(false);
