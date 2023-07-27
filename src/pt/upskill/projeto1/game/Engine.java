@@ -27,26 +27,24 @@ public class Engine {
     // TODO: melhorar algoritmo de perseguição https://wumbo.net/formulas/distance-between-two-points-2d/
     //
     // TODO: MELHORAR STATUS BAR PARA VIDA
-    // TODO: CREATE SINGLETON
+    // TODO: MELHORAR RELAÇÃO ENTRE SINGLETON E ENGINE !
     //
 
     // atributes 🔽
-
     private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
-    private List<ImageTile> tiles = new ArrayList<>();
-    int roomIndex = 0;
-    private List<Room> roomList = new ArrayList<>();
-    private Hero hero = new Hero(new Position(8, 8), 100);
 
     // methods 🔽
 
     public void init() {
         gui.setEngine(this);
 
-        // read file and draw room
-        roomList.add(new Room("rooms/room0.txt"));
-        roomList.add(new Room("rooms/room1.txt"));
-        roomList.add(new Room("rooms/room2.txt"));
+        // initiate singleton
+        GameSingleton gameSingleton = GameSingleton.getInstance();
+
+        // new !
+        gameSingleton.addRoom("rooms/room0.txt");
+        gameSingleton.addRoom("rooms/room1.txt");
+        gameSingleton.addRoom("rooms/room2.txt");
 
         // load room based on index
         loadRoom(0);
@@ -60,34 +58,22 @@ public class Engine {
     }
 
     public void loadRoom(int newRoomIndex) {
-        setRoomIndex(newRoomIndex);
+
         // reset tiles and clear gui
-        tiles.removeAll(tiles);
         gui.clearImages();
+        gui.clearStatus();
+
+        // get singleton
+        GameSingleton gameSingleton = GameSingleton.getInstance();
+        // load room in singleton
+        gameSingleton.loadRoom(newRoomIndex);
 
         // add status bar
         addStatusBackground();
         addStatusInitial();
 
-        // add floor
-        addFloor();
-
-        // add hero
-        tiles.add(this.hero);
-
-        // add walls
-        tiles.addAll(roomList.get(roomIndex).getWallList());
-
-        // add the doors
-        tiles.addAll(roomList.get(roomIndex).getDoorList());
-
-        // add the enemies
-        tiles.addAll(roomList.get(roomIndex).getEnemyList());
-
-        // add the items
-        tiles.addAll(roomList.get(roomIndex).getItemList());
-
-        gui.newImages(this.tiles);
+        // last gui update
+        gui.newImages(gameSingleton.getTiles());
     }
 
     public void addStatusBackground() {
@@ -110,16 +96,13 @@ public class Engine {
         }
     }
 
-    public void addFloor() {
-        System.out.println("building floor");
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                tiles.add(new Floor(new Position(i, j)));
-            }
-        }
-    }
-
     public void notify(int keyPressed) {
+
+        // get singleton
+        GameSingleton gameSingleton = GameSingleton.getInstance();
+        // get hero from singleton
+        Hero hero = gameSingleton.getHero();
+
         if (keyPressed == KeyEvent.VK_DOWN) {
             // System.out.println("User pressed down key!");
             Position nextPosition = hero.getPosition().plus(Objects.requireNonNull(Direction.DOWN.asVector()));
@@ -167,9 +150,15 @@ public class Engine {
          * receives the next position for the hero and checks if the move is possible.
          * if not the hero stays in its previous place
          */
+
+        // get singleton
+        GameSingleton gameSingleton = GameSingleton.getInstance();
+        Hero hero = gameSingleton.getHero();
+
+
         boolean move = true;
 
-        for (ImageTile tile : tiles) {
+        for (ImageTile tile : gameSingleton.getTiles()) {
             if (nextPosition.getX() == tile.getPosition().getX() && nextPosition.getY() == tile.getPosition().getY()) {
                 if (tile instanceof Wall) {
                     move = false;
@@ -184,6 +173,19 @@ public class Engine {
     }
 
     public void checkWhereHeroIs() {
+
+        // get singleton
+        GameSingleton gameSingleton = GameSingleton.getInstance();
+        // get tiles from singleton
+        List<ImageTile> tiles = gameSingleton.getTiles();
+        // get roomList from singleton
+        List<Room> roomList = gameSingleton.getRoomList();
+        // get room index
+        int roomIndex = gameSingleton.getRoomIndex();
+        // get hero from singleton
+        Hero hero = gameSingleton.getHero();
+
+
         ImageTile interaction = null;
 
         for (ImageTile tile : tiles) {
@@ -191,7 +193,7 @@ public class Engine {
                 continue;
             }
 
-            if (this.hero.getPosition().getX() == tile.getPosition().getX() && this.hero.getPosition().getY() == tile.getPosition().getY()) {
+            if (hero.getPosition().getX() == tile.getPosition().getX() && hero.getPosition().getY() == tile.getPosition().getY()) {
                 System.out.println("hero is on top of: " + tile.getName());
                 interaction = tile;
             }
@@ -207,12 +209,14 @@ public class Engine {
 
                     boolean removeEnemy = false;
                     Enemy toRemove = null;
-                    if (this.hero.getPower() >= currentEnemy.getPower()) {
+
+                    if (hero.getPower() >= currentEnemy.getPower()) {
                         gui.setStatus("You destroyed: " + currentEnemy.getName());
                         removeEnemy = true;
                         toRemove = currentEnemy;
                     }
                     if (removeEnemy) {
+
                         roomList.get(roomIndex).getEnemyList().remove(toRemove);
                         tiles.remove(toRemove);
                         gui.removeImage(toRemove);
@@ -232,13 +236,13 @@ public class Engine {
                     moveHero(roomList.get(nextRoom).getDoorList().get(nextDoorIndex).getPosition());
 
                     // move 1 step away from the door
-                    if (this.hero.getPosition().getY() == 9) {
+                    if (hero.getPosition().getY() == 9) {
                         moveHero(hero.getPosition().plus(Objects.requireNonNull(Direction.UP.asVector())));
-                    } else if (this.hero.getPosition().getY() == 0) {
+                    } else if (hero.getPosition().getY() == 0) {
                         moveHero(hero.getPosition().plus(Objects.requireNonNull(Direction.DOWN.asVector())));
-                    } else if (this.hero.getPosition().getX() == 0) {
+                    } else if (hero.getPosition().getX() == 0) {
                         moveHero(hero.getPosition().plus(Objects.requireNonNull(Direction.RIGHT.asVector())));
-                    } else if (this.hero.getPosition().getX() == 9) {
+                    } else if (hero.getPosition().getX() == 9) {
                         moveHero(hero.getPosition().plus(Objects.requireNonNull(Direction.LEFT.asVector())));
                     }
                 }
@@ -249,9 +253,9 @@ public class Engine {
                     Item currentItem = roomList.get(roomIndex).getItemList().get(indexItem);
 
                     // effect
-                    this.hero.setHealth(this.hero.getHealth() + currentItem.getHealth());
+                    hero.setHealth(hero.getHealth() + currentItem.getHealth());
                     gui.setStatus("You ate " + currentItem.getName() + " and received " + currentItem.getHealth() + " hp.");
-                    System.out.println("Current health: " + this.hero.getHealth());
+                    System.out.println("Current health: " + hero.getHealth());
 
                     // delete item
                     roomList.get(roomIndex).getItemList().remove(currentItem);
@@ -266,14 +270,26 @@ public class Engine {
     }
 
     public void checkIfEnemyOnHero() {
+
+        // get singleton
+        GameSingleton gameSingleton = GameSingleton.getInstance();
+        // get tiles from singleton
+        List<ImageTile> tiles = gameSingleton.getTiles();
+        // get roomList from singleton
+        List<Room> roomList = gameSingleton.getRoomList();
+        // get room index
+        int roomIndex = gameSingleton.getRoomIndex();
+        // get hero from singleton
+        Hero hero = gameSingleton.getHero();
+
         boolean removeEnemy = false;
         Enemy toRemove = null;
 
         for (Enemy enemy : roomList.get(roomIndex).getEnemyList()) {
-            if (this.hero.getPosition().isItSamePosition(enemy.getPosition())) {
+            if (hero.getPosition().isItSamePosition(enemy.getPosition())) {
                 System.out.println("ENEMY ATTACK!");
-                this.hero.setHealth(this.hero.getHealth() - enemy.getPower());
-                System.out.println("Life: " + this.hero.getHealth());
+                hero.setHealth(hero.getHealth() - enemy.getPower());
+                System.out.println("Life: " + hero.getHealth());
 
                 gui.setStatus(enemy.getName() + " attacked you. You lost: " + enemy.getPower() + " health.");
                 removeEnemy = true;
@@ -290,6 +306,12 @@ public class Engine {
     }
 
     public void moveEnemy(Enemy enemy, Position nextPosition) {
+
+        // get singleton
+        GameSingleton gameSingleton = GameSingleton.getInstance();
+        // get tiles from singleton
+        List<ImageTile> tiles = gameSingleton.getTiles();
+
         boolean move = true;
 
         for (ImageTile tile : tiles) {
@@ -306,51 +328,64 @@ public class Engine {
     }
 
     public void moveEveryEnemy() {
+
+        // get singleton
+        GameSingleton gameSingleton = GameSingleton.getInstance();
+        // get roomList from singleton
+        List<Room> roomList = gameSingleton.getRoomList();
+        // get room index
+        int roomIndex = gameSingleton.getRoomIndex();
+        // get hero from singleton
+        Hero hero = gameSingleton.getHero();
+
+
         // move every enemy in random direction
         for (Enemy enemy : roomList.get(roomIndex).getEnemyList()) {
-            moveEnemy(enemy, enemy.getPosition().plus(enemy.moveToHero(this.hero)));
+            moveEnemy(enemy, enemy.getPosition().plus(enemy.moveToHero(hero)));
         }
     }
 
     public void updateHeroHealth() {
-        if (this.hero.getHealth() == 100) {
+
+        // get singleton
+        GameSingleton gameSingleton = GameSingleton.getInstance();
+        // get hero from singleton
+        Hero hero = gameSingleton.getHero();
+
+        if (hero.getHealth() == 100) {
             gui.addStatusImage(new Green(new Position(6, 0)));
             gui.addStatusImage(new Green(new Position(5, 0)));
             gui.addStatusImage(new Green(new Position(4, 0)));
             gui.addStatusImage(new Green(new Position(3, 0)));
         }
 
-        if (this.hero.getHealth() == 75) {
+        if (hero.getHealth() == 75) {
             gui.addStatusImage(new Red(new Position(6, 0)));
             gui.addStatusImage(new Green(new Position(5, 0)));
             gui.addStatusImage(new Green(new Position(4, 0)));
             gui.addStatusImage(new Green(new Position(3, 0)));
         }
 
-        if (this.hero.getHealth() == 50) {
+        if (hero.getHealth() == 50) {
             gui.addStatusImage(new Red(new Position(6, 0)));
             gui.addStatusImage(new Red(new Position(5, 0)));
             gui.addStatusImage(new Green(new Position(4, 0)));
             gui.addStatusImage(new Green(new Position(3, 0)));
         }
 
-        if (this.hero.getHealth() == 25) {
+        if (hero.getHealth() == 25) {
             gui.addStatusImage(new Red(new Position(6, 0)));
             gui.addStatusImage(new Red(new Position(5, 0)));
             gui.addStatusImage(new Red(new Position(4, 0)));
             gui.addStatusImage(new Green(new Position(3, 0)));
         }
 
-        if (this.hero.getHealth() <= 0) {
+        if (hero.getHealth() <= 0) {
             gui.addStatusImage(new Red(new Position(6, 0)));
             gui.addStatusImage(new Red(new Position(5, 0)));
             gui.addStatusImage(new Red(new Position(4, 0)));
             gui.addStatusImage(new Red(new Position(3, 0)));
         }
 
-    }
-
-    public void setRoomIndex(int roomIndex) {
-        this.roomIndex = roomIndex;
     }
 }
