@@ -24,8 +24,9 @@ public class Engine {
 
     // new branch
     // TODO: melhorar algoritmo de perseguição https://wumbo.net/formulas/distance-between-two-points-2d/
-    // TODO: INSERIR CHECK DAS PORTAS NA FUNC CHECKWHEREHEROIS
+    //
     // TODO: ATUALIZAR STATUS BAR PARA VIDA
+    // TODO: CREATE SINGLETON
 
     // atributes 🔽
 
