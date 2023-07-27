@@ -125,7 +125,7 @@ public class Engine {
             turn();
         }
         if (keyPressed == KeyEvent.VK_SPACE) {
-            System.out.println("Space pressed");
+
         }
     }
 
@@ -140,7 +140,7 @@ public class Engine {
 
     public void checkWhereHeroIs() {
 
-        // get room index
+        // get room index // this is here because it's PRIMITIVE
         int roomIndex = gameSingleton.getRoomIndex();
 
         ImageTile interaction = null;
@@ -229,16 +229,8 @@ public class Engine {
 
     public void checkIfEnemyOnHero() {
 
-        // get singleton
-        GameSingleton gameSingleton = GameSingleton.getInstance();
-        // get tiles from singleton
-        List<ImageTile> tiles = gameSingleton.getTiles();
-        // get roomList from singleton
-        List<Room> roomList = gameSingleton.getRoomList();
         // get room index
         int roomIndex = gameSingleton.getRoomIndex();
-        // get hero from singleton
-        Hero hero = gameSingleton.getHero();
 
         boolean removeEnemy = false;
         Enemy toRemove = null;
@@ -263,52 +255,19 @@ public class Engine {
         }
     }
 
-    public void moveEnemy(Enemy enemy, Position nextPosition) {
-
-        // get singleton
-        GameSingleton gameSingleton = GameSingleton.getInstance();
-        // get tiles from singleton
-        List<ImageTile> tiles = gameSingleton.getTiles();
-
-        boolean move = true;
-
-        for (ImageTile tile : tiles) {
-            if (nextPosition.getX() == tile.getPosition().getX() && nextPosition.getY() == tile.getPosition().getY()) {
-                if (tile instanceof Wall || tile instanceof Door || tile instanceof Enemy) {
-                    move = !move;
-                }
-            }
-        }
-
-        if (move) {
-            enemy.setPosition(nextPosition);
-        }
-    }
-
     public void moveEveryEnemy() {
 
-        // get singleton
-        GameSingleton gameSingleton = GameSingleton.getInstance();
-        // get roomList from singleton
-        List<Room> roomList = gameSingleton.getRoomList();
-        // get room index
+        // get room index. !careful it's an int
         int roomIndex = gameSingleton.getRoomIndex();
-        // get hero from singleton
-        Hero hero = gameSingleton.getHero();
-
 
         // move every enemy in random direction
         for (Enemy enemy : roomList.get(roomIndex).getEnemyList()) {
-            moveEnemy(enemy, enemy.getPosition().plus(enemy.moveToHero(hero)));
+            // moveEnemy(enemy, enemy.getPosition().plus(enemy.moveToHero(hero)));
+            enemy.move(enemy.getPosition().plus(enemy.moveToHero(hero)));
         }
     }
 
     public void updateHeroHealth() {
-
-        // get singleton
-        GameSingleton gameSingleton = GameSingleton.getInstance();
-        // get hero from singleton
-        Hero hero = gameSingleton.getHero();
 
         if (hero.getHealth() == 100) {
             gui.addStatusImage(new Green(new Position(6, 0)));

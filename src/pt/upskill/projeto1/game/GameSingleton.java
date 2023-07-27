@@ -13,6 +13,8 @@ import java.util.List;
 public class GameSingleton {
     private static GameSingleton instance;
     private List<ImageTile> tiles;
+
+    // careful passing roomIndex because it's an int
     private int roomIndex;
     private List<Room> roomList;
     private Hero hero;
@@ -46,7 +48,7 @@ public class GameSingleton {
         }
 
         // add hero
-        addTile(hero);
+        tiles.add(hero);
 
         // add walls
         tiles.addAll(roomList.get(roomIndex).getWallList());
@@ -65,11 +67,6 @@ public class GameSingleton {
     public void addRoom(String filename) {
         roomList.add(new Room(filename));
     }
-
-    public void addTile(ImageTile tile) {
-        tiles.add(tile);
-    }
-
 
     // Getters 🔽
     public List<Room> getRoomList() {

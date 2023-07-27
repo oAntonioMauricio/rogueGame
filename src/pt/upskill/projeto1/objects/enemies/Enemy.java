@@ -1,5 +1,6 @@
 package pt.upskill.projeto1.objects.enemies;
 
+import pt.upskill.projeto1.game.GameSingleton;
 import pt.upskill.projeto1.gui.ImageTile;
 import pt.upskill.projeto1.objects.Door;
 import pt.upskill.projeto1.objects.Hero;
@@ -20,19 +21,24 @@ public abstract class Enemy implements ImageTile {
 
     public abstract void setPosition(Position position);
 
-    public void setNewPosition(Position newPosition, List<ImageTile> tileList) {
+    public void move(Position nextPosition) {
+
+        // get singleton
+        GameSingleton gameSingleton = GameSingleton.getInstance();
+        List<ImageTile> tiles = gameSingleton.getTiles();
+
         boolean move = true;
 
-        for (ImageTile tile : tileList) {
-            if (newPosition.getX() == tile.getPosition().getX() && newPosition.getY() == tile.getPosition().getY()) {
-                if (tile instanceof Wall || tile instanceof Door) {
+        for (ImageTile tile : tiles) {
+            if (nextPosition.getX() == tile.getPosition().getX() && nextPosition.getY() == tile.getPosition().getY()) {
+                if (tile instanceof Wall || tile instanceof Door || tile instanceof Enemy) {
                     move = !move;
                 }
             }
         }
 
         if (move) {
-            setPosition(newPosition);
+            setPosition(nextPosition);
         }
     }
 
