@@ -1,6 +1,5 @@
 package pt.upskill.projeto1.game;
 
-import pt.upskill.projeto1.gui.ImageTile;
 import pt.upskill.projeto1.objects.*;
 import pt.upskill.projeto1.rogue.utils.Position;
 
@@ -70,6 +69,8 @@ public class Room {
                         doorList.get(Integer.parseInt(chars[i])).setPosition(new Position(i, col));
                     } else if (Objects.equals(chars[i], "S")) {
                         enemyList.add(new Skeleton(new Position(i, col), 30));
+                    } else if (Objects.equals(chars[i], "B")) {
+                        enemyList.add(new Bat(new Position(i, col), 30));
                     }
                 }
                 // go to next column

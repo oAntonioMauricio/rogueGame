@@ -16,8 +16,8 @@ public class Engine {
         engine.init();
     }
 
+    // new branch
     // TODO: melhorar algoritmo de perseguição https://wumbo.net/formulas/distance-between-two-points-2d/
-    // testing new branch at home :D
 
     // atributes 🔽
 
@@ -165,7 +165,7 @@ public class Engine {
 
         for (ImageTile tile : tiles) {
             if (nextPosition.getX() == tile.getPosition().getX() && nextPosition.getY() == tile.getPosition().getY()) {
-                if (tile instanceof Wall || tile instanceof Door) {
+                if (tile instanceof Wall || tile instanceof Door || tile instanceof Enemy) {
                     move = !move;
                 }
             }

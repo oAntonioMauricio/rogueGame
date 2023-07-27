@@ -33,26 +33,7 @@ public class Hero implements ImageTile {
     }
 
     public void setPosition(Position position) {
-        /*
-        boolean move = true;
-
-        for (ImageTile tile : tileList) {
-            if (position.getX() == tile.getPosition().getX() && position.getY() == tile.getPosition().getY()) {
-                if (tile instanceof Wall) {
-                    move = false;
-                    break;
-                }
-            }
-        }
-
-        if (move) {
-            this.position = position;
-        }
-
-         */
-
         this.position = position;
-
     }
 
     public int getPower() {
