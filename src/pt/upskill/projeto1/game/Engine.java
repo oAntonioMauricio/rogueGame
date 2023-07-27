@@ -17,7 +17,6 @@ public class Engine {
     }
 
     // TODO: melhorar algoritmo de perseguição https://wumbo.net/formulas/distance-between-two-points-2d/
-    // TODO: mudar vefificação da próxima posição dos ENEMIES!
     // testing new branch at home :D
 
     // atributes 🔽
@@ -110,28 +109,28 @@ public class Engine {
         if (keyPressed == KeyEvent.VK_DOWN) {
             // System.out.println("User pressed down key!");
             Position nextPosition = hero.getPosition().plus(Direction.DOWN.asVector());
-            move(nextPosition);
+            moveHero(nextPosition);
 
             turn();
         }
         if (keyPressed == KeyEvent.VK_UP) {
             // System.out.println("User pressed up key!");
             Position nextPosition = hero.getPosition().plus(Direction.UP.asVector());
-            move(nextPosition);
+            moveHero(nextPosition);
 
             turn();
         }
         if (keyPressed == KeyEvent.VK_LEFT) {
             // System.out.println("User pressed left key!");
             Position nextPosition = hero.getPosition().plus(Direction.LEFT.asVector());
-            move(nextPosition);
+            moveHero(nextPosition);
 
             turn();
         }
         if (keyPressed == KeyEvent.VK_RIGHT) {
             // System.out.println("User pressed right key!");
             Position nextPosition = hero.getPosition().plus(Direction.RIGHT.asVector());
-            move(nextPosition);
+            moveHero(nextPosition);
 
             turn();
         }
@@ -140,7 +139,7 @@ public class Engine {
         }
     }
 
-    public void move(Position nextPosition) {
+    public void moveHero(Position nextPosition) {
         /**
          * receives the next position for the hero and checks if the move is possible.
          * if not the hero stays in its previous place
@@ -161,11 +160,27 @@ public class Engine {
         }
     }
 
+    public void moveEnemy(Enemy enemy, Position nextPosition) {
+        boolean move = true;
+
+        for (ImageTile tile : tiles) {
+            if (nextPosition.getX() == tile.getPosition().getX() && nextPosition.getY() == tile.getPosition().getY()) {
+                if (tile instanceof Wall || tile instanceof Door) {
+                    move = !move;
+                }
+            }
+        }
+
+        if (move) {
+            enemy.setPosition(nextPosition);
+        }
+    }
+
     public void turn() {
         checkIfHeroOnDoor();
 
         checkIfHeroOnEnemy(false);
-        moveEnemy();
+        moveEveryEnemy();
         checkIfHeroOnEnemy(true);
 
         updateHeroHealth();
@@ -180,17 +195,17 @@ public class Engine {
                 loadRoom(nextRoom);
 
                 // move to the right door on the map
-                move(roomList.get(nextRoom).getDoorList().get(nextDoorIndex).getPosition());
+                moveHero(roomList.get(nextRoom).getDoorList().get(nextDoorIndex).getPosition());
 
                 // move 1 step away from the door
                 if (this.hero.getPosition().getY() == 9) {
-                    move(hero.getPosition().plus(Objects.requireNonNull(Direction.UP.asVector())));
+                    moveHero(hero.getPosition().plus(Objects.requireNonNull(Direction.UP.asVector())));
                 } else if (this.hero.getPosition().getY() == 0) {
-                    move(hero.getPosition().plus(Objects.requireNonNull(Direction.DOWN.asVector())));
+                    moveHero(hero.getPosition().plus(Objects.requireNonNull(Direction.DOWN.asVector())));
                 } else if (this.hero.getPosition().getX() == 0) {
-                    move(hero.getPosition().plus(Objects.requireNonNull(Direction.RIGHT.asVector())));
+                    moveHero(hero.getPosition().plus(Objects.requireNonNull(Direction.RIGHT.asVector())));
                 } else if (this.hero.getPosition().getX() == 9) {
-                    move(hero.getPosition().plus(Objects.requireNonNull(Direction.LEFT.asVector())));
+                    moveHero(hero.getPosition().plus(Objects.requireNonNull(Direction.LEFT.asVector())));
                 }
             }
         }
@@ -234,10 +249,10 @@ public class Engine {
         }
     }
 
-    public void moveEnemy() {
-        // move enemy in random direction
+    public void moveEveryEnemy() {
+        // move every enemy in random direction
         for (Enemy enemy : roomList.get(roomIndex).getEnemyList()) {
-            enemy.setNewPosition(enemy.getPosition().plus(enemy.moveToHero(this.hero)), this.tiles);
+            moveEnemy(enemy, enemy.getPosition().plus(enemy.moveToHero(this.hero)));
         }
     }
 
