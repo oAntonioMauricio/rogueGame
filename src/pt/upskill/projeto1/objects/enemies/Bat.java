@@ -1,19 +1,18 @@
-package pt.upskill.projeto1.objects;
+package pt.upskill.projeto1.objects.enemies;
 
 import pt.upskill.projeto1.rogue.utils.Position;
 
-public class BadGuy extends Enemy {
+public class Bat extends Enemy {
     private Position position;
-    private int power;
+    private int power = 25;
 
-    public BadGuy(Position position, int power) {
+    public Bat(Position position) {
         this.position = position;
-        this.power = power;
     }
 
     @Override
     public String getName() {
-        return "BadGuy";
+        return "Bat";
     }
 
     @Override
@@ -34,4 +33,5 @@ public class BadGuy extends Enemy {
     public void setPosition(Position position) {
         this.position = position;
     }
+
 }

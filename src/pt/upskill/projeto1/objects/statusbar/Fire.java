@@ -1,18 +1,18 @@
-package pt.upskill.projeto1.objects;
+package pt.upskill.projeto1.objects.statusbar;
 
 import pt.upskill.projeto1.gui.ImageTile;
 import pt.upskill.projeto1.rogue.utils.Position;
 
-public class Red implements ImageTile {
+public class Fire implements ImageTile {
     private Position position;
 
-    public Red(Position position) {
+    public Fire(Position position) {
         this.position = position;
     }
 
     @Override
     public String getName() {
-        return "Red";
+        return "Fire";
     }
 
     @Override

@@ -3,6 +3,12 @@ package pt.upskill.projeto1.game;
 import pt.upskill.projeto1.gui.ImageMatrixGUI;
 import pt.upskill.projeto1.gui.ImageTile;
 import pt.upskill.projeto1.objects.*;
+import pt.upskill.projeto1.objects.enemies.Enemy;
+import pt.upskill.projeto1.objects.items.Item;
+import pt.upskill.projeto1.objects.statusbar.Black;
+import pt.upskill.projeto1.objects.statusbar.Fire;
+import pt.upskill.projeto1.objects.statusbar.Green;
+import pt.upskill.projeto1.objects.statusbar.Red;
 import pt.upskill.projeto1.rogue.utils.Direction;
 import pt.upskill.projeto1.rogue.utils.Position;
 
@@ -18,6 +24,8 @@ public class Engine {
 
     // new branch
     // TODO: melhorar algoritmo de perseguição https://wumbo.net/formulas/distance-between-two-points-2d/
+    // TODO: INSERIR CHECK DAS PORTAS NA FUNC CHECKWHEREHEROIS
+    // TODO: ATUALIZAR STATUS BAR PARA VIDA
 
     // atributes 🔽
 
@@ -73,6 +81,9 @@ public class Engine {
         // add the enemies
         tiles.addAll(roomList.get(roomIndex).getEnemyList());
 
+        // add the items
+        tiles.addAll(roomList.get(roomIndex).getItemList());
+
         gui.newImages(this.tiles);
     }
 
@@ -108,28 +119,28 @@ public class Engine {
     public void notify(int keyPressed) {
         if (keyPressed == KeyEvent.VK_DOWN) {
             // System.out.println("User pressed down key!");
-            Position nextPosition = hero.getPosition().plus(Direction.DOWN.asVector());
+            Position nextPosition = hero.getPosition().plus(Objects.requireNonNull(Direction.DOWN.asVector()));
             moveHero(nextPosition);
 
             turn();
         }
         if (keyPressed == KeyEvent.VK_UP) {
             // System.out.println("User pressed up key!");
-            Position nextPosition = hero.getPosition().plus(Direction.UP.asVector());
+            Position nextPosition = hero.getPosition().plus(Objects.requireNonNull(Direction.UP.asVector()));
             moveHero(nextPosition);
 
             turn();
         }
         if (keyPressed == KeyEvent.VK_LEFT) {
             // System.out.println("User pressed left key!");
-            Position nextPosition = hero.getPosition().plus(Direction.LEFT.asVector());
+            Position nextPosition = hero.getPosition().plus(Objects.requireNonNull(Direction.LEFT.asVector()));
             moveHero(nextPosition);
 
             turn();
         }
         if (keyPressed == KeyEvent.VK_RIGHT) {
             // System.out.println("User pressed right key!");
-            Position nextPosition = hero.getPosition().plus(Direction.RIGHT.asVector());
+            Position nextPosition = hero.getPosition().plus(Objects.requireNonNull(Direction.RIGHT.asVector()));
             moveHero(nextPosition);
 
             turn();
@@ -137,6 +148,15 @@ public class Engine {
         if (keyPressed == KeyEvent.VK_SPACE) {
             System.out.println("Space pressed");
         }
+    }
+
+    public void turn() {
+        checkWhereHeroIs();
+
+        moveEveryEnemy();
+        checkIfEnemyOnHero();
+
+        updateHeroHealth();
     }
 
     public void moveHero(Position nextPosition) {
@@ -160,6 +180,100 @@ public class Engine {
         }
     }
 
+    public void checkWhereHeroIs() {
+        ImageTile interaction = null;
+
+        for (ImageTile tile : tiles) {
+            if (Objects.equals(tile.getName(), "Hero") || Objects.equals(tile.getName(), "Floor")) {
+                continue;
+            }
+
+            if (this.hero.getPosition().getX() == tile.getPosition().getX() && this.hero.getPosition().getY() == tile.getPosition().getY()) {
+                System.out.println("hero is on top of: " + tile.getName());
+                interaction = tile;
+            }
+        }
+
+        if (interaction != null) {
+            switch (interaction.getName()) {
+                case "Skeleton", "Bat", "BadGuy" -> {
+                    System.out.println("HIT ON ENEMY!");
+                    int indexEnemy = roomList.get(roomIndex).getEnemyList().indexOf(interaction);
+                    Enemy currentEnemy = roomList.get(roomIndex).getEnemyList().get(indexEnemy);
+                    boolean removeEnemy = false;
+                    Enemy toRemove = null;
+                    if (this.hero.getPower() >= currentEnemy.getPower()) {
+                        gui.setStatus("You destroyed: " + currentEnemy.getName());
+                        removeEnemy = true;
+                        toRemove = currentEnemy;
+                    }
+                    if (removeEnemy) {
+                        roomList.get(roomIndex).getEnemyList().remove(toRemove);
+                        tiles.remove(toRemove);
+                        gui.removeImage(toRemove);
+                    }
+                }
+                case "DoorOpen", "DoorClosed", "DoorWay" -> {
+                    System.out.println("HERO ON DOOR!");
+                    int indexDoor = roomList.get(roomIndex).getDoorList().indexOf(interaction);
+                    Door door = roomList.get(roomIndex).getDoorList().get(indexDoor);
+
+                    int nextRoom = door.nextRoomInt();
+                    int nextDoorIndex = door.getNextIndex();
+                    loadRoom(nextRoom);
+
+                    // move to the door on the map
+                    moveHero(roomList.get(nextRoom).getDoorList().get(nextDoorIndex).getPosition());
+
+                    // move 1 step away from the door
+                    if (this.hero.getPosition().getY() == 9) {
+                        moveHero(hero.getPosition().plus(Objects.requireNonNull(Direction.UP.asVector())));
+                    } else if (this.hero.getPosition().getY() == 0) {
+                        moveHero(hero.getPosition().plus(Objects.requireNonNull(Direction.DOWN.asVector())));
+                    } else if (this.hero.getPosition().getX() == 0) {
+                        moveHero(hero.getPosition().plus(Objects.requireNonNull(Direction.RIGHT.asVector())));
+                    } else if (this.hero.getPosition().getX() == 9) {
+                        moveHero(hero.getPosition().plus(Objects.requireNonNull(Direction.LEFT.asVector())));
+                    }
+                }
+                case "GoodMeat" -> {
+                    System.out.println("HERO ON GOODMEAT!");
+                    int indexItem = roomList.get(roomIndex).getItemList().indexOf(interaction);
+                    Item currentItem = roomList.get(roomIndex).getItemList().get(indexItem);
+                    this.hero.setHealth(this.hero.getHealth() + currentItem.getHealth());
+                    System.out.println("Current health: " + this.hero.getHealth());
+                }
+                default -> {
+                    // default case
+                }
+            }
+        }
+    }
+
+    public void checkIfEnemyOnHero() {
+        boolean removeEnemy = false;
+        Enemy toRemove = null;
+
+        for (Enemy enemy : roomList.get(roomIndex).getEnemyList()) {
+            if (this.hero.getPosition().isItSamePosition(enemy.getPosition())) {
+                System.out.println("ENEMY ATTACK!");
+                this.hero.setHealth(this.hero.getHealth() - enemy.getPower());
+                System.out.println("Life: " + this.hero.getHealth());
+
+                gui.setStatus(enemy.getName() + " attacked you. You lost: " + enemy.getPower() + " health.");
+                removeEnemy = true;
+                toRemove = enemy;
+            }
+        }
+
+        if (removeEnemy) {
+            System.out.println("enemy removed");
+            roomList.get(roomIndex).getEnemyList().remove(toRemove);
+            tiles.remove(toRemove);
+            gui.removeImage(toRemove);
+        }
+    }
+
     public void moveEnemy(Enemy enemy, Position nextPosition) {
         boolean move = true;
 
@@ -176,79 +290,6 @@ public class Engine {
         }
     }
 
-    public void turn() {
-        checkIfHeroOnDoor();
-
-        checkIfHeroOnEnemy(false);
-        moveEveryEnemy();
-        checkIfHeroOnEnemy(true);
-
-        updateHeroHealth();
-    }
-
-    public void checkIfHeroOnDoor() {
-        for (Door door : roomList.get(roomIndex).getDoorList()) {
-            if (this.hero.getPosition().isItSamePosition(door.getPosition())) {
-                System.out.println("Hero on door");
-                int nextRoom = door.nextRoomInt();
-                int nextDoorIndex = door.getNextIndex();
-                loadRoom(nextRoom);
-
-                // move to the right door on the map
-                moveHero(roomList.get(nextRoom).getDoorList().get(nextDoorIndex).getPosition());
-
-                // move 1 step away from the door
-                if (this.hero.getPosition().getY() == 9) {
-                    moveHero(hero.getPosition().plus(Objects.requireNonNull(Direction.UP.asVector())));
-                } else if (this.hero.getPosition().getY() == 0) {
-                    moveHero(hero.getPosition().plus(Objects.requireNonNull(Direction.DOWN.asVector())));
-                } else if (this.hero.getPosition().getX() == 0) {
-                    moveHero(hero.getPosition().plus(Objects.requireNonNull(Direction.RIGHT.asVector())));
-                } else if (this.hero.getPosition().getX() == 9) {
-                    moveHero(hero.getPosition().plus(Objects.requireNonNull(Direction.LEFT.asVector())));
-                }
-            }
-        }
-    }
-
-    public void checkIfHeroOnEnemy(boolean reverseHeroAndEnemy) {
-        boolean removeEnemy = false;
-        Enemy toRemove = null;
-
-        if (!reverseHeroAndEnemy) {
-            for (Enemy enemy : roomList.get(roomIndex).getEnemyList()) {
-                if (this.hero.getPosition().isItSamePosition(enemy.getPosition())) {
-                    System.out.println("HIT ON ENEMY!");
-                    if (this.hero.getPower() >= enemy.getPower()) {
-                        gui.setStatus("You destroyed: " + enemy.getName());
-                        removeEnemy = true;
-                        toRemove = enemy;
-                    }
-                }
-            }
-        }
-
-        if (reverseHeroAndEnemy) {
-            for (Enemy enemy : roomList.get(roomIndex).getEnemyList()) {
-                if (this.hero.getPosition().isItSamePosition(enemy.getPosition())) {
-                    System.out.println("ENEMY ATTACK!");
-                    this.hero.setHealth(this.hero.getHealth() - enemy.getPower());
-                    System.out.println("Life: " + this.hero.getHealth());
-
-                    gui.setStatus(enemy.getName() + " attacked you. You lost: " + enemy.getPower() + " health.");
-                    removeEnemy = true;
-                    toRemove = enemy;
-                }
-            }
-        }
-
-        if (removeEnemy) {
-            System.out.println("enemy removed");
-            roomList.get(roomIndex).getEnemyList().remove(toRemove);
-            gui.removeImage(toRemove);
-        }
-    }
-
     public void moveEveryEnemy() {
         // move every enemy in random direction
         for (Enemy enemy : roomList.get(roomIndex).getEnemyList()) {
@@ -257,9 +298,33 @@ public class Engine {
     }
 
     public void updateHeroHealth() {
+        if (this.hero.getHealth() == 100) {
+            gui.addStatusImage(new Green(new Position(6, 0)));
+            gui.addStatusImage(new Green(new Position(5, 0)));
+            gui.addStatusImage(new Green(new Position(4, 0)));
+            gui.addStatusImage(new Green(new Position(3, 0)));
+        }
+
         if (this.hero.getHealth() <= 75) {
             gui.addStatusImage(new Red(new Position(6, 0)));
         }
+
+        if (this.hero.getHealth() <= 50) {
+            gui.addStatusImage(new Red(new Position(5, 0)));
+        }
+
+        if (this.hero.getHealth() <= 25) {
+            gui.addStatusImage(new Red(new Position(4, 0)));
+        }
+
+        if (this.hero.getHealth() <= 25) {
+            gui.addStatusImage(new Red(new Position(4, 0)));
+        }
+
+        if (this.hero.getHealth() <= 0) {
+            gui.addStatusImage(new Red(new Position(3, 0)));
+        }
+
     }
 
     public void setRoomIndex(int roomIndex) {

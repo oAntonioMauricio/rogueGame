@@ -1,6 +1,12 @@
 package pt.upskill.projeto1.game;
 
 import pt.upskill.projeto1.objects.*;
+import pt.upskill.projeto1.objects.enemies.BadGuy;
+import pt.upskill.projeto1.objects.enemies.Bat;
+import pt.upskill.projeto1.objects.enemies.Enemy;
+import pt.upskill.projeto1.objects.enemies.Skeleton;
+import pt.upskill.projeto1.objects.items.GoodMeat;
+import pt.upskill.projeto1.objects.items.Item;
 import pt.upskill.projeto1.rogue.utils.Position;
 
 import java.io.File;
@@ -14,6 +20,7 @@ public class Room {
     private List<Wall> wallList = new ArrayList<>();
     private List<Door> doorList = new ArrayList<>();
     private List<Enemy> enemyList = new ArrayList<>();
+    private List<Item> itemList = new ArrayList<>();
 
     public Room(String fileName) {
         readFile(fileName);
@@ -56,6 +63,11 @@ public class Room {
                         }
                     }
 
+                    // catch keys
+                    if (Objects.equals(chars.get(1), "k")) {
+                        System.out.println("🔼 Got a key.");
+                    }
+
                     //ignore next steps for # fields
                     continue;
                 }
@@ -68,11 +80,13 @@ public class Room {
                     } else if (isNumber(chars[i])) {
                         doorList.get(Integer.parseInt(chars[i])).setPosition(new Position(i, col));
                     } else if (Objects.equals(chars[i], "S")) {
-                        enemyList.add(new Skeleton(new Position(i, col), 30));
+                        enemyList.add(new Skeleton(new Position(i, col)));
                     } else if (Objects.equals(chars[i], "B")) {
-                        enemyList.add(new Bat(new Position(i, col), 30));
+                        enemyList.add(new Bat(new Position(i, col)));
                     } else if (Objects.equals(chars[i], "G")) {
-                        enemyList.add(new BadGuy(new Position(i, col), 60));
+                        enemyList.add(new BadGuy(new Position(i, col)));
+                    } else if (Objects.equals(chars[i], "m")) {
+                        itemList.add(new GoodMeat(new Position(i, col)));
                     }
                 }
                 // go to next column
@@ -109,5 +123,9 @@ public class Room {
 
     public List<Enemy> getEnemyList() {
         return enemyList;
+    }
+
+    public List<Item> getItemList() {
+        return itemList;
     }
 }
