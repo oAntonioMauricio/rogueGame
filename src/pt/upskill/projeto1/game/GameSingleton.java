@@ -33,8 +33,9 @@ public class GameSingleton {
     }
 
     // Methods 🔽
-    public void loadRoom(int newRoomIndex) {
-        setRoomIndex(newRoomIndex);
+    public void loadRoom(int nextRoom) {
+        setRoomIndex(nextRoom);
+
         tiles.removeAll(tiles);
 
         System.out.println("building floor");

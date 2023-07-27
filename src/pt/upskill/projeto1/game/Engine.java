@@ -28,18 +28,18 @@ public class Engine {
     //
     // TODO: MELHORAR STATUS BAR PARA VIDA
     // TODO: MELHORAR RELAÇÃO ENTRE SINGLETON E ENGINE !
-    //
+    // TODO: DOOR PROBLEM
 
     // atributes 🔽
     private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
+    GameSingleton gameSingleton = GameSingleton.getInstance();
+    Hero hero = gameSingleton.getHero();
+    List<ImageTile> tiles = gameSingleton.getTiles();
+    List<Room> roomList = gameSingleton.getRoomList();
 
     // methods 🔽
-
     public void init() {
         gui.setEngine(this);
-
-        // initiate singleton
-        GameSingleton gameSingleton = GameSingleton.getInstance();
 
         // new !
         gameSingleton.addRoom("rooms/room0.txt");
@@ -57,23 +57,21 @@ public class Engine {
         }
     }
 
-    public void loadRoom(int newRoomIndex) {
+    public void loadRoom(int nextRoom) {
 
-        // reset tiles and clear gui
+        // reset gui
         gui.clearImages();
         gui.clearStatus();
 
-        // get singleton
-        GameSingleton gameSingleton = GameSingleton.getInstance();
         // load room in singleton
-        gameSingleton.loadRoom(newRoomIndex);
+        gameSingleton.loadRoom(nextRoom);
 
         // add status bar
         addStatusBackground();
         addStatusInitial();
 
         // last gui update
-        gui.newImages(gameSingleton.getTiles());
+        gui.newImages(tiles);
     }
 
     public void addStatusBackground() {
@@ -98,36 +96,31 @@ public class Engine {
 
     public void notify(int keyPressed) {
 
-        // get singleton
-        GameSingleton gameSingleton = GameSingleton.getInstance();
-        // get hero from singleton
-        Hero hero = gameSingleton.getHero();
-
         if (keyPressed == KeyEvent.VK_DOWN) {
             // System.out.println("User pressed down key!");
             Position nextPosition = hero.getPosition().plus(Objects.requireNonNull(Direction.DOWN.asVector()));
-            moveHero(nextPosition);
+            hero.move(nextPosition);
 
             turn();
         }
         if (keyPressed == KeyEvent.VK_UP) {
             // System.out.println("User pressed up key!");
             Position nextPosition = hero.getPosition().plus(Objects.requireNonNull(Direction.UP.asVector()));
-            moveHero(nextPosition);
+            hero.move(nextPosition);
 
             turn();
         }
         if (keyPressed == KeyEvent.VK_LEFT) {
             // System.out.println("User pressed left key!");
             Position nextPosition = hero.getPosition().plus(Objects.requireNonNull(Direction.LEFT.asVector()));
-            moveHero(nextPosition);
+            hero.move(nextPosition);
 
             turn();
         }
         if (keyPressed == KeyEvent.VK_RIGHT) {
             // System.out.println("User pressed right key!");
             Position nextPosition = hero.getPosition().plus(Objects.requireNonNull(Direction.RIGHT.asVector()));
-            moveHero(nextPosition);
+            hero.move(nextPosition);
 
             turn();
         }
@@ -145,46 +138,10 @@ public class Engine {
         updateHeroHealth();
     }
 
-    public void moveHero(Position nextPosition) {
-        /**
-         * receives the next position for the hero and checks if the move is possible.
-         * if not the hero stays in its previous place
-         */
-
-        // get singleton
-        GameSingleton gameSingleton = GameSingleton.getInstance();
-        Hero hero = gameSingleton.getHero();
-
-
-        boolean move = true;
-
-        for (ImageTile tile : gameSingleton.getTiles()) {
-            if (nextPosition.getX() == tile.getPosition().getX() && nextPosition.getY() == tile.getPosition().getY()) {
-                if (tile instanceof Wall) {
-                    move = false;
-                    break;
-                }
-            }
-        }
-
-        if (move) {
-            hero.setPosition(nextPosition);
-        }
-    }
-
     public void checkWhereHeroIs() {
 
-        // get singleton
-        GameSingleton gameSingleton = GameSingleton.getInstance();
-        // get tiles from singleton
-        List<ImageTile> tiles = gameSingleton.getTiles();
-        // get roomList from singleton
-        List<Room> roomList = gameSingleton.getRoomList();
         // get room index
         int roomIndex = gameSingleton.getRoomIndex();
-        // get hero from singleton
-        Hero hero = gameSingleton.getHero();
-
 
         ImageTile interaction = null;
 
@@ -229,21 +186,22 @@ public class Engine {
                     Door door = roomList.get(roomIndex).getDoorList().get(indexDoor);
 
                     int nextRoom = door.nextRoomInt();
+                    System.out.println("next room: " + nextRoom);
                     int nextDoorIndex = door.getNextIndex();
                     loadRoom(nextRoom);
 
                     // move to the door on the map
-                    moveHero(roomList.get(nextRoom).getDoorList().get(nextDoorIndex).getPosition());
+                    hero.move(roomList.get(nextRoom).getDoorList().get(nextDoorIndex).getPosition());
 
                     // move 1 step away from the door
                     if (hero.getPosition().getY() == 9) {
-                        moveHero(hero.getPosition().plus(Objects.requireNonNull(Direction.UP.asVector())));
+                        hero.move(hero.getPosition().plus(Objects.requireNonNull(Direction.UP.asVector())));
                     } else if (hero.getPosition().getY() == 0) {
-                        moveHero(hero.getPosition().plus(Objects.requireNonNull(Direction.DOWN.asVector())));
+                        hero.move(hero.getPosition().plus(Objects.requireNonNull(Direction.DOWN.asVector())));
                     } else if (hero.getPosition().getX() == 0) {
-                        moveHero(hero.getPosition().plus(Objects.requireNonNull(Direction.RIGHT.asVector())));
+                        hero.move(hero.getPosition().plus(Objects.requireNonNull(Direction.RIGHT.asVector())));
                     } else if (hero.getPosition().getX() == 9) {
-                        moveHero(hero.getPosition().plus(Objects.requireNonNull(Direction.LEFT.asVector())));
+                        hero.move(hero.getPosition().plus(Objects.requireNonNull(Direction.LEFT.asVector())));
                     }
                 }
                 case "GoodMeat" -> {
