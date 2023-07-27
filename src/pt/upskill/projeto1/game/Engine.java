@@ -25,7 +25,7 @@ public class Engine {
     // new branch
     // TODO: melhorar algoritmo de perseguição https://wumbo.net/formulas/distance-between-two-points-2d/
     //
-    // TODO: ATUALIZAR STATUS BAR PARA VIDA
+    // TODO: MELHORAR STATUS BAR PARA VIDA
     // TODO: CREATE SINGLETON
 
     // atributes 🔽
@@ -199,8 +199,10 @@ public class Engine {
             switch (interaction.getName()) {
                 case "Skeleton", "Bat", "BadGuy" -> {
                     System.out.println("HIT ON ENEMY!");
+                    // get enemy
                     int indexEnemy = roomList.get(roomIndex).getEnemyList().indexOf(interaction);
                     Enemy currentEnemy = roomList.get(roomIndex).getEnemyList().get(indexEnemy);
+
                     boolean removeEnemy = false;
                     Enemy toRemove = null;
                     if (this.hero.getPower() >= currentEnemy.getPower()) {
@@ -216,6 +218,7 @@ public class Engine {
                 }
                 case "DoorOpen", "DoorClosed", "DoorWay" -> {
                     System.out.println("HERO ON DOOR!");
+                    // get door
                     int indexDoor = roomList.get(roomIndex).getDoorList().indexOf(interaction);
                     Door door = roomList.get(roomIndex).getDoorList().get(indexDoor);
 
@@ -239,10 +242,19 @@ public class Engine {
                 }
                 case "GoodMeat" -> {
                     System.out.println("HERO ON GOODMEAT!");
+                    // get item
                     int indexItem = roomList.get(roomIndex).getItemList().indexOf(interaction);
                     Item currentItem = roomList.get(roomIndex).getItemList().get(indexItem);
+
+                    // effect
                     this.hero.setHealth(this.hero.getHealth() + currentItem.getHealth());
+                    gui.setStatus("You ate " + currentItem.getName() + " and received " + currentItem.getHealth() + " hp.");
                     System.out.println("Current health: " + this.hero.getHealth());
+
+                    // delete item
+                    roomList.get(roomIndex).getItemList().remove(currentItem);
+                    tiles.remove(currentItem);
+                    gui.removeImage(currentItem);
                 }
                 default -> {
                     // default case
@@ -306,23 +318,31 @@ public class Engine {
             gui.addStatusImage(new Green(new Position(3, 0)));
         }
 
-        if (this.hero.getHealth() <= 75) {
+        if (this.hero.getHealth() == 75) {
             gui.addStatusImage(new Red(new Position(6, 0)));
+            gui.addStatusImage(new Green(new Position(5, 0)));
+            gui.addStatusImage(new Green(new Position(4, 0)));
+            gui.addStatusImage(new Green(new Position(3, 0)));
         }
 
-        if (this.hero.getHealth() <= 50) {
+        if (this.hero.getHealth() == 50) {
+            gui.addStatusImage(new Red(new Position(6, 0)));
             gui.addStatusImage(new Red(new Position(5, 0)));
+            gui.addStatusImage(new Green(new Position(4, 0)));
+            gui.addStatusImage(new Green(new Position(3, 0)));
         }
 
-        if (this.hero.getHealth() <= 25) {
+        if (this.hero.getHealth() == 25) {
+            gui.addStatusImage(new Red(new Position(6, 0)));
+            gui.addStatusImage(new Red(new Position(5, 0)));
             gui.addStatusImage(new Red(new Position(4, 0)));
-        }
-
-        if (this.hero.getHealth() <= 25) {
-            gui.addStatusImage(new Red(new Position(4, 0)));
+            gui.addStatusImage(new Green(new Position(3, 0)));
         }
 
         if (this.hero.getHealth() <= 0) {
+            gui.addStatusImage(new Red(new Position(6, 0)));
+            gui.addStatusImage(new Red(new Position(5, 0)));
+            gui.addStatusImage(new Red(new Position(4, 0)));
             gui.addStatusImage(new Red(new Position(3, 0)));
         }
 
