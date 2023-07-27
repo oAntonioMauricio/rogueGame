@@ -71,6 +71,8 @@ public class Room {
                         enemyList.add(new Skeleton(new Position(i, col), 30));
                     } else if (Objects.equals(chars[i], "B")) {
                         enemyList.add(new Bat(new Position(i, col), 30));
+                    } else if (Objects.equals(chars[i], "G")) {
+                        enemyList.add(new BadGuy(new Position(i, col), 60));
                     }
                 }
                 // go to next column
