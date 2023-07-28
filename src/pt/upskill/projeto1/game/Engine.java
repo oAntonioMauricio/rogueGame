@@ -4,6 +4,8 @@ import pt.upskill.projeto1.gui.ImageMatrixGUI;
 import pt.upskill.projeto1.gui.ImageTile;
 import pt.upskill.projeto1.objects.*;
 import pt.upskill.projeto1.objects.enemies.Enemy;
+import pt.upskill.projeto1.objects.hero.Hero;
+import pt.upskill.projeto1.objects.hero.StatusBar;
 import pt.upskill.projeto1.objects.items.Item;
 import pt.upskill.projeto1.objects.statusbar.Black;
 import pt.upskill.projeto1.objects.statusbar.Fire;
@@ -27,8 +29,9 @@ public class Engine {
     // TODO: melhorar algoritmo de perseguição https://wumbo.net/formulas/distance-between-two-points-2d/
     //
     // TODO: MELHORAR STATUS BAR PARA VIDA
-    // TODO: MELHORAR RELAÇÃO ENTRE SINGLETON E ENGINE !
+    // TODO: MELHORAR RELAÇÃO ENTRE SINGLETON E ENGINE!
     // TODO: DOOR PROBLEM
+    //
 
     // atributes 🔽
     private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
@@ -36,6 +39,7 @@ public class Engine {
     Hero hero = gameSingleton.getHero();
     List<ImageTile> tiles = gameSingleton.getTiles();
     List<Room> roomList = gameSingleton.getRoomList();
+    StatusBar statusBar = gameSingleton.getStatusBar();
 
     // methods 🔽
     public void init() {
@@ -68,7 +72,7 @@ public class Engine {
 
         // add status bar
         addStatusBackground();
-        addStatusInitial();
+        updateStatusBar();
 
         // last gui update
         gui.newImages(tiles);
@@ -81,16 +85,29 @@ public class Engine {
         }
     }
 
-    public void addStatusInitial() {
+    public void updateStatusBar() {
+        // reset status
+        gui.clearStatus();
+
         System.out.println("building default status");
+        // black background
+        for (int i = 0; i < 10; i++) {
+            gui.addStatusImage(new Black(new Position(i, 0)));
+        }
+
         // fireballs
-        for (int i = 0; i < 3; i++) {
-            gui.addStatusImage(new Fire(new Position(i, 0)));
+        for (ImageTile fireball : statusBar.getStatusBarList().get(0)) {
+            gui.addStatusImage(fireball);
         }
 
         // health
-        for (int i = 3; i < 7; i++) {
-            gui.addStatusImage(new Green(new Position(i, 0)));
+        for (ImageTile health : statusBar.getStatusBarList().get(1)) {
+            gui.addStatusImage(health);
+        }
+
+        // items
+        for (ImageTile item : statusBar.getStatusBarList().get(2)) {
+            gui.addStatusImage(item);
         }
     }
 
@@ -125,7 +142,14 @@ public class Engine {
             turn();
         }
         if (keyPressed == KeyEvent.VK_SPACE) {
-
+            ImageTile[] fireballs = statusBar.getStatusBarList().get(0);
+            for (int i = 0; i < fireballs.length; i++) {
+                if (fireballs[i] instanceof Fire) {
+                    fireballs[i] = new Black(new Position(i, 0));
+                    break;
+                }
+            }
+            updateStatusBar();
         }
     }
 
@@ -136,6 +160,8 @@ public class Engine {
         checkIfEnemyOnHero();
 
         updateHeroHealth();
+
+        updateStatusBar();
     }
 
     public void checkWhereHeroIs() {
@@ -227,6 +253,18 @@ public class Engine {
         }
     }
 
+    public void moveEveryEnemy() {
+
+        // get room index. !careful it's an int
+        int roomIndex = gameSingleton.getRoomIndex();
+
+        // move every enemy in random direction
+        for (Enemy enemy : roomList.get(roomIndex).getEnemyList()) {
+            // moveEnemy(enemy, enemy.getPosition().plus(enemy.moveToHero(hero)));
+            enemy.move(enemy.getPosition().plus(enemy.moveToHero(hero)));
+        }
+    }
+
     public void checkIfEnemyOnHero() {
 
         // get room index
@@ -255,53 +293,42 @@ public class Engine {
         }
     }
 
-    public void moveEveryEnemy() {
-
-        // get room index. !careful it's an int
-        int roomIndex = gameSingleton.getRoomIndex();
-
-        // move every enemy in random direction
-        for (Enemy enemy : roomList.get(roomIndex).getEnemyList()) {
-            // moveEnemy(enemy, enemy.getPosition().plus(enemy.moveToHero(hero)));
-            enemy.move(enemy.getPosition().plus(enemy.moveToHero(hero)));
-        }
-    }
-
     public void updateHeroHealth() {
 
+        ImageTile[] healthArray = gameSingleton.getStatusBar().getStatusBarList().get(1);
+
         if (hero.getHealth() == 100) {
-            gui.addStatusImage(new Green(new Position(6, 0)));
-            gui.addStatusImage(new Green(new Position(5, 0)));
-            gui.addStatusImage(new Green(new Position(4, 0)));
-            gui.addStatusImage(new Green(new Position(3, 0)));
+            for (int i = 0, j = 3; i < 4; i++, j++) {
+                healthArray[i] = new Green(new Position(j, 0));
+            }
         }
 
         if (hero.getHealth() == 75) {
-            gui.addStatusImage(new Red(new Position(6, 0)));
-            gui.addStatusImage(new Green(new Position(5, 0)));
-            gui.addStatusImage(new Green(new Position(4, 0)));
-            gui.addStatusImage(new Green(new Position(3, 0)));
+            healthArray[0] = new Green(new Position(3, 0));
+            healthArray[1] = new Green(new Position(4, 0));
+            healthArray[2] = new Green(new Position(5, 0));
+            healthArray[3] = new Red(new Position(6, 0));
         }
 
         if (hero.getHealth() == 50) {
-            gui.addStatusImage(new Red(new Position(6, 0)));
-            gui.addStatusImage(new Red(new Position(5, 0)));
-            gui.addStatusImage(new Green(new Position(4, 0)));
-            gui.addStatusImage(new Green(new Position(3, 0)));
+            healthArray[0] = new Green(new Position(3, 0));
+            healthArray[1] = new Green(new Position(4, 0));
+            healthArray[2] = new Red(new Position(5, 0));
+            healthArray[3] = new Red(new Position(6, 0));
         }
 
         if (hero.getHealth() == 25) {
-            gui.addStatusImage(new Red(new Position(6, 0)));
-            gui.addStatusImage(new Red(new Position(5, 0)));
-            gui.addStatusImage(new Red(new Position(4, 0)));
-            gui.addStatusImage(new Green(new Position(3, 0)));
+            healthArray[0] = new Green(new Position(3, 0));
+            healthArray[1] = new Red(new Position(4, 0));
+            healthArray[2] = new Red(new Position(5, 0));
+            healthArray[3] = new Red(new Position(6, 0));
         }
 
         if (hero.getHealth() <= 0) {
-            gui.addStatusImage(new Red(new Position(6, 0)));
-            gui.addStatusImage(new Red(new Position(5, 0)));
-            gui.addStatusImage(new Red(new Position(4, 0)));
-            gui.addStatusImage(new Red(new Position(3, 0)));
+            healthArray[0] = new Red(new Position(3, 0));
+            healthArray[1] = new Red(new Position(4, 0));
+            healthArray[2] = new Red(new Position(5, 0));
+            healthArray[3] = new Red(new Position(6, 0));
         }
 
     }

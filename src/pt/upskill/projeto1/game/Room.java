@@ -16,7 +16,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
-public class Room {
+public class
+Room {
     private List<Wall> wallList = new ArrayList<>();
     private List<Door> doorList = new ArrayList<>();
     private List<Enemy> enemyList = new ArrayList<>();

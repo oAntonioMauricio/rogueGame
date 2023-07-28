@@ -3,14 +3,13 @@ package pt.upskill.projeto1.objects.enemies;
 import pt.upskill.projeto1.game.GameSingleton;
 import pt.upskill.projeto1.gui.ImageTile;
 import pt.upskill.projeto1.objects.Door;
-import pt.upskill.projeto1.objects.Hero;
+import pt.upskill.projeto1.objects.hero.Hero;
 import pt.upskill.projeto1.objects.Wall;
 import pt.upskill.projeto1.rogue.utils.Direction;
 import pt.upskill.projeto1.rogue.utils.Position;
 import pt.upskill.projeto1.rogue.utils.Vector2D;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Enemy implements ImageTile {

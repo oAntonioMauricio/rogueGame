@@ -2,9 +2,8 @@ package pt.upskill.projeto1.game;
 
 import pt.upskill.projeto1.gui.ImageTile;
 import pt.upskill.projeto1.objects.Floor;
-import pt.upskill.projeto1.objects.Hero;
-import pt.upskill.projeto1.objects.Wall;
-import pt.upskill.projeto1.objects.enemies.Enemy;
+import pt.upskill.projeto1.objects.hero.Hero;
+import pt.upskill.projeto1.objects.hero.StatusBar;
 import pt.upskill.projeto1.rogue.utils.Position;
 
 import java.util.ArrayList;
@@ -13,17 +12,19 @@ import java.util.List;
 public class GameSingleton {
     private static GameSingleton instance;
     private List<ImageTile> tiles;
-
     // careful passing roomIndex because it's an int
     private int roomIndex;
+    // careful passing roomIndex because it's an int
     private List<Room> roomList;
     private Hero hero;
+    private StatusBar statusBar;
 
     private GameSingleton() {
         tiles = new ArrayList<>();
         roomIndex = 0;
         roomList = new ArrayList<>();
-        hero = new Hero(new Position(8, 8), 100);
+        hero = new Hero();
+        statusBar = new StatusBar();
     }
 
     public static GameSingleton getInstance() {
@@ -89,5 +90,9 @@ public class GameSingleton {
 
     public void setRoomIndex(int roomIndex) {
         this.roomIndex = roomIndex;
+    }
+
+    public StatusBar getStatusBar() {
+        return statusBar;
     }
 }
