@@ -16,7 +16,7 @@ public class StatusBar {
 
         ImageTile[] fireballs = {new Fire(new Position(0, 0)), new Fire(new Position(1, 0)), new Fire(new Position(2, 0))};
         ImageTile[] health = {new Green(new Position(3, 0)), new Green(new Position(4, 0)), new Green(new Position(5, 0)), new Green(new Position(6, 0))};
-        ImageTile[] items = {};
+        ImageTile[] items = {null, null, null};
 
         // index 0
         this.statusBar.add(fireballs);
@@ -28,5 +28,29 @@ public class StatusBar {
 
     public List<ImageTile[]> getStatusBarList() {
         return statusBar;
+    }
+
+    public ImageTile[] getFireballsArray() {
+        return getStatusBarList().get(0);
+    }
+
+    public ImageTile[] getHealthArray() {
+        return getStatusBarList().get(1);
+    }
+
+    public ImageTile[] getItemArray() {
+        return getStatusBarList().get(2);
+    }
+
+    public int itemArrayEmptyIndex() {
+        // return -1 if array is full
+
+        for (int i = 0; i < getItemArray().length; i++) {
+            if (getItemArray()[i] == null) {
+                return i;
+            }
+        }
+
+        return -1;
     }
 }

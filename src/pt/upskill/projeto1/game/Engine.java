@@ -8,6 +8,7 @@ import pt.upskill.projeto1.objects.hero.Hero;
 import pt.upskill.projeto1.objects.hero.StatusBar;
 import pt.upskill.projeto1.objects.items.GoodMeat;
 import pt.upskill.projeto1.objects.items.Item;
+import pt.upskill.projeto1.objects.items.Key;
 import pt.upskill.projeto1.objects.statusbar.Black;
 import pt.upskill.projeto1.objects.statusbar.Fire;
 import pt.upskill.projeto1.objects.statusbar.Green;
@@ -29,9 +30,8 @@ public class Engine {
     //
     // TODO: melhorar algoritmo de perseguição https://wumbo.net/formulas/distance-between-two-points-2d/
     //
-    // TODO: MELHORAR STATUS BAR PARA VIDA
     // TODO: MELHORAR RELAÇÃO ENTRE SINGLETON E ENGINE!
-    // TODO: DOOR PROBLEM
+    // PERGUNTA: Statusbar no singleton ou como atributo do heroi?
     //
 
     // atributes 🔽
@@ -107,9 +107,12 @@ public class Engine {
         }
 
         // items
-        for (ImageTile item : statusBar.getStatusBarList().get(2)) {
-            gui.addStatusImage(item);
+        for (ImageTile item : statusBar.getItemArray()) {
+            if (item != null) {
+                gui.addStatusImage(item);
+            }
         }
+
     }
 
     public void notify(int keyPressed) {
@@ -211,6 +214,10 @@ public class Engine {
                     int indexDoor = roomList.get(roomIndex).getDoorList().indexOf(interaction);
                     Door door = roomList.get(roomIndex).getDoorList().get(indexDoor);
 
+                    //
+                    // add condition to check if door needs key
+                    //
+
                     int nextRoom = door.nextRoomInt();
                     System.out.println("next room: " + nextRoom);
                     int nextDoorIndex = door.getNextIndex();
@@ -231,7 +238,28 @@ public class Engine {
                     }
                 }
                 case "Key" -> {
+                    // get key
+                    int indexItem = roomList.get(roomIndex).getItemList().indexOf(interaction);
+                    Key currentKey = (Key) roomList.get(roomIndex).getItemList().get(indexItem);
 
+                    // effect
+                    ImageTile[] itemsArray = gameSingleton.getStatusBar().getItemArray();
+                    int emptyIndex = gameSingleton.getStatusBar().itemArrayEmptyIndex();
+                    if (emptyIndex == -1) {
+                        System.out.println("Inventory is full!");
+                        gui.setStatus("Inventory is full!");
+                    } else {
+                        itemsArray[emptyIndex] = currentKey;
+                        // seven is the start on the items position on the status bar
+                        currentKey.setPosition(new Position(7 + emptyIndex, 0));
+                        System.out.println("Got " + currentKey.getKeyId());
+                        gui.setStatus("You picked " + currentKey.getKeyId());
+                    }
+
+                    // delete item
+                    roomList.get(roomIndex).getItemList().remove(currentKey);
+                    tiles.remove(currentKey);
+                    gui.removeImage(currentKey);
                 }
                 case "GoodMeat" -> {
                     // get item

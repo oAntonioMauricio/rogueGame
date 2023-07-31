@@ -14,7 +14,6 @@ public class GameSingleton {
     private List<ImageTile> tiles;
     // careful passing roomIndex because it's an int
     private int roomIndex;
-    // careful passing roomIndex because it's an int
     private List<Room> roomList;
     private Hero hero;
     private StatusBar statusBar;
