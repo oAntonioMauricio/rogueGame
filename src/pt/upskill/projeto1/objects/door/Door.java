@@ -1,4 +1,4 @@
-package pt.upskill.projeto1.objects;
+package pt.upskill.projeto1.objects.door;
 
 import pt.upskill.projeto1.gui.ImageTile;
 import pt.upskill.projeto1.rogue.utils.Position;

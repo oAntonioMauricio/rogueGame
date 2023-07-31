@@ -1,6 +1,10 @@
 package pt.upskill.projeto1.game;
 
 import pt.upskill.projeto1.objects.*;
+import pt.upskill.projeto1.objects.door.Door;
+import pt.upskill.projeto1.objects.door.DoorClosed;
+import pt.upskill.projeto1.objects.door.DoorOpen;
+import pt.upskill.projeto1.objects.door.DoorWay;
 import pt.upskill.projeto1.objects.enemies.BadGuy;
 import pt.upskill.projeto1.objects.enemies.Bat;
 import pt.upskill.projeto1.objects.enemies.Enemy;

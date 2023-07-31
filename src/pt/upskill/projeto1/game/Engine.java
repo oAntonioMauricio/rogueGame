@@ -2,10 +2,11 @@ package pt.upskill.projeto1.game;
 
 import pt.upskill.projeto1.gui.ImageMatrixGUI;
 import pt.upskill.projeto1.gui.ImageTile;
-import pt.upskill.projeto1.objects.*;
+import pt.upskill.projeto1.objects.door.Door;
 import pt.upskill.projeto1.objects.enemies.Enemy;
 import pt.upskill.projeto1.objects.hero.Hero;
 import pt.upskill.projeto1.objects.hero.StatusBar;
+import pt.upskill.projeto1.objects.items.GoodMeat;
 import pt.upskill.projeto1.objects.items.Item;
 import pt.upskill.projeto1.objects.statusbar.Black;
 import pt.upskill.projeto1.objects.statusbar.Fire;
@@ -35,11 +36,11 @@ public class Engine {
 
     // atributes 🔽
     private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
-    GameSingleton gameSingleton = GameSingleton.getInstance();
-    Hero hero = gameSingleton.getHero();
-    List<ImageTile> tiles = gameSingleton.getTiles();
-    List<Room> roomList = gameSingleton.getRoomList();
-    StatusBar statusBar = gameSingleton.getStatusBar();
+    private GameSingleton gameSingleton = GameSingleton.getInstance();
+    private Hero hero = gameSingleton.getHero();
+    private List<ImageTile> tiles = gameSingleton.getTiles();
+    private List<Room> roomList = gameSingleton.getRoomList();
+    private StatusBar statusBar = gameSingleton.getStatusBar();
 
     // methods 🔽
     public void init() {
@@ -234,7 +235,7 @@ public class Engine {
                     System.out.println("HERO ON GOODMEAT!");
                     // get item
                     int indexItem = roomList.get(roomIndex).getItemList().indexOf(interaction);
-                    Item currentItem = roomList.get(roomIndex).getItemList().get(indexItem);
+                    GoodMeat currentItem = (GoodMeat) roomList.get(roomIndex).getItemList().get(indexItem);
 
                     // effect
                     hero.setHealth(hero.getHealth() + currentItem.getHealth());

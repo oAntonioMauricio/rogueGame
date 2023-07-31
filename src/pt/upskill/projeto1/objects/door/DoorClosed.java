@@ -1,7 +1,4 @@
-package pt.upskill.projeto1.objects;
-
-import pt.upskill.projeto1.gui.ImageTile;
-import pt.upskill.projeto1.rogue.utils.Position;
+package pt.upskill.projeto1.objects.door;
 
 public class DoorClosed extends Door {
 

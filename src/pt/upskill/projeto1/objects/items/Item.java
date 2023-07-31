@@ -6,11 +6,9 @@ import pt.upskill.projeto1.rogue.utils.Position;
 public abstract class Item implements ImageTile {
 
     private Position position;
-    private int health;
 
-    public Item(Position position, int health) {
+    public Item(Position position) {
         this.position = position;
-        this.health = health;
     }
 
     @Override
@@ -25,10 +23,6 @@ public abstract class Item implements ImageTile {
 
     public void setPosition(Position position) {
         this.position = position;
-    }
-
-    public int getHealth() {
-        return health;
     }
 
 }

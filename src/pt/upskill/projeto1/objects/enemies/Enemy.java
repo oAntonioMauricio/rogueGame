@@ -2,7 +2,7 @@ package pt.upskill.projeto1.objects.enemies;
 
 import pt.upskill.projeto1.game.GameSingleton;
 import pt.upskill.projeto1.gui.ImageTile;
-import pt.upskill.projeto1.objects.Door;
+import pt.upskill.projeto1.objects.door.Door;
 import pt.upskill.projeto1.objects.hero.Hero;
 import pt.upskill.projeto1.objects.Wall;
 import pt.upskill.projeto1.rogue.utils.Direction;
