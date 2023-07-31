@@ -207,7 +207,6 @@ public class Engine {
                     }
                 }
                 case "DoorOpen", "DoorClosed", "DoorWay" -> {
-                    System.out.println("HERO ON DOOR!");
                     // get door
                     int indexDoor = roomList.get(roomIndex).getDoorList().indexOf(interaction);
                     Door door = roomList.get(roomIndex).getDoorList().get(indexDoor);
@@ -231,8 +230,10 @@ public class Engine {
                         hero.move(hero.getPosition().plus(Objects.requireNonNull(Direction.LEFT.asVector())));
                     }
                 }
+                case "Key" -> {
+
+                }
                 case "GoodMeat" -> {
-                    System.out.println("HERO ON GOODMEAT!");
                     // get item
                     int indexItem = roomList.get(roomIndex).getItemList().indexOf(interaction);
                     GoodMeat currentItem = (GoodMeat) roomList.get(roomIndex).getItemList().get(indexItem);

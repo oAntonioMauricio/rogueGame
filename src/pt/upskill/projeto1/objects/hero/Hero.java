@@ -69,7 +69,11 @@ public class Hero implements ImageTile {
     }
 
     public void setHealth(int health) {
-        this.health = health;
+        if (health > 100) {
+            this.health = 100;
+        } else {
+            this.health = health;
+        }
     }
 
     public void setPower(int power) {
