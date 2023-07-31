@@ -11,6 +11,7 @@ import pt.upskill.projeto1.objects.enemies.Enemy;
 import pt.upskill.projeto1.objects.enemies.Skeleton;
 import pt.upskill.projeto1.objects.items.GoodMeat;
 import pt.upskill.projeto1.objects.items.Item;
+import pt.upskill.projeto1.objects.items.Key;
 import pt.upskill.projeto1.rogue.utils.Position;
 
 import java.io.File;
@@ -69,8 +70,11 @@ Room {
                     }
 
                     // catch keys
+                    // based on 1 key per room. postion is set during map read
                     if (Objects.equals(chars.get(1), "k")) {
                         System.out.println("🔼 Got a key.");
+                        String keyId = chars.get(2);
+                        itemList.add(new Key(new Position(-1, -1), keyId));
                     }
 
                     //ignore next steps for # fields
@@ -92,6 +96,13 @@ Room {
                         enemyList.add(new BadGuy(new Position(i, col)));
                     } else if (Objects.equals(chars[i], "m")) {
                         itemList.add(new GoodMeat(new Position(i, col)));
+                    } else if (Objects.equals(chars[i], "k")) {
+                        // based on 1 key per room.
+                        for (Item item : itemList) {
+                            if (item instanceof Key) {
+                                item.setPosition(new Position(i, col));
+                            }
+                        }
                     }
                 }
                 // go to next column

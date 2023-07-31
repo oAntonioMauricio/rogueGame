@@ -90,7 +90,7 @@ public class Engine {
         // reset status
         gui.clearStatus();
 
-        System.out.println("building default status");
+        // System.out.println("updating status...");
         // black background
         for (int i = 0; i < 10; i++) {
             gui.addStatusImage(new Black(new Position(i, 0)));
