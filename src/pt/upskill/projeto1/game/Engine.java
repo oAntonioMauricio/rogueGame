@@ -28,13 +28,15 @@ public class Engine {
     }
 
     // SINGLETON BRANCH
+    // PERGUNTA: Statusbar no singleton ou como atributo do heroi?
     //
     // TODO: melhorar algoritmo de perseguição https://wumbo.net/formulas/distance-between-two-points-2d/
     //
     // TODO: MELHORAR RELAÇÃO ENTRE SINGLETON E ENGINE!
-    // PERGUNTA: Statusbar no singleton ou como atributo do heroi?
+    // TODO: ABRIR PORTAS DOS DOIS LADO COM A KEY
     //
-    // TODO: DROP ITEMS
+    // TODO: ORGANIZAR ORDEM DOS ITEMS DEPOIS DE UM DROP. TAREFA PARA A STATUS BAR
+
 
     // atributes 🔽
     private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
@@ -147,6 +149,39 @@ public class Engine {
 
             turn();
         }
+        if (keyPressed == KeyEvent.VK_1) {
+            // System.out.println("Remove first item");
+
+            ImageTile[] items = statusBar.getItemArray();
+            Item currentItem = (Item) items[0];
+
+            if (currentItem == null) {
+                gui.setStatus("You don't have an item in the first slot.");
+            } else {
+                // let's drop the item on the floor. on top of the hero
+                // get room index // this is here because it's PRIMITIVE
+                int roomIndex = gameSingleton.getRoomIndex();
+
+                // drop item and check if it can be dropped
+                if (currentItem.dropItem()) {
+                    // add item to room
+                    roomList.get(roomIndex).getItemList().add((Item) currentItem);
+                    tiles.add(currentItem);
+                    gui.addImage(currentItem);
+
+                    if (currentItem instanceof Key) {
+                        gui.setStatus("You removed: " + ((Key) currentItem).getKeyId());
+                    } else {
+                        gui.setStatus("You removed: " + currentItem.getName());
+                    }
+
+                    items[0] = null;
+                }
+
+            }
+
+            updateStatusBar();
+        }
         if (keyPressed == KeyEvent.VK_SPACE) {
             ImageTile[] fireballs = statusBar.getStatusBarList().get(0);
             for (int i = 0; i < fireballs.length; i++) {
@@ -205,7 +240,6 @@ public class Engine {
                         toRemove = currentEnemy;
                     }
                     if (removeEnemy) {
-
                         roomList.get(roomIndex).getEnemyList().remove(toRemove);
                         tiles.remove(toRemove);
                         gui.removeImage(toRemove);
