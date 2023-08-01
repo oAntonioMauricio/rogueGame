@@ -3,6 +3,7 @@ package pt.upskill.projeto1.game;
 import pt.upskill.projeto1.gui.ImageMatrixGUI;
 import pt.upskill.projeto1.gui.ImageTile;
 import pt.upskill.projeto1.objects.door.Door;
+import pt.upskill.projeto1.objects.door.DoorClosed;
 import pt.upskill.projeto1.objects.enemies.Enemy;
 import pt.upskill.projeto1.objects.hero.Hero;
 import pt.upskill.projeto1.objects.hero.StatusBar;
@@ -33,7 +34,7 @@ public class Engine {
     // TODO: MELHORAR RELAÇÃO ENTRE SINGLETON E ENGINE!
     // PERGUNTA: Statusbar no singleton ou como atributo do heroi?
     //
-    // TODO: CHECK IF DOOR NEEDS KEY
+    // TODO: DROP ITEMS
 
     // atributes 🔽
     private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
@@ -215,32 +216,71 @@ public class Engine {
                     int indexDoor = roomList.get(roomIndex).getDoorList().indexOf(interaction);
                     Door door = roomList.get(roomIndex).getDoorList().get(indexDoor);
 
-                    //
-                    // add condition to check if door needs key
-                    //
+                    // check if door needs key
+                    if (!door.isOpen()) {
+                        boolean gotTheKey = false;
 
+                        DoorClosed doorClosed = (DoorClosed) door;
+                        String keyToOpenDoor = doorClosed.getKey();
+
+                        // check inventory for the right key
+                        ImageTile[] itemArray = gameSingleton.getStatusBar().getItemArray();
+
+                        for (ImageTile item : itemArray) {
+                            if (item instanceof Key) {
+                                System.out.println("Got a key!");
+                                System.out.println(((Key) item).getKeyId());
+                                System.out.println(keyToOpenDoor);
+                                if (Objects.equals(((Key) item).getKeyId(), keyToOpenDoor)) {
+                                    System.out.println("You got the key to this door!");
+                                    gui.setStatus("You opened " + doorClosed.getName() + " with " + keyToOpenDoor);
+                                    gotTheKey = true;
+                                    doorClosed.setOpen(true);
+                                }
+                            }
+                        }
+
+                        if (!gotTheKey) {
+                            gui.setStatus("You don't have the key to this door.");
+
+                            // move 1 step away from the door
+                            if (hero.getPosition().getY() == 9) {
+                                hero.move(hero.getPosition().plus(Objects.requireNonNull(Direction.UP.asVector())));
+                            } else if (hero.getPosition().getY() == 0) {
+                                hero.move(hero.getPosition().plus(Objects.requireNonNull(Direction.DOWN.asVector())));
+                            } else if (hero.getPosition().getX() == 0) {
+                                hero.move(hero.getPosition().plus(Objects.requireNonNull(Direction.RIGHT.asVector())));
+                            } else if (hero.getPosition().getX() == 9) {
+                                hero.move(hero.getPosition().plus(Objects.requireNonNull(Direction.LEFT.asVector())));
+                            }
+                        }
+
+                    }
+
+                    // this needs to run again. if you got the key this will check true right after
                     if (door.isOpen()) {
-                        System.out.println("Door is open");
+                        int nextRoom = door.nextRoomInt();
+                        System.out.println("next room: " + nextRoom);
+                        int nextDoorIndex = door.getNextIndex();
+
+                        loadRoom(nextRoom);
+
+                        // move to the door on the map
+                        hero.move(roomList.get(nextRoom).getDoorList().get(nextDoorIndex).getPosition());
+
+                        // move 1 step away from the door
+                        if (hero.getPosition().getY() == 9) {
+                            hero.move(hero.getPosition().plus(Objects.requireNonNull(Direction.UP.asVector())));
+                        } else if (hero.getPosition().getY() == 0) {
+                            hero.move(hero.getPosition().plus(Objects.requireNonNull(Direction.DOWN.asVector())));
+                        } else if (hero.getPosition().getX() == 0) {
+                            hero.move(hero.getPosition().plus(Objects.requireNonNull(Direction.RIGHT.asVector())));
+                        } else if (hero.getPosition().getX() == 9) {
+                            hero.move(hero.getPosition().plus(Objects.requireNonNull(Direction.LEFT.asVector())));
+                        }
                     }
 
-                    int nextRoom = door.nextRoomInt();
-                    System.out.println("next room: " + nextRoom);
-                    int nextDoorIndex = door.getNextIndex();
-                    loadRoom(nextRoom);
 
-                    // move to the door on the map
-                    hero.move(roomList.get(nextRoom).getDoorList().get(nextDoorIndex).getPosition());
-
-                    // move 1 step away from the door
-                    if (hero.getPosition().getY() == 9) {
-                        hero.move(hero.getPosition().plus(Objects.requireNonNull(Direction.UP.asVector())));
-                    } else if (hero.getPosition().getY() == 0) {
-                        hero.move(hero.getPosition().plus(Objects.requireNonNull(Direction.DOWN.asVector())));
-                    } else if (hero.getPosition().getX() == 0) {
-                        hero.move(hero.getPosition().plus(Objects.requireNonNull(Direction.RIGHT.asVector())));
-                    } else if (hero.getPosition().getX() == 9) {
-                        hero.move(hero.getPosition().plus(Objects.requireNonNull(Direction.LEFT.asVector())));
-                    }
                 }
                 case "Key" -> {
                     // get key

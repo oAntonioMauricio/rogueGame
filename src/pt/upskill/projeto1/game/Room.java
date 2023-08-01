@@ -56,7 +56,7 @@ Room {
                             case "D" -> {
                                 if (chars.size() > 5) {
                                     // System.out.println("Create DoorClosed");
-                                    doorList.add(new DoorClosed(doorIndex, nextRoom, nextIndex, false, chars.get(4)));
+                                    doorList.add(new DoorClosed(doorIndex, nextRoom, nextIndex, false, chars.get(5)));
                                 } else {
                                     // System.out.println("Create DoorOpen");
                                     doorList.add(new DoorOpen(doorIndex, nextRoom, nextIndex, true));

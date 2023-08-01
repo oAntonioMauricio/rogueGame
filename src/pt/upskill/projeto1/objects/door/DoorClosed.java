@@ -18,4 +18,8 @@ public class DoorClosed extends Door {
     public Boolean isPossibleToWalk() {
         return super.isOpen();
     }
+
+    public String getKey() {
+        return key;
+    }
 }
