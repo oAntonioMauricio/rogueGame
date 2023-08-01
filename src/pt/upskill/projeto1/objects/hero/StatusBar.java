@@ -7,6 +7,7 @@ import pt.upskill.projeto1.gui.ImageTile;
 import pt.upskill.projeto1.objects.items.Hammer;
 import pt.upskill.projeto1.objects.items.Item;
 import pt.upskill.projeto1.objects.items.Key;
+import pt.upskill.projeto1.objects.statusbar.Black;
 import pt.upskill.projeto1.objects.statusbar.Fire;
 import pt.upskill.projeto1.objects.statusbar.Green;
 import pt.upskill.projeto1.rogue.utils.Position;
@@ -15,6 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StatusBar {
+    // singelton 🔽
+    private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
+
+    // propreties 🔽
 
     private List<ImageTile[]> statusBar;
 
@@ -33,6 +38,8 @@ public class StatusBar {
         this.statusBar.add(items);
     }
 
+    // methods 🔽
+
     public List<ImageTile[]> getStatusBarList() {
         return statusBar;
     }
@@ -47,6 +54,34 @@ public class StatusBar {
 
     public ImageTile[] getItemArray() {
         return getStatusBarList().get(2);
+    }
+
+    public void updateStatus() {
+        // reset status
+        gui.clearStatus();
+
+        // System.out.println("updating status...");
+        // black background
+        for (int i = 0; i < 10; i++) {
+            gui.addStatusImage(new Black(new Position(i, 0)));
+        }
+
+        // fireballs
+        for (ImageTile fireball : getStatusBarList().get(0)) {
+            gui.addStatusImage(fireball);
+        }
+
+        // health
+        for (ImageTile health : getStatusBarList().get(1)) {
+            gui.addStatusImage(health);
+        }
+
+        // items
+        for (ImageTile item : getItemArray()) {
+            if (item != null) {
+                gui.addStatusImage(item);
+            }
+        }
     }
 
     public void removeItem(int slot) {
@@ -85,8 +120,9 @@ public class StatusBar {
                 // remove item from status bar
                 this.statusBar.get(2)[slot] = null;
 
-                // organize at the end
+                // organize and update at the end
                 organizeItemArray();
+                updateStatus();
             }
         }
     }

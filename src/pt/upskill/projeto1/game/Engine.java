@@ -77,7 +77,8 @@ public class Engine {
         gameSingleton.loadRoom(nextRoom);
 
         // update status bar
-        updateStatusBar();
+        // updateStatusBar();
+        statusBar.updateStatus();
 
         // last gui update
         gui.newImages(tiles);
@@ -144,17 +145,14 @@ public class Engine {
         if (keyPressed == KeyEvent.VK_1) {
             // System.out.println("Remove first item");
             statusBar.removeItem(0);
-            updateStatusBar();
         }
         if (keyPressed == KeyEvent.VK_2) {
             // System.out.println("Remove second item");
             statusBar.removeItem(1);
-            updateStatusBar();
         }
         if (keyPressed == KeyEvent.VK_3) {
             // System.out.println("Remove third item");
             statusBar.removeItem(2);
-            updateStatusBar();
         }
         if (keyPressed == KeyEvent.VK_SPACE) {
             ImageTile[] fireballs = statusBar.getStatusBarList().get(0);
@@ -164,7 +162,7 @@ public class Engine {
                     break;
                 }
             }
-            updateStatusBar();
+            statusBar.updateStatus();
         }
     }
 
@@ -175,7 +173,7 @@ public class Engine {
         checkIfEnemyOnHero();
 
         updateHeroHealth();
-        updateStatusBar();
+        // updateStatusBar();
     }
 
     public void checkWhereHeroIs() {
@@ -416,6 +414,8 @@ public class Engine {
             healthArray[2] = new Red(new Position(5, 0));
             healthArray[3] = new Red(new Position(6, 0));
         }
+
+        statusBar.updateStatus();
 
     }
 }
