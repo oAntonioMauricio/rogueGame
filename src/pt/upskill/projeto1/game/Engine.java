@@ -165,7 +165,7 @@ public class Engine {
                 // drop item and check if it can be dropped
                 if (currentItem.dropItem()) {
                     // add item to room
-                    roomList.get(roomIndex).getItemList().add((Item) currentItem);
+                    roomList.get(roomIndex).getItemList().add(currentItem);
                     tiles.add(currentItem);
                     gui.addImage(currentItem);
 
