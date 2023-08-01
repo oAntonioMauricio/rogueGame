@@ -4,7 +4,7 @@ import pt.upskill.projeto1.rogue.utils.Position;
 
 public class Skeleton extends Enemy {
     private Position position;
-    private int health = 25;
+    private int health = 50;
     private int power = 25;
 
     public Skeleton(Position position) {
@@ -29,6 +29,16 @@ public class Skeleton extends Enemy {
     @Override
     public int getPower() {
         return this.power;
+    }
+
+    @Override
+    public int getHealth() {
+        return this.health;
+    }
+
+    @Override
+    public void setHealth(int newHealth) {
+        this.health = newHealth;
     }
 
     public void setPosition(Position position) {

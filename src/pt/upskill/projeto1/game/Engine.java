@@ -38,7 +38,6 @@ public class Engine {
     // TODO: melhorar algoritmo de perseguição https://wumbo.net/formulas/distance-between-two-points-2d/
     // TODO: MELHORAR RELAÇÃO ENTRE SINGLETON E ENGIN
     // TODO: metodo para afastar da porta dentro do hero
-    // TODO: MELHORAR INTERAÇÃO ATAQUE / VIDA COM INIMIGOS
 
     // atributes 🔽
     private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
@@ -61,7 +60,7 @@ public class Engine {
         loadRoom(0);
 
         gui.go();
-        gui.setStatus("O jogo começou!");
+        gui.setStatus("Welcome. You have " + hero.getHealth() + " HP and " + hero.getPower() + " power.");
 
         while (true) {
             gui.update();
@@ -176,7 +175,6 @@ public class Engine {
         checkIfEnemyOnHero();
 
         updateHeroHealth();
-
         updateStatusBar();
     }
 
@@ -206,19 +204,8 @@ public class Engine {
                     int indexEnemy = roomList.get(roomIndex).getEnemyList().indexOf(interaction);
                     Enemy currentEnemy = roomList.get(roomIndex).getEnemyList().get(indexEnemy);
 
-                    boolean removeEnemy = false;
-                    Enemy toRemove = null;
-
-                    if (hero.getPower() >= currentEnemy.getPower()) {
-                        gui.setStatus("You destroyed: " + currentEnemy.getName());
-                        removeEnemy = true;
-                        toRemove = currentEnemy;
-                    }
-                    if (removeEnemy) {
-                        roomList.get(roomIndex).getEnemyList().remove(toRemove);
-                        tiles.remove(toRemove);
-                        gui.removeImage(toRemove);
-                    }
+                    // fight func
+                    hero.fight(currentEnemy);
                 }
                 case "DoorOpen", "DoorClosed", "DoorWay" -> {
                     // get door
@@ -352,7 +339,7 @@ public class Engine {
 
                     // effect
                     hero.setHealth(hero.getHealth() + currentItem.getHealth());
-                    gui.setStatus("You ate " + currentItem.getName() + " and received " + currentItem.getHealth() + " hp.");
+                    gui.setStatus("You ate " + currentItem.getName() + " and received " + currentItem.getHealth() + " HP. Your HP is: " + hero.getHealth());
 
                     // delete item
                     roomList.get(roomIndex).getItemList().remove(currentItem);
@@ -383,26 +370,12 @@ public class Engine {
         // get room index
         int roomIndex = gameSingleton.getRoomIndex();
 
-        boolean removeEnemy = false;
-        Enemy toRemove = null;
-
         for (Enemy enemy : roomList.get(roomIndex).getEnemyList()) {
             if (hero.getPosition().isItSamePosition(enemy.getPosition())) {
-                System.out.println("ENEMY ATTACK!");
-                hero.setHealth(hero.getHealth() - enemy.getPower());
-                System.out.println("Life: " + hero.getHealth());
-
-                gui.setStatus(enemy.getName() + " attacked you. You lost: " + enemy.getPower() + " health.");
-                removeEnemy = true;
-                toRemove = enemy;
+                System.out.println("Enemy attack!");
+                enemy.fight(hero);
+                break;
             }
-        }
-
-        if (removeEnemy) {
-            System.out.println("enemy removed");
-            roomList.get(roomIndex).getEnemyList().remove(toRemove);
-            tiles.remove(toRemove);
-            gui.removeImage(toRemove);
         }
     }
 

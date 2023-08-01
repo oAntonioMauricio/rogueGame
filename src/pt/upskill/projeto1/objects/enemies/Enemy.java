@@ -1,10 +1,13 @@
 package pt.upskill.projeto1.objects.enemies;
 
 import pt.upskill.projeto1.game.GameSingleton;
+import pt.upskill.projeto1.game.Room;
+import pt.upskill.projeto1.gui.ImageMatrixGUI;
 import pt.upskill.projeto1.gui.ImageTile;
 import pt.upskill.projeto1.objects.door.Door;
 import pt.upskill.projeto1.objects.hero.Hero;
 import pt.upskill.projeto1.objects.Wall;
+import pt.upskill.projeto1.objects.hero.StatusBar;
 import pt.upskill.projeto1.objects.items.Item;
 import pt.upskill.projeto1.rogue.utils.Direction;
 import pt.upskill.projeto1.rogue.utils.Position;
@@ -14,10 +17,19 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Enemy implements ImageTile {
+    // singletons 🔽
+    private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
+    private GameSingleton gameSingleton = GameSingleton.getInstance();
+    private Hero hero = gameSingleton.getHero();
+    private List<ImageTile> tiles = gameSingleton.getTiles();
+    private List<Room> roomList = gameSingleton.getRoomList();
 
-    private String test = "Hey;";
-
+    // properties 🔽
     public abstract int getPower();
+
+    public abstract int getHealth();
+
+    public abstract void setHealth(int newHealth);
 
     public abstract void setPosition(Position position);
 
@@ -108,6 +120,42 @@ public abstract class Enemy implements ImageTile {
 
         // move random if not close
         return randomPosition();
+    }
+
+    public void fight(Hero hero) {
+
+        // get room index // this is here because it's PRIMITIVE
+        int roomIndex = gameSingleton.getRoomIndex();
+
+        int enemyHP = getHealth();
+
+        while (getHealth() > 0 && hero.getHealth() > 0) {
+            // deal dmg
+            hero.setHealth(hero.getHealth() - getPower());
+            System.out.println("Enemy dealt " + getPower() + " damage.");
+
+            if (hero.getHealth() > 0) {
+                System.out.println("Hero attack!");
+                setHealth(getHealth() - hero.getPower());
+                System.out.println("Hero attack and dealt " + hero.getPower() + " damage. Enemy HP left: " + getHealth());
+            }
+        }
+
+        if (getHealth() <= 0) {
+            // remove enemy fight
+            gui.setStatus("Enemy lost the fight.");
+            roomList.get(roomIndex).getEnemyList().remove(this);
+            tiles.remove(this);
+            gui.removeImage(this);
+        } else {
+            // remove hero from the game
+            gui.setStatus("You died in the fight." + " The enemy had " + enemyHP + " HP at the start and " + getPower() + " power.");
+            hero.setPosition(new Position(-1, -1));
+            tiles.remove(hero);
+            gui.removeImage(hero);
+        }
+
+
     }
 
 }
