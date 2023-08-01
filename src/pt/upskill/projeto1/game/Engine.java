@@ -33,6 +33,7 @@ public class Engine {
     // TODO: MELHORAR RELAÇÃO ENTRE SINGLETON E ENGINE!
     // PERGUNTA: Statusbar no singleton ou como atributo do heroi?
     //
+    // TODO: CHECK IF DOOR NEEDS KEY
 
     // atributes 🔽
     private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
@@ -217,6 +218,10 @@ public class Engine {
                     //
                     // add condition to check if door needs key
                     //
+
+                    if (door.isOpen()) {
+                        System.out.println("Door is open");
+                    }
 
                     int nextRoom = door.nextRoomInt();
                     System.out.println("next room: " + nextRoom);
