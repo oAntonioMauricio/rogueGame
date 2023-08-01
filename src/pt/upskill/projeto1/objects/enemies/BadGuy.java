@@ -4,7 +4,7 @@ import pt.upskill.projeto1.rogue.utils.Position;
 
 public class BadGuy extends Enemy {
     private Position position;
-    private int power = 25;
+    private int power = 50;
 
     public BadGuy(Position position) {
         this.position = position;

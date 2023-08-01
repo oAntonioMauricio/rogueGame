@@ -10,6 +10,7 @@ import pt.upskill.projeto1.objects.enemies.Bat;
 import pt.upskill.projeto1.objects.enemies.Enemy;
 import pt.upskill.projeto1.objects.enemies.Skeleton;
 import pt.upskill.projeto1.objects.items.GoodMeat;
+import pt.upskill.projeto1.objects.items.Hammer;
 import pt.upskill.projeto1.objects.items.Item;
 import pt.upskill.projeto1.objects.items.Key;
 import pt.upskill.projeto1.rogue.utils.Position;
@@ -96,6 +97,8 @@ Room {
                         enemyList.add(new BadGuy(new Position(i, col)));
                     } else if (Objects.equals(chars[i], "m")) {
                         itemList.add(new GoodMeat(new Position(i, col)));
+                    } else if (Objects.equals(chars[i], "h")) {
+                        itemList.add(new Hammer(new Position(i, col)));
                     } else if (Objects.equals(chars[i], "k")) {
                         // based on 1 key per room.
                         for (Item item : itemList) {

@@ -12,12 +12,11 @@ import java.util.List;
 public class Hero implements ImageTile {
 
     private Position position;
-    private int power;
+    private int power = 25;
     private int health = 100;
 
     public Hero() {
         this.position = new Position(8, 8);
-        this.power = 100;
     }
 
     @Override

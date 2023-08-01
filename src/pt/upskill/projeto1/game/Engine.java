@@ -8,6 +8,7 @@ import pt.upskill.projeto1.objects.enemies.Enemy;
 import pt.upskill.projeto1.objects.hero.Hero;
 import pt.upskill.projeto1.objects.hero.StatusBar;
 import pt.upskill.projeto1.objects.items.GoodMeat;
+import pt.upskill.projeto1.objects.items.Hammer;
 import pt.upskill.projeto1.objects.items.Item;
 import pt.upskill.projeto1.objects.items.Key;
 import pt.upskill.projeto1.objects.statusbar.Black;
@@ -31,8 +32,9 @@ public class Engine {
     // PERGUNTA: Statusbar no singleton ou como atributo do heroi?
     // PERGUNTA: updateStatusBar() na classe statusbar?
     //
-    // TODO: melhorar algoritmo de perseguição https://wumbo.net/formulas/distance-between-two-points-2d/
+    // PENSAR: Mudar organização dos items? Fora do checkWhereHeroIs para statusbar? ou gamestate?
     //
+    // TODO: melhorar algoritmo de perseguição https://wumbo.net/formulas/distance-between-two-points-2d/
     // TODO: MELHORAR RELAÇÃO ENTRE SINGLETON E ENGINE!
     // TODO: metodo para afastar da porta dentro do hero
     //
@@ -74,19 +76,11 @@ public class Engine {
         // load room in singleton
         gameSingleton.loadRoom(nextRoom);
 
-        // add status bar
-        // addStatusBackground();
+        // update status bar
         updateStatusBar();
 
         // last gui update
         gui.newImages(tiles);
-    }
-
-    public void addStatusBackground() {
-        System.out.println("building status background");
-        for (int i = 0; i < 10; i++) {
-            gui.addStatusImage(new Black(new Position(i, 0)));
-        }
     }
 
     public void updateStatusBar() {
@@ -306,7 +300,7 @@ public class Engine {
                     int indexItem = roomList.get(roomIndex).getItemList().indexOf(interaction);
                     Key currentKey = (Key) roomList.get(roomIndex).getItemList().get(indexItem);
 
-                    // effect
+                    // storage
                     ImageTile[] itemsArray = gameSingleton.getStatusBar().getItemArray();
                     int emptyIndex = gameSingleton.getStatusBar().itemArrayEmptyIndex();
 
@@ -316,13 +310,38 @@ public class Engine {
                         itemsArray[emptyIndex] = currentKey;
                         // seven is the start on the items position on the status bar
                         currentKey.setPosition(new Position(7 + emptyIndex, 0));
-                        System.out.println("Got " + currentKey.getKeyId());
                         gui.setStatus("You picked " + currentKey.getKeyId());
 
                         // delete item
                         roomList.get(roomIndex).getItemList().remove(currentKey);
                         tiles.remove(currentKey);
                         gui.removeImage(currentKey);
+                    }
+                }
+                case "Hammer" -> {
+                    // get item
+                    int indexItem = roomList.get(roomIndex).getItemList().indexOf(interaction);
+                    Hammer currentItem = (Hammer) roomList.get(roomIndex).getItemList().get(indexItem);
+
+                    // storage
+                    ImageTile[] itemsArray = gameSingleton.getStatusBar().getItemArray();
+                    int emptyIndex = gameSingleton.getStatusBar().itemArrayEmptyIndex();
+
+                    if (emptyIndex == -1) {
+                        gui.setStatus("Inventory is full!");
+                    } else {
+                        itemsArray[emptyIndex] = currentItem;
+                        // seven is the start on the items position on the status bar
+                        currentItem.setPosition(new Position(7 + emptyIndex, 0));
+
+                        // effect
+                        hero.setPower(hero.getPower() + currentItem.getItemPower());
+                        gui.setStatus("You picked the Hammer and gained " + currentItem.getItemPower() + " power. Total power: " + hero.getPower());
+
+                        // delete item
+                        roomList.get(roomIndex).getItemList().remove(currentItem);
+                        tiles.remove(currentItem);
+                        gui.removeImage(currentItem);
                     }
                 }
                 case "GoodMeat" -> {
@@ -333,7 +352,6 @@ public class Engine {
                     // effect
                     hero.setHealth(hero.getHealth() + currentItem.getHealth());
                     gui.setStatus("You ate " + currentItem.getName() + " and received " + currentItem.getHealth() + " hp.");
-                    System.out.println("Current health: " + hero.getHealth());
 
                     // delete item
                     roomList.get(roomIndex).getItemList().remove(currentItem);

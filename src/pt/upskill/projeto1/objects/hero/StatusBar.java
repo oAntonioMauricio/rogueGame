@@ -4,6 +4,7 @@ import pt.upskill.projeto1.game.GameSingleton;
 import pt.upskill.projeto1.game.Room;
 import pt.upskill.projeto1.gui.ImageMatrixGUI;
 import pt.upskill.projeto1.gui.ImageTile;
+import pt.upskill.projeto1.objects.items.Hammer;
 import pt.upskill.projeto1.objects.items.Item;
 import pt.upskill.projeto1.objects.items.Key;
 import pt.upskill.projeto1.objects.statusbar.Fire;
@@ -54,13 +55,13 @@ public class StatusBar {
         GameSingleton gameSingleton = GameSingleton.getInstance();
         List<ImageTile> tiles = gameSingleton.getTiles();
         List<Room> roomList = gameSingleton.getRoomList();
+        Hero hero = gameSingleton.getHero();
 
         Item currentSlot = (Item) this.statusBar.get(2)[slot];
 
         if (currentSlot == null) {
             gui.setStatus("You don't have an item in the slot: " + (slot + 1));
         } else {
-            // let's drop the item on the floor. on top of the hero
             // get room index // this is here because it's PRIMITIVE
             int roomIndex = gameSingleton.getRoomIndex();
 
@@ -71,8 +72,12 @@ public class StatusBar {
                 tiles.add(currentSlot);
                 gui.addImage(currentSlot);
 
+                // TIRAR O DANO DO HAMMER AQUI?!
                 if (currentSlot instanceof Key) {
                     gui.setStatus("You removed: " + ((Key) currentSlot).getKeyId());
+                } else if (currentSlot instanceof Hammer) {
+                    hero.setPower(hero.getPower() - ((Hammer) currentSlot).getItemPower());
+                    gui.setStatus("You removed the Hammer and lost " + ((Hammer) currentSlot).getItemPower() + ". Total power: " + hero.getPower());
                 } else {
                     gui.setStatus("You removed: " + currentSlot.getName());
                 }
