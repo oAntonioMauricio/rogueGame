@@ -33,7 +33,7 @@ public class Engine {
     // TODO: melhorar algoritmo de perseguição https://wumbo.net/formulas/distance-between-two-points-2d/
     //
     // TODO: MELHORAR RELAÇÃO ENTRE SINGLETON E ENGINE!
-    // TODO: ABRIR PORTAS DOS DOIS LADO COM A KEY
+    // TODO: metodo para afastar da porta dentro do hero
     //
     // TODO: ORGANIZAR ORDEM DOS ITEMS DEPOIS DE UM DROP. TAREFA PARA A STATUS BAR
 
@@ -270,6 +270,11 @@ public class Engine {
                                     gui.setStatus("You opened " + doorClosed.getName() + " with " + keyToOpenDoor);
                                     gotTheKey = true;
                                     doorClosed.setOpen(true);
+
+                                    // unlock the door in the next room
+                                    int nextRoom = doorClosed.nextRoomInt();
+                                    int nextDoorIndex = doorClosed.getNextIndex();
+                                    roomList.get(nextRoom).getDoorList().get(nextDoorIndex).setOpen(true);
                                 }
                             }
                         }
