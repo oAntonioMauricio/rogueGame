@@ -9,6 +9,7 @@ import pt.upskill.projeto1.objects.enemies.BadGuy;
 import pt.upskill.projeto1.objects.enemies.Bat;
 import pt.upskill.projeto1.objects.enemies.Enemy;
 import pt.upskill.projeto1.objects.enemies.Skeleton;
+import pt.upskill.projeto1.objects.hero.Hero;
 import pt.upskill.projeto1.objects.items.GoodMeat;
 import pt.upskill.projeto1.objects.items.Hammer;
 import pt.upskill.projeto1.objects.items.Item;
@@ -22,8 +23,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
-public class
-Room {
+public class Room {
+    // singleton 🔽
+    private GameSingleton gameSingleton = GameSingleton.getInstance();
+    private Hero hero = gameSingleton.getHero();
+
+    // properties 🔽
     private List<Wall> wallList = new ArrayList<>();
     private List<Door> doorList = new ArrayList<>();
     private List<Enemy> enemyList = new ArrayList<>();
@@ -85,7 +90,9 @@ Room {
                 // build map
                 String[] chars = linha.split("");
                 for (int i = 0; i < 10; i++) {
-                    if (Objects.equals(chars[i], "W")) {
+                    if (Objects.equals(chars[i], "H")) {
+                        hero.setPosition(new Position(i, col));
+                    } else if (Objects.equals(chars[i], "W")) {
                         wallList.add(new Wall(new Position(i, col)));
                     } else if (isNumber(chars[i])) {
                         doorList.get(Integer.parseInt(chars[i])).setPosition(new Position(i, col));

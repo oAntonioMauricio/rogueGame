@@ -65,17 +65,17 @@ public class StatusBar {
             // get room index // this is here because it's PRIMITIVE
             int roomIndex = gameSingleton.getRoomIndex();
 
-            // drop item and check if it can be dropped
+            // check if it can be dropped to continue
             if (currentSlot.dropItem()) {
                 // add item to room
                 roomList.get(roomIndex).getItemList().add(currentSlot);
                 tiles.add(currentSlot);
                 gui.addImage(currentSlot);
 
-                // TIRAR O DANO DO HAMMER AQUI?!
                 if (currentSlot instanceof Key) {
                     gui.setStatus("You removed: " + ((Key) currentSlot).getKeyId());
                 } else if (currentSlot instanceof Hammer) {
+                    // remove hammer power
                     hero.setPower(hero.getPower() - ((Hammer) currentSlot).getItemPower());
                     gui.setStatus("You removed the Hammer and lost " + ((Hammer) currentSlot).getItemPower() + ". Total power: " + hero.getPower());
                 } else {

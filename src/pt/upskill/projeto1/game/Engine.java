@@ -37,7 +37,7 @@ public class Engine {
     // TODO: melhorar algoritmo de perseguição https://wumbo.net/formulas/distance-between-two-points-2d/
     // TODO: MELHORAR RELAÇÃO ENTRE SINGLETON E ENGINE!
     // TODO: metodo para afastar da porta dentro do hero
-    //
+    //  TODO : MELHORAR INTERAÇÃO ATAQUE / VIDA COM INIMIGOS
 
     // atributes 🔽
     private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
