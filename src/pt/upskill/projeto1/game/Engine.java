@@ -28,16 +28,17 @@ public class Engine {
         engine.init();
     }
 
-    // SINGLETON BRANCH
+    // MAIN BRANCH
+    //
     // PERGUNTA: Statusbar no singleton ou como atributo do heroi?
     // PERGUNTA: updateStatusBar() na classe statusbar?
     //
-    // PENSAR: Mudar organização dos items? Fora do checkWhereHeroIs para statusbar? ou gamestate?
+    // PENSAR: Mudar armazenamento/organização dos items? Fora do checkWhereHeroIs para statusbar? ou gamestate?
     //
     // TODO: melhorar algoritmo de perseguição https://wumbo.net/formulas/distance-between-two-points-2d/
-    // TODO: MELHORAR RELAÇÃO ENTRE SINGLETON E ENGINE!
+    // TODO: MELHORAR RELAÇÃO ENTRE SINGLETON E ENGIN
     // TODO: metodo para afastar da porta dentro do hero
-    //  TODO : MELHORAR INTERAÇÃO ATAQUE / VIDA COM INIMIGOS
+    // TODO: MELHORAR INTERAÇÃO ATAQUE / VIDA COM INIMIGOS
 
     // atributes 🔽
     private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
