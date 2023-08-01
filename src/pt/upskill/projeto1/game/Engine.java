@@ -29,6 +29,7 @@ public class Engine {
 
     // SINGLETON BRANCH
     // PERGUNTA: Statusbar no singleton ou como atributo do heroi?
+    // PERGUNTA: updateStatusBar() na classe statusbar?
     //
     // TODO: melhorar algoritmo de perseguição https://wumbo.net/formulas/distance-between-two-points-2d/
     //
@@ -74,7 +75,7 @@ public class Engine {
         gameSingleton.loadRoom(nextRoom);
 
         // add status bar
-        addStatusBackground();
+        // addStatusBackground();
         updateStatusBar();
 
         // last gui update
@@ -114,8 +115,6 @@ public class Engine {
                 gui.addStatusImage(item);
             }
         }
-
-
     }
 
     public void notify(int keyPressed) {
@@ -150,37 +149,17 @@ public class Engine {
         }
         if (keyPressed == KeyEvent.VK_1) {
             // System.out.println("Remove first item");
-
-            ImageTile[] items = statusBar.getItemArray();
-            Item currentItem = (Item) items[0];
-
-            if (currentItem == null) {
-                gui.setStatus("You don't have an item in the first slot.");
-            } else {
-                // let's drop the item on the floor. on top of the hero
-                // get room index // this is here because it's PRIMITIVE
-                int roomIndex = gameSingleton.getRoomIndex();
-
-                // drop item and check if it can be dropped
-                if (currentItem.dropItem()) {
-                    // add item to room
-                    roomList.get(roomIndex).getItemList().add(currentItem);
-                    tiles.add(currentItem);
-                    gui.addImage(currentItem);
-
-                    if (currentItem instanceof Key) {
-                        gui.setStatus("You removed: " + ((Key) currentItem).getKeyId());
-                    } else {
-                        gui.setStatus("You removed: " + currentItem.getName());
-                    }
-
-                    // remove item from status bar
-                    items[0] = null;
-                }
-
-            }
-
-            statusBar.organizeItemArray();
+            statusBar.removeItem(0);
+            updateStatusBar();
+        }
+        if (keyPressed == KeyEvent.VK_2) {
+            // System.out.println("Remove second item");
+            statusBar.removeItem(1);
+            updateStatusBar();
+        }
+        if (keyPressed == KeyEvent.VK_3) {
+            // System.out.println("Remove third item");
+            statusBar.removeItem(2);
             updateStatusBar();
         }
         if (keyPressed == KeyEvent.VK_SPACE) {

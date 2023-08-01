@@ -1,7 +1,11 @@
 package pt.upskill.projeto1.objects.hero;
 
+import pt.upskill.projeto1.game.GameSingleton;
+import pt.upskill.projeto1.game.Room;
+import pt.upskill.projeto1.gui.ImageMatrixGUI;
 import pt.upskill.projeto1.gui.ImageTile;
 import pt.upskill.projeto1.objects.items.Item;
+import pt.upskill.projeto1.objects.items.Key;
 import pt.upskill.projeto1.objects.statusbar.Fire;
 import pt.upskill.projeto1.objects.statusbar.Green;
 import pt.upskill.projeto1.rogue.utils.Position;
@@ -10,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StatusBar {
+
     private List<ImageTile[]> statusBar;
 
     public StatusBar() {
@@ -41,6 +46,44 @@ public class StatusBar {
 
     public ImageTile[] getItemArray() {
         return getStatusBarList().get(2);
+    }
+
+    public void removeItem(int slot) {
+        // access singletons
+        ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
+        GameSingleton gameSingleton = GameSingleton.getInstance();
+        List<ImageTile> tiles = gameSingleton.getTiles();
+        List<Room> roomList = gameSingleton.getRoomList();
+
+        Item currentSlot = (Item) this.statusBar.get(2)[slot];
+
+        if (currentSlot == null) {
+            gui.setStatus("You don't have an item in the slot: " + (slot + 1));
+        } else {
+            // let's drop the item on the floor. on top of the hero
+            // get room index // this is here because it's PRIMITIVE
+            int roomIndex = gameSingleton.getRoomIndex();
+
+            // drop item and check if it can be dropped
+            if (currentSlot.dropItem()) {
+                // add item to room
+                roomList.get(roomIndex).getItemList().add(currentSlot);
+                tiles.add(currentSlot);
+                gui.addImage(currentSlot);
+
+                if (currentSlot instanceof Key) {
+                    gui.setStatus("You removed: " + ((Key) currentSlot).getKeyId());
+                } else {
+                    gui.setStatus("You removed: " + currentSlot.getName());
+                }
+
+                // remove item from status bar
+                this.statusBar.get(2)[slot] = null;
+
+                // organize at the end
+                organizeItemArray();
+            }
+        }
     }
 
     public int itemArrayEmptyIndex() {
