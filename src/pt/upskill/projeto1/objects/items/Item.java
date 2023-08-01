@@ -55,7 +55,7 @@ public abstract class Item implements ImageTile {
 
         for (ImageTile tile : gameSingleton.getTiles()) {
             if (tile.getPosition().getX() == heroX && tile.getPosition().getY() == dropTop) {
-                if (tile instanceof Wall) {
+                if (tile instanceof Wall || tile instanceof Item) {
                     dropAvailable = false;
                 }
             }

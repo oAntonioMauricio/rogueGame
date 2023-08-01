@@ -35,8 +35,6 @@ public class Engine {
     // TODO: MELHORAR RELAÇÃO ENTRE SINGLETON E ENGINE!
     // TODO: metodo para afastar da porta dentro do hero
     //
-    // TODO: ORGANIZAR ORDEM DOS ITEMS DEPOIS DE UM DROP. TAREFA PARA A STATUS BAR
-
 
     // atributes 🔽
     private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
@@ -117,6 +115,7 @@ public class Engine {
             }
         }
 
+
     }
 
     public void notify(int keyPressed) {
@@ -175,11 +174,13 @@ public class Engine {
                         gui.setStatus("You removed: " + currentItem.getName());
                     }
 
+                    // remove item from status bar
                     items[0] = null;
                 }
 
             }
 
+            statusBar.organizeItemArray();
             updateStatusBar();
         }
         if (keyPressed == KeyEvent.VK_SPACE) {
@@ -329,8 +330,8 @@ public class Engine {
                     // effect
                     ImageTile[] itemsArray = gameSingleton.getStatusBar().getItemArray();
                     int emptyIndex = gameSingleton.getStatusBar().itemArrayEmptyIndex();
+
                     if (emptyIndex == -1) {
-                        System.out.println("Inventory is full!");
                         gui.setStatus("Inventory is full!");
                     } else {
                         itemsArray[emptyIndex] = currentKey;
@@ -338,12 +339,12 @@ public class Engine {
                         currentKey.setPosition(new Position(7 + emptyIndex, 0));
                         System.out.println("Got " + currentKey.getKeyId());
                         gui.setStatus("You picked " + currentKey.getKeyId());
-                    }
 
-                    // delete item
-                    roomList.get(roomIndex).getItemList().remove(currentKey);
-                    tiles.remove(currentKey);
-                    gui.removeImage(currentKey);
+                        // delete item
+                        roomList.get(roomIndex).getItemList().remove(currentKey);
+                        tiles.remove(currentKey);
+                        gui.removeImage(currentKey);
+                    }
                 }
                 case "GoodMeat" -> {
                     // get item
