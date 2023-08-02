@@ -143,10 +143,7 @@ public abstract class Enemy implements ImageTile {
 
         if (getHealth() <= 0) {
             // remove enemy fight
-            gui.setStatus("Enemy lost the fight.");
-            roomList.get(roomIndex).getEnemyList().remove(this);
-            tiles.remove(this);
-            gui.removeImage(this);
+            death();
         } else {
             // remove hero from the game
             gui.setStatus("You died in the fight." + " The enemy had " + enemyHP + " HP at the start and " + getPower() + " power.");
@@ -156,6 +153,16 @@ public abstract class Enemy implements ImageTile {
         }
 
 
+    }
+
+    public void death() {
+        // get room index // this is here because it's PRIMITIVE
+        int roomIndex = gameSingleton.getRoomIndex();
+        // remove enemy
+        gui.setStatus(getName() + " died.");
+        roomList.get(roomIndex).getEnemyList().remove(this);
+        tiles.remove(this);
+        gui.removeImage(this);
     }
 
 }

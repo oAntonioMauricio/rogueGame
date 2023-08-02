@@ -109,9 +109,7 @@ public class Hero implements ImageTile {
         if (enemyToFight.getHealth() <= 0) {
             gui.setStatus("You killed " + enemyToFight.getName() + ". The enemy had " + enemyHP + " HP at the start and " + enemyToFight.getPower() + " power.");
             // delete after fight
-            roomList.get(roomIndex).getEnemyList().remove(enemyToFight);
-            tiles.remove(enemyToFight);
-            gui.removeImage(enemyToFight);
+            enemyToFight.death();
         } else {
             // remove hero from the game
             setPosition(new Position(-1,-1));

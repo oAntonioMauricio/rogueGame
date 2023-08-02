@@ -1,5 +1,6 @@
 package pt.upskill.projeto1.game;
 
+import pt.upskill.projeto1.gui.FireTile;
 import pt.upskill.projeto1.gui.ImageMatrixGUI;
 import pt.upskill.projeto1.gui.ImageTile;
 import pt.upskill.projeto1.objects.door.Door;
@@ -45,6 +46,9 @@ public class Engine {
     private List<ImageTile> tiles = gameSingleton.getTiles();
     private List<Room> roomList = gameSingleton.getRoomList();
     private StatusBar statusBar = gameSingleton.getStatusBar();
+
+
+    // TEST
 
     // methods 🔽
     public void init() {
@@ -125,13 +129,23 @@ public class Engine {
             statusBar.removeItem(2);
         }
         if (keyPressed == KeyEvent.VK_SPACE) {
-            ImageTile[] fireballs = statusBar.getStatusBarList().get(0);
+
+            ImageTile[] fireballs = statusBar.getFireballsArray();
+
             for (int i = 0; i < fireballs.length; i++) {
                 if (fireballs[i] instanceof Fire) {
+                    gui.setStatus("Sending fireball!");
+
+                    ((Fire) fireballs[i]).setPosition(hero.getPosition());
+                    FireBallThread fireball = new FireBallThread(Direction.UP, (FireTile) fireballs[i]);
+                    gui.addImage(fireballs[i]);
+                    fireball.start();
+
                     fireballs[i] = new Black(new Position(i, 0));
                     break;
                 }
             }
+
             statusBar.updateStatus();
         }
     }
