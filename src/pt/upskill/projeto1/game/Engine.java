@@ -31,12 +31,11 @@ public class Engine {
     // MAIN BRANCH
     //
     // PERGUNTA: Statusbar no singleton ou como atributo do heroi?
-    // PERGUNTA: updateStatusBar() na classe statusbar?
     //
     // PENSAR: Mudar armazenamento/organização dos items? Fora do checkWhereHeroIs para statusbar? ou gamestate?
     //
     // TODO: melhorar algoritmo de perseguição https://wumbo.net/formulas/distance-between-two-points-2d/
-    // TODO: MELHORAR RELAÇÃO ENTRE SINGLETON E ENGIN
+    // TODO: MELHORAR RELAÇÃO ENTRE SINGLETON E ENGINE
     // TODO: metodo para afastar da porta dentro do hero
 
     // atributes 🔽
