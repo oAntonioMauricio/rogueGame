@@ -77,39 +77,10 @@ public class Engine {
         gameSingleton.loadRoom(nextRoom);
 
         // update status bar
-        // updateStatusBar();
         statusBar.updateStatus();
 
         // last gui update
         gui.newImages(tiles);
-    }
-
-    public void updateStatusBar() {
-        // reset status
-        gui.clearStatus();
-
-        // System.out.println("updating status...");
-        // black background
-        for (int i = 0; i < 10; i++) {
-            gui.addStatusImage(new Black(new Position(i, 0)));
-        }
-
-        // fireballs
-        for (ImageTile fireball : statusBar.getStatusBarList().get(0)) {
-            gui.addStatusImage(fireball);
-        }
-
-        // health
-        for (ImageTile health : statusBar.getStatusBarList().get(1)) {
-            gui.addStatusImage(health);
-        }
-
-        // items
-        for (ImageTile item : statusBar.getItemArray()) {
-            if (item != null) {
-                gui.addStatusImage(item);
-            }
-        }
     }
 
     public void notify(int keyPressed) {
@@ -170,10 +141,10 @@ public class Engine {
         checkWhereHeroIs();
 
         moveEveryEnemy();
+
         checkIfEnemyOnHero();
 
-        updateHeroHealth();
-        // updateStatusBar();
+        statusBar.updateStatus();
     }
 
     public void checkWhereHeroIs() {
@@ -226,7 +197,7 @@ public class Engine {
                                 System.out.println(((Key) item).getKeyId());
                                 System.out.println(keyToOpenDoor);
                                 if (Objects.equals(((Key) item).getKeyId(), keyToOpenDoor)) {
-                                    System.out.println("You got the key to this door!");
+                                    // System.out.println("You got the key to this door!");
                                     gui.setStatus("You opened " + doorClosed.getName() + " with " + keyToOpenDoor);
                                     gotTheKey = true;
                                     doorClosed.setOpen(true);
@@ -240,7 +211,7 @@ public class Engine {
                         }
 
                         if (!gotTheKey) {
-                            gui.setStatus("You don't have the key to this door.");
+                            gui.setStatus("You need the " + keyToOpenDoor + " to open this door.");
 
                             // move 1 step away from the door
                             if (hero.getPosition().getY() == 9) {
@@ -375,47 +346,5 @@ public class Engine {
                 break;
             }
         }
-    }
-
-    public void updateHeroHealth() {
-
-        ImageTile[] healthArray = gameSingleton.getStatusBar().getStatusBarList().get(1);
-
-        if (hero.getHealth() == 100) {
-            for (int i = 0, j = 3; i < 4; i++, j++) {
-                healthArray[i] = new Green(new Position(j, 0));
-            }
-        }
-
-        if (hero.getHealth() == 75) {
-            healthArray[0] = new Green(new Position(3, 0));
-            healthArray[1] = new Green(new Position(4, 0));
-            healthArray[2] = new Green(new Position(5, 0));
-            healthArray[3] = new Red(new Position(6, 0));
-        }
-
-        if (hero.getHealth() == 50) {
-            healthArray[0] = new Green(new Position(3, 0));
-            healthArray[1] = new Green(new Position(4, 0));
-            healthArray[2] = new Red(new Position(5, 0));
-            healthArray[3] = new Red(new Position(6, 0));
-        }
-
-        if (hero.getHealth() == 25) {
-            healthArray[0] = new Green(new Position(3, 0));
-            healthArray[1] = new Red(new Position(4, 0));
-            healthArray[2] = new Red(new Position(5, 0));
-            healthArray[3] = new Red(new Position(6, 0));
-        }
-
-        if (hero.getHealth() <= 0) {
-            healthArray[0] = new Red(new Position(3, 0));
-            healthArray[1] = new Red(new Position(4, 0));
-            healthArray[2] = new Red(new Position(5, 0));
-            healthArray[3] = new Red(new Position(6, 0));
-        }
-
-        statusBar.updateStatus();
-
     }
 }

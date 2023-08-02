@@ -10,6 +10,7 @@ import pt.upskill.projeto1.objects.items.Key;
 import pt.upskill.projeto1.objects.statusbar.Black;
 import pt.upskill.projeto1.objects.statusbar.Fire;
 import pt.upskill.projeto1.objects.statusbar.Green;
+import pt.upskill.projeto1.objects.statusbar.Red;
 import pt.upskill.projeto1.rogue.utils.Position;
 
 import java.util.ArrayList;
@@ -20,7 +21,6 @@ public class StatusBar {
     private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
 
     // propreties 🔽
-
     private List<ImageTile[]> statusBar;
 
     public StatusBar() {
@@ -39,7 +39,6 @@ public class StatusBar {
     }
 
     // methods 🔽
-
     public List<ImageTile[]> getStatusBarList() {
         return statusBar;
     }
@@ -56,9 +55,13 @@ public class StatusBar {
         return getStatusBarList().get(2);
     }
 
+    // HP IS ALSO UPDATED IN UPDATE STATUS!
     public void updateStatus() {
         // reset status
         gui.clearStatus();
+
+        // update HP
+        updateHeroHP();
 
         // System.out.println("updating status...");
         // black background
@@ -81,6 +84,47 @@ public class StatusBar {
             if (item != null) {
                 gui.addStatusImage(item);
             }
+        }
+    }
+
+    public void updateHeroHP() {
+        GameSingleton gameSingleton = GameSingleton.getInstance();
+        Hero hero = gameSingleton.getHero();
+
+        ImageTile[] healthArray = getHealthArray();
+
+        if (hero.getHealth() == 100) {
+            for (int i = 0, j = 3; i < 4; i++, j++) {
+                healthArray[i] = new Green(new Position(j, 0));
+            }
+        }
+
+        if (hero.getHealth() == 75) {
+            healthArray[0] = new Green(new Position(3, 0));
+            healthArray[1] = new Green(new Position(4, 0));
+            healthArray[2] = new Green(new Position(5, 0));
+            healthArray[3] = new Red(new Position(6, 0));
+        }
+
+        if (hero.getHealth() == 50) {
+            healthArray[0] = new Green(new Position(3, 0));
+            healthArray[1] = new Green(new Position(4, 0));
+            healthArray[2] = new Red(new Position(5, 0));
+            healthArray[3] = new Red(new Position(6, 0));
+        }
+
+        if (hero.getHealth() == 25) {
+            healthArray[0] = new Green(new Position(3, 0));
+            healthArray[1] = new Red(new Position(4, 0));
+            healthArray[2] = new Red(new Position(5, 0));
+            healthArray[3] = new Red(new Position(6, 0));
+        }
+
+        if (hero.getHealth() <= 0) {
+            healthArray[0] = new Red(new Position(3, 0));
+            healthArray[1] = new Red(new Position(4, 0));
+            healthArray[2] = new Red(new Position(5, 0));
+            healthArray[3] = new Red(new Position(6, 0));
         }
     }
 
