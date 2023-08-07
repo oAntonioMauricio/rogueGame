@@ -29,7 +29,7 @@ public class Engine {
         engine.init();
     }
 
-    // MAIN BRANCH
+    // save_game branch
     //
     // PERGUNTA: Statusbar no singleton ou como atributo do heroi?
     //
