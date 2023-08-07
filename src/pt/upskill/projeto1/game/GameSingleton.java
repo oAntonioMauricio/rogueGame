@@ -34,6 +34,10 @@ public class GameSingleton {
         return instance;
     }
 
+    protected Object readResolve() {
+        return instance;
+    }
+
     // Methods 🔽
     public void loadRoom(int nextRoom) {
         setRoomIndex(nextRoom);
