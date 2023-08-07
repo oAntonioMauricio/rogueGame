@@ -113,11 +113,17 @@ public class Hero implements ImageTile, Serializable {
             enemyToFight.death();
         } else {
             // remove hero from the game
-            setPosition(new Position(-1,-1));
+            setPosition(new Position(-1, -1));
             tiles.remove(this);
             gui.removeImage(this);
             gui.setStatus("You died in the fight." + " The enemy had " + enemyHP + " HP at the start and " + enemyToFight.getPower() + " power.");
         }
+    }
+
+    public void loadHero(Hero savedHero) {
+        this.position = savedHero.getPosition();
+        this.health = savedHero.getHealth();
+        this.power = savedHero.getPower();
     }
 
 }

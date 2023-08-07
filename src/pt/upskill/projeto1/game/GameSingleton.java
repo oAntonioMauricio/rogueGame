@@ -102,12 +102,8 @@ public class GameSingleton {
         this.roomList.clear();
         this.roomList.addAll(savedRoomList);
 
-        this.hero.setPosition(savedHero.getPosition());
-        this.hero.setHealth(savedHero.getHealth());
-        this.hero.setPower(savedHero.getPower());
+        this.hero.loadHero(savedHero);
 
         this.statusBar.setStatusBar(savedStatus.getStatusBarList());
-
-
     }
 }
