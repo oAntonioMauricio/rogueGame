@@ -194,4 +194,8 @@ public class StatusBar implements Serializable {
             }
         }
     }
+
+    public void setStatusBar(List<ImageTile[]> statusBar) {
+        this.statusBar = statusBar;
+    }
 }

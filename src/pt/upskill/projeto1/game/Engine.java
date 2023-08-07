@@ -152,9 +152,13 @@ public class Engine {
                 FileInputStream fileIn = new FileInputStream("saves/save.dat");
                 ObjectInputStream in = new ObjectInputStream(fileIn);
                 Save loadedSave = (Save) in.readObject();
+
+                gameSingleton.loadGame(loadedSave.getRoomIndex(), loadedSave.getRoomList(), loadedSave.getHero(), loadedSave.getStatusBar());
+
+                loadRoom(gameSingleton.getRoomIndex());
+
                 in.close();
                 fileIn.close();
-                System.out.println("Vida do hero: " + loadedSave.getHero().getHealth());
             } catch (IOException e) {
                 System.out.println("Erro a ler o ficheiro com o save do mapa!");
             } catch (ClassNotFoundException e) {

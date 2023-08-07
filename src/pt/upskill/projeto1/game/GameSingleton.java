@@ -95,4 +95,19 @@ public class GameSingleton {
     public StatusBar getStatusBar() {
         return statusBar;
     }
+
+    public void loadGame(int savedIndex, List<Room> savedRoomList, Hero savedHero, StatusBar savedStatus) {
+        setRoomIndex(savedIndex);
+
+        this.roomList.clear();
+        this.roomList.addAll(savedRoomList);
+
+        this.hero.setPosition(savedHero.getPosition());
+        this.hero.setHealth(savedHero.getHealth());
+        this.hero.setPower(savedHero.getPower());
+
+        this.statusBar.setStatusBar(savedStatus.getStatusBarList());
+
+
+    }
 }
