@@ -41,7 +41,7 @@ public class GameSingleton implements Serializable {
 
         tiles.removeAll(tiles);
 
-        System.out.println("building floor");
+        // System.out.println("building floor");
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 tiles.add(new Floor(new Position(i, j)));
@@ -96,14 +96,13 @@ public class GameSingleton implements Serializable {
         return statusBar;
     }
 
-    public void loadGame(int savedIndex, List<Room> savedRoomList, Hero savedHero, StatusBar savedStatus) {
-        setRoomIndex(savedIndex);
-
+    public void loadGame(GameSingleton savedSingleton) {
+        setRoomIndex(savedSingleton.getRoomIndex());
         this.roomList.clear();
-        this.roomList.addAll(savedRoomList);
+        this.roomList.addAll(savedSingleton.getRoomList());
+        this.hero.loadHero(savedSingleton.getHero());
+        this.statusBar.setStatusBar(savedSingleton.getStatusBar().getStatusBarList());
 
-        this.hero.loadHero(savedHero);
-
-        this.statusBar.setStatusBar(savedStatus.getStatusBarList());
+        System.out.println("Loaded roomIndex, roomList, Hero and StatusBar.");
     }
 }

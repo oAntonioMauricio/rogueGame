@@ -151,11 +151,11 @@ public class Engine {
             try {
                 FileInputStream fileIn = new FileInputStream("saves/save.dat");
                 ObjectInputStream in = new ObjectInputStream(fileIn);
-                GameSingleton loadedSave = (GameSingleton) in.readObject();
+                GameSingleton savedSingleton = (GameSingleton) in.readObject();
 
-                gameSingleton.loadGame(loadedSave.getRoomIndex(), loadedSave.getRoomList(), loadedSave.getHero(), loadedSave.getStatusBar());
-
+                gameSingleton.loadGame(savedSingleton);
                 loadRoom(gameSingleton.getRoomIndex());
+
                 gui.setStatus("Game Loaded. You have " + hero.getHealth() + " HP and " + hero.getPower() + " power.");
 
                 in.close();
