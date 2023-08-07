@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameSingleton {
+public class GameSingleton implements Serializable {
     private static GameSingleton instance;
     private List<ImageTile> tiles;
     // careful passing roomIndex because it's an int

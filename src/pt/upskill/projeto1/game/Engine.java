@@ -136,7 +136,7 @@ public class Engine {
             try {
                 FileOutputStream fileOut = new FileOutputStream("saves/save.dat");
                 ObjectOutputStream out = new ObjectOutputStream(fileOut);
-                out.writeObject(new Save(gameSingleton.getRoomIndex(), gameSingleton.getRoomList(), gameSingleton.getHero(), gameSingleton.getStatusBar()));
+                out.writeObject(gameSingleton);
                 out.close();
                 fileOut.close();
             } catch (IOException e) {
@@ -151,11 +151,12 @@ public class Engine {
             try {
                 FileInputStream fileIn = new FileInputStream("saves/save.dat");
                 ObjectInputStream in = new ObjectInputStream(fileIn);
-                Save loadedSave = (Save) in.readObject();
+                GameSingleton loadedSave = (GameSingleton) in.readObject();
 
                 gameSingleton.loadGame(loadedSave.getRoomIndex(), loadedSave.getRoomList(), loadedSave.getHero(), loadedSave.getStatusBar());
 
                 loadRoom(gameSingleton.getRoomIndex());
+                gui.setStatus("Game Loaded. You have " + hero.getHealth() + " HP and " + hero.getPower() + " power.");
 
                 in.close();
                 fileIn.close();
