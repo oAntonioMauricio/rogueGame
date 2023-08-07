@@ -1,9 +1,11 @@
 package pt.upskill.projeto1.rogue.utils;
 
+import java.io.Serializable;
+
 /**
  * 2D integer position.
  */
-public class Position {
+public class Position implements Serializable {
 
     private int x;
     private int y;

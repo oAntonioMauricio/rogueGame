@@ -18,15 +18,13 @@ import pt.upskill.projeto1.rogue.utils.Position;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
-public class Room {
-    // singleton 🔽
-    private GameSingleton gameSingleton = GameSingleton.getInstance();
-    private Hero hero = gameSingleton.getHero();
+public class Room implements Serializable {
 
     // properties 🔽
     private List<Wall> wallList = new ArrayList<>();
@@ -39,6 +37,10 @@ public class Room {
     }
 
     public void readFile(String fileName) {
+        // singleton 🔽
+        GameSingleton gameSingleton = GameSingleton.getInstance();
+        Hero hero = gameSingleton.getHero();
+
         System.out.println("building " + fileName);
         try {
             Scanner fileScanner = new Scanner(new File(fileName));

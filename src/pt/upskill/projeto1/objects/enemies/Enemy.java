@@ -13,16 +13,11 @@ import pt.upskill.projeto1.rogue.utils.Direction;
 import pt.upskill.projeto1.rogue.utils.Position;
 import pt.upskill.projeto1.rogue.utils.Vector2D;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-public abstract class Enemy implements ImageTile {
-    // singletons 🔽
-    private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
-    private GameSingleton gameSingleton = GameSingleton.getInstance();
-    private Hero hero = gameSingleton.getHero();
-    private List<ImageTile> tiles = gameSingleton.getTiles();
-    private List<Room> roomList = gameSingleton.getRoomList();
+public abstract class Enemy implements ImageTile, Serializable {
 
     // properties 🔽
     public abstract int getPower();
@@ -123,6 +118,10 @@ public abstract class Enemy implements ImageTile {
     }
 
     public void fight(Hero hero) {
+        // singletons 🔽
+        ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
+        GameSingleton gameSingleton = GameSingleton.getInstance();
+        List<ImageTile> tiles = gameSingleton.getTiles();
 
         // get room index // this is here because it's PRIMITIVE
         int roomIndex = gameSingleton.getRoomIndex();
@@ -156,6 +155,12 @@ public abstract class Enemy implements ImageTile {
     }
 
     public void death() {
+        // singletons 🔽
+        ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
+        GameSingleton gameSingleton = GameSingleton.getInstance();
+        List<ImageTile> tiles = gameSingleton.getTiles();
+        List<Room> roomList = gameSingleton.getRoomList();
+
         // get room index // this is here because it's PRIMITIVE
         int roomIndex = gameSingleton.getRoomIndex();
         // remove enemy

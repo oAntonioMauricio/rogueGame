@@ -3,7 +3,9 @@ package pt.upskill.projeto1.objects.statusbar;
 import pt.upskill.projeto1.gui.ImageTile;
 import pt.upskill.projeto1.rogue.utils.Position;
 
-public class Green implements ImageTile {
+import java.io.Serializable;
+
+public class Green implements ImageTile, Serializable {
     private Position position;
 
     public Green(Position position) {

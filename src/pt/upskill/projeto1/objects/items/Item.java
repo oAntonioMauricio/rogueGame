@@ -10,15 +10,10 @@ import pt.upskill.projeto1.objects.door.Door;
 import pt.upskill.projeto1.objects.hero.Hero;
 import pt.upskill.projeto1.rogue.utils.Position;
 
+import java.io.Serializable;
 import java.util.List;
 
-public abstract class Item implements ImageTile {
-    private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
-    private GameSingleton gameSingleton = GameSingleton.getInstance();
-    private Hero hero = gameSingleton.getHero();
-    private List<ImageTile> tiles = gameSingleton.getTiles();
-    private List<Room> roomList = gameSingleton.getRoomList();
-
+public abstract class Item implements ImageTile, Serializable {
     private Position position;
 
     public Item(Position position) {
@@ -40,6 +35,10 @@ public abstract class Item implements ImageTile {
     }
 
     public boolean dropItem() {
+        ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
+        GameSingleton gameSingleton = GameSingleton.getInstance();
+        Hero hero = gameSingleton.getHero();
+
         int heroX = hero.getPosition().getX();
         int heroY = hero.getPosition().getY();
 

@@ -3,7 +3,9 @@ package pt.upskill.projeto1.objects.door;
 import pt.upskill.projeto1.gui.ImageTile;
 import pt.upskill.projeto1.rogue.utils.Position;
 
-public abstract class Door implements ImageTile {
+import java.io.Serializable;
+
+public abstract class Door implements ImageTile, Serializable {
     private Position position;
     private int doorIndex;
     private String nextRoom;

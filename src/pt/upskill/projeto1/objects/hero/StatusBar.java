@@ -13,13 +13,11 @@ import pt.upskill.projeto1.objects.statusbar.Green;
 import pt.upskill.projeto1.objects.statusbar.Red;
 import pt.upskill.projeto1.rogue.utils.Position;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StatusBar {
-    // singelton 🔽
-    private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
-
+public class StatusBar implements Serializable {
     // propreties 🔽
     private List<ImageTile[]> statusBar;
 
@@ -57,6 +55,8 @@ public class StatusBar {
 
     // HP IS ALSO UPDATED IN UPDATE STATUS!
     public void updateStatus() {
+        // singelton 🔽
+        ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
         // reset status
         gui.clearStatus();
 

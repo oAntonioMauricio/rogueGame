@@ -20,6 +20,8 @@ import pt.upskill.projeto1.rogue.utils.Direction;
 import pt.upskill.projeto1.rogue.utils.Position;
 
 import java.awt.event.KeyEvent;
+import java.io.*;
+import java.sql.SQLOutput;
 import java.util.*;
 
 public class Engine {
@@ -127,6 +129,38 @@ public class Engine {
         if (keyPressed == KeyEvent.VK_3) {
             // System.out.println("Remove third item");
             statusBar.removeItem(2);
+        }
+        if (keyPressed == KeyEvent.VK_8) {
+            System.out.println("Saving game...");
+
+            try {
+                FileOutputStream fileOut = new FileOutputStream("saves/save.dat");
+                ObjectOutputStream out = new ObjectOutputStream(fileOut);
+                out.writeObject(new Save(gameSingleton.getRoomIndex(), gameSingleton.getRoomList(), gameSingleton.getHero(), gameSingleton.getStatusBar()));
+                out.close();
+                fileOut.close();
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+                System.out.println("Erro a salvar o mapa no ficheiro!");
+            }
+
+        }
+        if (keyPressed == KeyEvent.VK_9) {
+            System.out.println("Loading game...");
+
+            try {
+                FileInputStream fileIn = new FileInputStream("saves/save.dat");
+                ObjectInputStream in = new ObjectInputStream(fileIn);
+                Save loadedSave = (Save) in.readObject();
+                in.close();
+                fileIn.close();
+                System.out.println("Vida do hero: " + loadedSave.getHero().getHealth());
+            } catch (IOException e) {
+                System.out.println("Erro a ler o ficheiro com o save do mapa!");
+            } catch (ClassNotFoundException e) {
+                System.out.println("Não foi possível converter o objeto salvo no mapa!");
+            }
+
         }
         if (keyPressed == KeyEvent.VK_SPACE) {
 

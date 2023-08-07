@@ -6,6 +6,7 @@ import pt.upskill.projeto1.objects.hero.Hero;
 import pt.upskill.projeto1.objects.hero.StatusBar;
 import pt.upskill.projeto1.rogue.utils.Position;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,10 +32,6 @@ public class GameSingleton {
             instance = new GameSingleton();
         }
 
-        return instance;
-    }
-
-    protected Object readResolve() {
         return instance;
     }
 

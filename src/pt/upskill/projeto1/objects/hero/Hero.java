@@ -9,10 +9,11 @@ import pt.upskill.projeto1.objects.enemies.Enemy;
 import pt.upskill.projeto1.objects.statusbar.Fire;
 import pt.upskill.projeto1.rogue.utils.Position;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Hero implements ImageTile {
+public class Hero implements ImageTile, Serializable {
     // properties 🔽
     private Position position;
     private int power = 25;

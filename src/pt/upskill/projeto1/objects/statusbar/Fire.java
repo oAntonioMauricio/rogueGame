@@ -8,10 +8,10 @@ import pt.upskill.projeto1.objects.Wall;
 import pt.upskill.projeto1.objects.enemies.Enemy;
 import pt.upskill.projeto1.rogue.utils.Position;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Fire implements ImageTile, FireTile {
-
+public class Fire implements ImageTile, FireTile, Serializable {
 
     private Position position;
 
