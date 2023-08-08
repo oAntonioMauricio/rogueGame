@@ -45,7 +45,6 @@ import java.util.*;
 
 /**
  * @author lmmn
- *
  */
 public class ImageMatrixGUI {
 
@@ -85,13 +84,10 @@ public class ImageMatrixGUI {
     }
 
     /**
-     *
      * Setter for the name of the frame
      *
-     * @param name
-     *            Name of application (will be displayed as a frame title in the
-     *            top left corner)
-     *
+     * @param name Name of application (will be displayed as a frame title in the
+     *             top left corner)
      */
 
     public void setName(final String name) {
@@ -163,49 +159,36 @@ public class ImageMatrixGUI {
     }
 
     /**
-     *
      * Set the game engine that will feed the GUI
      *
-     * @param engine
-     *            engine to feed the GUI
-     *
+     * @param engine engine to feed the GUI
      */
     public void setEngine(Engine engine) {
         this.engine = engine;
     }
 
     /**
-     *
      * Display a text on the status portion of the game window
      *
-     * @param text
-     *            the status text to print in the GUI
-     *
+     * @param text the status text to print in the GUI
      */
     public void setStatus(String text) {
         statusLabel.setText(text);
     }
 
     /**
-     *
      * Make the window visible.
-     *
      */
     public void go() {
         frame.setVisible(true);
     }
 
     /**
-     *
      * Add a new set of images to the main window.
      *
-     * @param newImages
-     *            images to be added to main window
-     *
-     * @throws IllegalArgumentException
-     *             if no image with that name (and a suitable extension) is
-     *             found the images folder
-     *
+     * @param newImages images to be added to main window
+     * @throws IllegalArgumentException if no image with that name (and a suitable extension) is
+     *                                  found the images folder
      */
 
     public void newImages(final List<? extends ImageTile> newImages) {
@@ -227,12 +210,10 @@ public class ImageMatrixGUI {
 
     /**
      * Removes the image given as a parameter.
-     *
+     * <p>
      * Does nothing if there is no match.
      *
-     * @param image
-     *            to be removed (must be the exact same Object and not a copy)
-     *
+     * @param image to be removed (must be the exact same Object and not a copy)
      */
 
     public void removeImage(final ImageTile image) {
@@ -246,8 +227,7 @@ public class ImageMatrixGUI {
     /**
      * Adds image to main window
      *
-     * @param image
-     *            to be added
+     * @param image to be added
      */
     public void addImage(final ImageTile image) {
         synchronized (images) { // Added 16-Mar-2016
@@ -265,17 +245,11 @@ public class ImageMatrixGUI {
     }
 
     /**
-     *
      * Add a new set of images to the status window.
      *
-     * @param newImages
-     *            images to be added to status bar
-     *
-     * @throws IllegalArgumentException
-     *             if no image with that name (and a suitable extension) is
-     *             found the images folder
-     *
-     *
+     * @param newImages images to be added to status bar
+     * @throws IllegalArgumentException if no image with that name (and a suitable extension) is
+     *                                  found the images folder
      */
 
     public void newStatusImages(final List<ImageTile> newImages) {
@@ -297,12 +271,10 @@ public class ImageMatrixGUI {
 
     /**
      * Removes the image given as a parameter from the status bar.
-     *
+     * <p>
      * Does nothing if there is no match.
      *
-     * @param image
-     *            to be removed (must be the exact same Object and not a copy)
-     *
+     * @param image to be removed (must be the exact same Object and not a copy)
      */
 
     public void removeStatusImage(final ImageTile image) {
@@ -316,8 +288,7 @@ public class ImageMatrixGUI {
     /**
      * Adds image to status window
      *
-     * @param image
-     *            to be added
+     * @param image to be added
      */
     public void addStatusImage(final ImageTile image) {
         synchronized (statusImages) { // Added 16-Mar-2016
@@ -401,14 +372,15 @@ public class ImageMatrixGUI {
     }
 
     /**
-     *
      * Grid dimensions
      *
      * @return the width and height of the image grid
-     *
      */
     public Dimension getGridDimension() {
         return new Dimension(N_SQUARES_WIDTH, N_SQUARES_HEIGHT);
     }
 
+    public JPanel getInfo() {
+        return info;
+    }
 }

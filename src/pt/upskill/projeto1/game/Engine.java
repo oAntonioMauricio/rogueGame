@@ -190,6 +190,9 @@ public class Engine {
     }
 
     public void turn() {
+        // remove 1 point
+        gameSingleton.setScore(gameSingleton.getScore() - 1);
+
         checkWhereHeroIs();
 
         moveEveryEnemy();
