@@ -34,7 +34,6 @@ public class Engine {
     // save_game branch
     //
     // PERGUNTA: Statusbar no singleton ou como atributo do heroi?
-    //
     // PENSAR: Mudar armazenamento/organização dos items? Fora do checkWhereHeroIs para statusbar? ou gamestate?
     //
     // TODO: melhorar algoritmo de perseguição https://wumbo.net/formulas/distance-between-two-points-2d/
@@ -61,6 +60,7 @@ public class Engine {
         gameSingleton.addRoom("rooms/room0.txt");
         gameSingleton.addRoom("rooms/room1.txt");
         gameSingleton.addRoom("rooms/room2.txt");
+        gameSingleton.addRoom("rooms/room3.txt");
 
         // load room based on index
         loadRoom(0);
