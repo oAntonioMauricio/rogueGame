@@ -18,6 +18,8 @@ public class GameSingleton implements Serializable {
     private List<Room> roomList;
     private Hero hero;
     private StatusBar statusBar;
+    // careful passing score because it's an int
+    private int score;
 
     private GameSingleton() {
         tiles = new ArrayList<>();
@@ -25,6 +27,7 @@ public class GameSingleton implements Serializable {
         roomList = new ArrayList<>();
         hero = new Hero();
         statusBar = new StatusBar();
+        score = 500;
     }
 
     public static GameSingleton getInstance() {
