@@ -4,6 +4,7 @@ import pt.upskill.projeto1.gui.FireTile;
 import pt.upskill.projeto1.gui.ImageMatrixGUI;
 import pt.upskill.projeto1.gui.ImageTile;
 import pt.upskill.projeto1.leaderboard.LeaderBoard;
+import pt.upskill.projeto1.leaderboard.Score;
 import pt.upskill.projeto1.objects.door.Door;
 import pt.upskill.projeto1.objects.door.DoorClosed;
 import pt.upskill.projeto1.objects.enemies.Enemy;
@@ -386,6 +387,8 @@ public class Engine {
                 }
                 case "CityFloor" -> {
 
+                    int playerScore = gameSingleton.getScore() + 1;
+
                     /*
                     LeaderBoard firstLeaderBoard = new LeaderBoard();
                     try {
@@ -398,12 +401,10 @@ public class Engine {
                         System.out.println(e.getMessage());
                         System.out.println("Erro a salvar o leaderboard!");
                     }
-
                      */
 
                     gui.showMessage("Congratulations!",
-                            "You finished the game with " + (gameSingleton.getScore() + 1) + " points.");
-
+                            "You finished the game with " + (playerScore) + " points.");
 
                     // show leaderboard
                     try {
@@ -414,9 +415,21 @@ public class Engine {
                         fileIn.close();
                         System.out.println("LeaderBoard: " + loadedLeaderBoard);
 
+                        // check if the score tops the leaderboard
+                        for (Score score : loadedLeaderBoard.getLeaderboard()) {
+                            if (playerScore > score.getPlayerScore()) {
+                                score.setPlayerName(gui.showInputDialog("You got a top score!", "Enter your name"));
+                                score.setPlayerScore(playerScore);
+                                break;
+                            }
+                        }
+
                         gui.showMessage("Top Scores",
                                 loadedLeaderBoard +
                                         System.getProperty("line.separator"));
+
+                        hero.setPosition(new Position(21,21));
+                        gui.setStatus("Thanks for playing :)");
 
                     } catch (IOException e) {
                         System.out.println("Erro a ler o ficheiro com o leaderboard!");

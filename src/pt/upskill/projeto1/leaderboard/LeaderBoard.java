@@ -9,8 +9,8 @@ public class LeaderBoard implements Serializable {
 
     public LeaderBoard() {
         this.leaderboard = new Score[]{
-                new Score("Rute", 5),
-                new Score("António", 4),
+                new Score("António", 5),
+                new Score("Rute", 4),
                 new Score("Francisca", 3),
                 new Score("Floribela", 2),
                 new Score("Fred", 1)};
