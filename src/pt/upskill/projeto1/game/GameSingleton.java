@@ -73,24 +73,17 @@ public class GameSingleton implements Serializable {
     }
 
     public void loadGame(GameSingleton savedSingleton) {
-        setRoomIndex(savedSingleton.getRoomIndex());
+        this.setRoomIndex(savedSingleton.getRoomIndex());
+        this.setScore(savedSingleton.getScore());
+
         this.roomList.clear();
         this.roomList.addAll(savedSingleton.getRoomList());
+
         this.hero.loadHero(savedSingleton.getHero());
         this.statusBar.setStatusBar(savedSingleton.getStatusBar().getStatusBarList());
 
-        System.out.println("Loaded roomIndex, roomList, Hero and StatusBar.");
+        System.out.println("Loaded roomIndex, score, roomList, Hero and StatusBar.");
     }
-
-
-
-    /// TESTE
-
-
-    /// TESTE
-
-
-
 
     // Getters 🔽
     public List<Room> getRoomList() {

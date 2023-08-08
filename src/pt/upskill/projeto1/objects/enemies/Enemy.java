@@ -7,7 +7,6 @@ import pt.upskill.projeto1.gui.ImageTile;
 import pt.upskill.projeto1.objects.door.Door;
 import pt.upskill.projeto1.objects.hero.Hero;
 import pt.upskill.projeto1.objects.Wall;
-import pt.upskill.projeto1.objects.hero.StatusBar;
 import pt.upskill.projeto1.objects.items.Item;
 import pt.upskill.projeto1.rogue.utils.Direction;
 import pt.upskill.projeto1.rogue.utils.Position;
@@ -141,7 +140,22 @@ public abstract class Enemy implements ImageTile, Serializable {
         }
 
         if (getHealth() <= 0) {
-            // remove enemy fight
+            // hero wins fight
+            // receive points
+            int points = 0;
+
+            switch (getName()) {
+                case "Skeleton" -> points = 50;
+                case "Bat" -> points = 25;
+                case "BadGuy" -> points = 75;
+                default -> {
+                }
+            }
+
+            gameSingleton.setScore(gameSingleton.getScore() + points);
+            gui.setStatus("Killed " + getName() + " with " + enemyHP + " HP at the start and " + getPower() + " power. You won " + points + " points.");
+
+            // remove enemy
             death();
         } else {
             // remove hero from the game
@@ -164,7 +178,6 @@ public abstract class Enemy implements ImageTile, Serializable {
         // get room index // this is here because it's PRIMITIVE
         int roomIndex = gameSingleton.getRoomIndex();
         // remove enemy
-        gui.setStatus(getName() + " died.");
         roomList.get(roomIndex).getEnemyList().remove(this);
         tiles.remove(this);
         gui.removeImage(this);

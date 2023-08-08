@@ -40,6 +40,7 @@ public class Engine {
     // TODO: melhorar algoritmo de perseguição https://wumbo.net/formulas/distance-between-two-points-2d/
     // TODO: MELHORAR RELAÇÃO ENTRE SINGLETON E ENGINE
     // TODO: metodo para afastar da porta dentro do hero
+    // TODO: switch case de pontos depois do fight. codigo repetido.
 
     // atributes 🔽
     private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
@@ -230,6 +231,7 @@ public class Engine {
 
                     // fight func
                     hero.fight(currentEnemy);
+
                 }
                 case "DoorOpen", "DoorClosed", "DoorWay" -> {
                     // get door
@@ -348,7 +350,13 @@ public class Engine {
 
                         // effect
                         hero.setPower(hero.getPower() + currentItem.getItemPower());
-                        gui.setStatus("You picked the Hammer and gained " + currentItem.getItemPower() + " power. Total power: " + hero.getPower());
+
+                        // increment score
+                        int points = 30;
+                        gameSingleton.setScore(gameSingleton.getScore() + points);
+
+                        // gui message
+                        gui.setStatus("You picked the Hammer and gained " + currentItem.getItemPower() + " power and " + points + " points. Total power: " + hero.getPower());
 
                         // delete item
                         roomList.get(roomIndex).getItemList().remove(currentItem);
