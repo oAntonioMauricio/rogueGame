@@ -16,6 +16,8 @@ import java.util.List;
 public abstract class Item implements ImageTile, Serializable {
     private Position position;
 
+    private boolean alreadyPickedUp = false;
+
     public Item(Position position) {
         this.position = position;
     }
@@ -28,6 +30,14 @@ public abstract class Item implements ImageTile, Serializable {
     @Override
     public Boolean isPossibleToWalk() {
         return true;
+    }
+
+    public void setAlreadyPickedUp(boolean alreadyPickedUp) {
+        this.alreadyPickedUp = alreadyPickedUp;
+    }
+
+    public boolean getAlreadyPickedUp() {
+        return this.alreadyPickedUp;
     }
 
     public void setPosition(Position position) {

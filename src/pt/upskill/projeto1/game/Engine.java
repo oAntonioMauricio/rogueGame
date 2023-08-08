@@ -352,11 +352,16 @@ public class Engine {
                         hero.setPower(hero.getPower() + currentItem.getItemPower());
 
                         // increment score
-                        int points = 30;
-                        gameSingleton.setScore(gameSingleton.getScore() + points);
-
-                        // gui message
-                        gui.setStatus("You picked the Hammer and gained " + currentItem.getItemPower() + " power and " + points + " points. Total power: " + hero.getPower());
+                        if (!currentItem.getAlreadyPickedUp()) {
+                            int points = 30;
+                            gameSingleton.setScore(gameSingleton.getScore() + points);
+                            currentItem.setAlreadyPickedUp(true);
+                            // gui message
+                            gui.setStatus("You picked the Hammer and gained " + currentItem.getItemPower() + " power and " + points + " points. Total power: " + hero.getPower());
+                        } else {
+                            // gui message
+                            gui.setStatus("You picked the Hammer and gained " + currentItem.getItemPower() + " power. Total power: " + hero.getPower());
+                        }
 
                         // delete item
                         roomList.get(roomIndex).getItemList().remove(currentItem);
