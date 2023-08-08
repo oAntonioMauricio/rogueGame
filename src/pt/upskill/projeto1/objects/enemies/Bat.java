@@ -21,10 +21,6 @@ public class Bat extends Enemy {
         return position;
     }
 
-    @Override
-    public Boolean isPossibleToWalk() {
-        return true;
-    }
 
     @Override
     public int getPower() {

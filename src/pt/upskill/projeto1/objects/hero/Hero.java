@@ -33,11 +33,6 @@ public class Hero implements ImageTile, Serializable {
         return position;
     }
 
-    @Override
-    public Boolean isPossibleToWalk() {
-        return true;
-    }
-
     public void move(Position nextPosition) {
         // get singleton
         GameSingleton gameSingleton = GameSingleton.getInstance();

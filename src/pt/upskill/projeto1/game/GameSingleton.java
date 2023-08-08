@@ -51,11 +51,8 @@ public class GameSingleton implements Serializable {
             }
         }
 
-        // add hero
-        tiles.add(hero);
-
         // add walls
-        tiles.addAll(roomList.get(roomIndex).getWallList());
+        tiles.addAll(roomList.get(roomIndex).getPropsList());
 
         // add the doors
         tiles.addAll(roomList.get(roomIndex).getDoorList());
@@ -65,6 +62,9 @@ public class GameSingleton implements Serializable {
 
         // add the items
         tiles.addAll(roomList.get(roomIndex).getItemList());
+
+        // add hero
+        tiles.add(hero);
 
     }
 

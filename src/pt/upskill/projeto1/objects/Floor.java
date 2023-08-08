@@ -23,9 +23,4 @@ public class Floor implements ImageTile, Serializable {
         return position;
     }
 
-    @Override
-    public Boolean isPossibleToWalk() {
-        return true;
-    }
-
 }

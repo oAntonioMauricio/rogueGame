@@ -14,11 +14,6 @@ public class DoorClosed extends Door {
         return "DoorClosed";
     }
 
-    @Override
-    public Boolean isPossibleToWalk() {
-        return super.isOpen();
-    }
-
     public String getKey() {
         return key;
     }

@@ -11,8 +11,4 @@ public class DoorOpen extends Door {
         return "DoorOpen";
     }
 
-    @Override
-    public Boolean isPossibleToWalk() {
-        return super.isOpen();
-    }
 }

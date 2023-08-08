@@ -3,9 +3,9 @@
 #
 WWWWWWWWWW
 W        W
-W        W
-W        W
-W        W
+W  RRRR  W
+W  R  R  W
+W  RRRR  W
 W        W
 W        W
 W        W

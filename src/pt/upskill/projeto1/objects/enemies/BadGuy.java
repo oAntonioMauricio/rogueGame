@@ -22,11 +22,6 @@ public class BadGuy extends Enemy {
     }
 
     @Override
-    public Boolean isPossibleToWalk() {
-        return true;
-    }
-
-    @Override
     public int getPower() {
         return this.power;
     }

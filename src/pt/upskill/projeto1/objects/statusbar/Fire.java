@@ -30,11 +30,6 @@ public class Fire implements ImageTile, FireTile, Serializable {
     }
 
     @Override
-    public Boolean isPossibleToWalk() {
-        return false;
-    }
-
-    @Override
     public boolean validateImpact() {
         ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
         GameSingleton gameSingleton = GameSingleton.getInstance();

@@ -23,8 +23,4 @@ public class Wall implements ImageTile, Serializable {
         return position;
     }
 
-    @Override
-    public Boolean isPossibleToWalk() {
-        return false;
-    }
 }

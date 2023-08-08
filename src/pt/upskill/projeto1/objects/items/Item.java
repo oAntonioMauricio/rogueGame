@@ -27,11 +27,6 @@ public abstract class Item implements ImageTile, Serializable {
         return position;
     }
 
-    @Override
-    public Boolean isPossibleToWalk() {
-        return true;
-    }
-
     public void setAlreadyPickedUp(boolean alreadyPickedUp) {
         this.alreadyPickedUp = alreadyPickedUp;
     }

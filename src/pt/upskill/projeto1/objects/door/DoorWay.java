@@ -10,9 +10,4 @@ public class DoorWay extends Door {
     public String getName() {
         return "DoorWay";
     }
-
-    @Override
-    public Boolean isPossibleToWalk() {
-        return super.isOpen();
-    }
 }

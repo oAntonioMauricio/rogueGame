@@ -22,8 +22,5 @@ public class Black implements ImageTile, Serializable {
         return position;
     }
 
-    @Override
-    public Boolean isPossibleToWalk() {
-        return false;
-    }
+
 }

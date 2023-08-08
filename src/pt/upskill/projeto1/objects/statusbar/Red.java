@@ -22,8 +22,5 @@ public class Red implements ImageTile, Serializable {
         return position;
     }
 
-    @Override
-    public Boolean isPossibleToWalk() {
-        return false;
-    }
+
 }

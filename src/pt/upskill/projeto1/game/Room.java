@@ -1,5 +1,6 @@
 package pt.upskill.projeto1.game;
 
+import pt.upskill.projeto1.gui.ImageTile;
 import pt.upskill.projeto1.objects.*;
 import pt.upskill.projeto1.objects.door.Door;
 import pt.upskill.projeto1.objects.door.DoorClosed;
@@ -27,7 +28,7 @@ import java.util.Scanner;
 public class Room implements Serializable {
 
     // properties 🔽
-    private List<Wall> wallList = new ArrayList<>();
+    private List<ImageTile> propsList = new ArrayList<>();
     private List<Door> doorList = new ArrayList<>();
     private List<Enemy> enemyList = new ArrayList<>();
     private List<Item> itemList = new ArrayList<>();
@@ -95,7 +96,9 @@ public class Room implements Serializable {
                     if (Objects.equals(chars[i], "H")) {
                         hero.setPosition(new Position(i, col));
                     } else if (Objects.equals(chars[i], "W")) {
-                        wallList.add(new Wall(new Position(i, col)));
+                        propsList.add(new Wall(new Position(i, col)));
+                    } else if (Objects.equals(chars[i], "R")) {
+                        propsList.add(new Grass(new Position(i, col)));
                     } else if (isNumber(chars[i])) {
                         doorList.get(Integer.parseInt(chars[i])).setPosition(new Position(i, col));
                     } else if (Objects.equals(chars[i], "S")) {
@@ -141,8 +144,8 @@ public class Room implements Serializable {
         }
     }
 
-    public List<Wall> getWallList() {
-        return wallList;
+    public List<ImageTile> getPropsList() {
+        return propsList;
     }
 
     public List<Door> getDoorList() {
