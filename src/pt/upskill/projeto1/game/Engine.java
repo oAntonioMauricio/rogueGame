@@ -3,6 +3,7 @@ package pt.upskill.projeto1.game;
 import pt.upskill.projeto1.gui.FireTile;
 import pt.upskill.projeto1.gui.ImageMatrixGUI;
 import pt.upskill.projeto1.gui.ImageTile;
+import pt.upskill.projeto1.leaderboard.LeaderBoard;
 import pt.upskill.projeto1.objects.door.Door;
 import pt.upskill.projeto1.objects.door.DoorClosed;
 import pt.upskill.projeto1.objects.enemies.Enemy;
@@ -31,7 +32,7 @@ public class Engine {
         engine.init();
     }
 
-    // save_game branch
+    // scoreboard branch
     //
     // PERGUNTA: Statusbar no singleton ou como atributo do heroi?
     // PENSAR: Mudar armazenamento/organização dos items? Fora do checkWhereHeroIs para statusbar? ou gamestate?
@@ -192,7 +193,6 @@ public class Engine {
     }
 
     public void turn() {
-        // remove 1 point
         gameSingleton.setScore(gameSingleton.getScore() - 1);
 
         checkWhereHeroIs();
@@ -385,7 +385,44 @@ public class Engine {
                     gui.removeImage(currentItem);
                 }
                 case "CityFloor" -> {
-                    gui.showMessage("Congratulations!", "You finished the game with " + (gameSingleton.getScore() + 1) + " points.");
+
+                    /*
+                    LeaderBoard firstLeaderBoard = new LeaderBoard();
+                    try {
+                        FileOutputStream fileOut = new FileOutputStream("scores/scores.dat");
+                        ObjectOutputStream out = new ObjectOutputStream(fileOut);
+                        out.writeObject(firstLeaderBoard);
+                        out.close();
+                        fileOut.close();
+                    } catch (IOException e) {
+                        System.out.println(e.getMessage());
+                        System.out.println("Erro a salvar o leaderboard!");
+                    }
+
+                     */
+
+                    gui.showMessage("Congratulations!",
+                            "You finished the game with " + (gameSingleton.getScore() + 1) + " points.");
+
+
+                    // show leaderboard
+                    try {
+                        FileInputStream fileIn = new FileInputStream("scores/scores.dat");
+                        ObjectInputStream in = new ObjectInputStream(fileIn);
+                        LeaderBoard loadedLeaderBoard = (LeaderBoard) in.readObject();
+                        in.close();
+                        fileIn.close();
+                        System.out.println("LeaderBoard: " + loadedLeaderBoard);
+
+                        gui.showMessage("Top Scores",
+                                loadedLeaderBoard +
+                                        System.getProperty("line.separator"));
+
+                    } catch (IOException e) {
+                        System.out.println("Erro a ler o ficheiro com o leaderboard!");
+                    } catch (ClassNotFoundException e) {
+                        System.out.println("Não foi possível converter o objeto gravado no leaderboard!");
+                    }
                 }
                 default -> {
                     // default case
