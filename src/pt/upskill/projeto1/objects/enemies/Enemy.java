@@ -6,7 +6,7 @@ import pt.upskill.projeto1.gui.ImageMatrixGUI;
 import pt.upskill.projeto1.gui.ImageTile;
 import pt.upskill.projeto1.objects.door.Door;
 import pt.upskill.projeto1.objects.hero.Hero;
-import pt.upskill.projeto1.objects.Wall;
+import pt.upskill.projeto1.objects.props.Wall;
 import pt.upskill.projeto1.objects.items.Item;
 import pt.upskill.projeto1.rogue.utils.Direction;
 import pt.upskill.projeto1.rogue.utils.Position;

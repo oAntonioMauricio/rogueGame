@@ -1,7 +1,7 @@
 package pt.upskill.projeto1.game;
 
 import pt.upskill.projeto1.gui.ImageTile;
-import pt.upskill.projeto1.objects.Floor;
+import pt.upskill.projeto1.objects.props.Floor;
 import pt.upskill.projeto1.objects.hero.Hero;
 import pt.upskill.projeto1.objects.hero.StatusBar;
 import pt.upskill.projeto1.rogue.utils.Position;

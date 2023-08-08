@@ -4,13 +4,11 @@ import pt.upskill.projeto1.game.GameSingleton;
 import pt.upskill.projeto1.game.Room;
 import pt.upskill.projeto1.gui.ImageMatrixGUI;
 import pt.upskill.projeto1.gui.ImageTile;
-import pt.upskill.projeto1.objects.Wall;
+import pt.upskill.projeto1.objects.props.Wall;
 import pt.upskill.projeto1.objects.enemies.Enemy;
-import pt.upskill.projeto1.objects.statusbar.Fire;
 import pt.upskill.projeto1.rogue.utils.Position;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Hero implements ImageTile, Serializable {

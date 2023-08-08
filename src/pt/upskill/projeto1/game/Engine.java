@@ -384,6 +384,9 @@ public class Engine {
                     tiles.remove(currentItem);
                     gui.removeImage(currentItem);
                 }
+                case "CityFloor" -> {
+                    gui.showMessage("Congratulations!", "You finished the game with " + (gameSingleton.getScore() + 1) + " points.");
+                }
                 default -> {
                     // default case
                 }

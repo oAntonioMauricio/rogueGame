@@ -1,7 +1,6 @@
 package pt.upskill.projeto1.game;
 
 import pt.upskill.projeto1.gui.ImageTile;
-import pt.upskill.projeto1.objects.*;
 import pt.upskill.projeto1.objects.door.Door;
 import pt.upskill.projeto1.objects.door.DoorClosed;
 import pt.upskill.projeto1.objects.door.DoorOpen;
@@ -15,6 +14,9 @@ import pt.upskill.projeto1.objects.items.GoodMeat;
 import pt.upskill.projeto1.objects.items.Hammer;
 import pt.upskill.projeto1.objects.items.Item;
 import pt.upskill.projeto1.objects.items.Key;
+import pt.upskill.projeto1.objects.props.CityFloor;
+import pt.upskill.projeto1.objects.props.Grass;
+import pt.upskill.projeto1.objects.props.Wall;
 import pt.upskill.projeto1.rogue.utils.Position;
 
 import java.io.File;
@@ -99,6 +101,8 @@ public class Room implements Serializable {
                         propsList.add(new Wall(new Position(i, col)));
                     } else if (Objects.equals(chars[i], "R")) {
                         propsList.add(new Grass(new Position(i, col)));
+                    } else if (Objects.equals(chars[i], "C")) {
+                        propsList.add(new CityFloor(new Position(i, col)));
                     } else if (isNumber(chars[i])) {
                         doorList.get(Integer.parseInt(chars[i])).setPosition(new Position(i, col));
                     } else if (Objects.equals(chars[i], "S")) {

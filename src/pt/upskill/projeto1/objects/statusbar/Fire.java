@@ -4,7 +4,7 @@ import pt.upskill.projeto1.game.GameSingleton;
 import pt.upskill.projeto1.gui.FireTile;
 import pt.upskill.projeto1.gui.ImageMatrixGUI;
 import pt.upskill.projeto1.gui.ImageTile;
-import pt.upskill.projeto1.objects.Wall;
+import pt.upskill.projeto1.objects.props.Wall;
 import pt.upskill.projeto1.objects.enemies.Enemy;
 import pt.upskill.projeto1.rogue.utils.Position;
 
