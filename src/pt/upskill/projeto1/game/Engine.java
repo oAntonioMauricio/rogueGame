@@ -38,9 +38,8 @@ public class Engine {
     // TODO: MELHORAR RELAÇÃO ENTRE SINGLETON E ENGINE
     // TODO: metodo para afastar da porta dentro do hero
     // TODO: switch case de pontos depois do fight. codigo repetido.
+    // TODO: Direção da bola de fogo
     // TODO: Abrir portas depois de utilizar chave
-
-    // TODO: Adicionar movimentos do thief
 
     // atributes 🔽
     private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
