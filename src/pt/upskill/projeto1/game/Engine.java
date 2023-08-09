@@ -13,12 +13,15 @@ import pt.upskill.projeto1.objects.hero.StatusBar;
 import pt.upskill.projeto1.objects.items.GoodMeat;
 import pt.upskill.projeto1.objects.items.Hammer;
 import pt.upskill.projeto1.objects.items.Key;
+import pt.upskill.projeto1.objects.props.arrows.ArrowUp;
 import pt.upskill.projeto1.objects.statusbar.Black;
 import pt.upskill.projeto1.objects.statusbar.Fire;
 import pt.upskill.projeto1.rogue.utils.Direction;
 import pt.upskill.projeto1.rogue.utils.Position;
 
+import javax.swing.*;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.*;
 import java.util.*;
 
@@ -38,7 +41,7 @@ public class Engine {
     // TODO: MELHORAR RELAÇÃO ENTRE SINGLETON E ENGINE
     // TODO: metodo para afastar da porta dentro do hero
     // TODO: switch case de pontos depois do fight. codigo repetido.
-    // TODO: Direção da bola de fogo
+    // TODO: Eliminar repitiação de codigo no lançamento da bola de fogo
 
     // atributes 🔽
     private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
@@ -47,6 +50,9 @@ public class Engine {
     private List<ImageTile> tiles = gameSingleton.getTiles();
     private List<Room> roomList = gameSingleton.getRoomList();
     private StatusBar statusBar = gameSingleton.getStatusBar();
+
+    // teste for fireball bool
+    boolean fireballMode = false;
 
     // methods 🔽
     public void init() {
@@ -87,103 +93,207 @@ public class Engine {
 
     public void notify(int keyPressed) {
 
-        if (keyPressed == KeyEvent.VK_DOWN) {
-            // System.out.println("User pressed down key!");
-            Position nextPosition = hero.getPosition().plus(Objects.requireNonNull(Direction.DOWN.asVector()));
-            hero.move(nextPosition);
+        if (!fireballMode) {
+            if (keyPressed == KeyEvent.VK_DOWN) {
+                // System.out.println("User pressed down key!");
+                Position nextPosition = hero.getPosition().plus(Objects.requireNonNull(Direction.DOWN.asVector()));
+                hero.move(nextPosition);
 
-            turn();
-        }
-        if (keyPressed == KeyEvent.VK_UP) {
-            // System.out.println("User pressed up key!");
-            Position nextPosition = hero.getPosition().plus(Objects.requireNonNull(Direction.UP.asVector()));
-            hero.move(nextPosition);
-
-            turn();
-        }
-        if (keyPressed == KeyEvent.VK_LEFT) {
-            // System.out.println("User pressed left key!");
-            Position nextPosition = hero.getPosition().plus(Objects.requireNonNull(Direction.LEFT.asVector()));
-            hero.move(nextPosition);
-
-            turn();
-        }
-        if (keyPressed == KeyEvent.VK_RIGHT) {
-            // System.out.println("User pressed right key!");
-            Position nextPosition = hero.getPosition().plus(Objects.requireNonNull(Direction.RIGHT.asVector()));
-            hero.move(nextPosition);
-
-            turn();
-        }
-        if (keyPressed == KeyEvent.VK_1) {
-            // System.out.println("Remove first item");
-            statusBar.removeItem(0);
-        }
-        if (keyPressed == KeyEvent.VK_2) {
-            // System.out.println("Remove second item");
-            statusBar.removeItem(1);
-        }
-        if (keyPressed == KeyEvent.VK_3) {
-            // System.out.println("Remove third item");
-            statusBar.removeItem(2);
-        }
-        if (keyPressed == KeyEvent.VK_8) {
-            System.out.println("Saving game...");
-
-            try {
-                FileOutputStream fileOut = new FileOutputStream("saves/save.dat");
-                ObjectOutputStream out = new ObjectOutputStream(fileOut);
-                out.writeObject(gameSingleton);
-                out.close();
-                fileOut.close();
-            } catch (IOException e) {
-                System.out.println(e.getMessage());
-                System.out.println("Erro a salvar o mapa no ficheiro!");
+                turn();
             }
+            if (keyPressed == KeyEvent.VK_UP) {
+                // System.out.println("User pressed up key!");
+                Position nextPosition = hero.getPosition().plus(Objects.requireNonNull(Direction.UP.asVector()));
+                hero.move(nextPosition);
 
-        }
-        if (keyPressed == KeyEvent.VK_9) {
-            System.out.println("Loading game...");
-
-            try {
-                FileInputStream fileIn = new FileInputStream("saves/save.dat");
-                ObjectInputStream in = new ObjectInputStream(fileIn);
-                GameSingleton savedSingleton = (GameSingleton) in.readObject();
-
-                gameSingleton.loadGame(savedSingleton);
-                loadRoom(gameSingleton.getRoomIndex());
-
-                gui.setStatus("Game Loaded. You have " + hero.getHealth() + " HP and " + hero.getPower() + " power.");
-
-                in.close();
-                fileIn.close();
-            } catch (IOException e) {
-                System.out.println("Erro a ler o ficheiro com o save do mapa!");
-            } catch (ClassNotFoundException e) {
-                System.out.println("Não foi possível converter o objeto salvo no mapa!");
+                turn();
             }
+            if (keyPressed == KeyEvent.VK_LEFT) {
+                // System.out.println("User pressed left key!");
+                Position nextPosition = hero.getPosition().plus(Objects.requireNonNull(Direction.LEFT.asVector()));
+                hero.move(nextPosition);
 
-        }
-        if (keyPressed == KeyEvent.VK_SPACE) {
+                turn();
+            }
+            if (keyPressed == KeyEvent.VK_RIGHT) {
+                // System.out.println("User pressed right key!");
+                Position nextPosition = hero.getPosition().plus(Objects.requireNonNull(Direction.RIGHT.asVector()));
+                hero.move(nextPosition);
 
-            ImageTile[] fireballs = statusBar.getFireballsArray();
+                turn();
+            }
+            if (keyPressed == KeyEvent.VK_1) {
+                // System.out.println("Remove first item");
+                statusBar.removeItem(0);
+            }
+            if (keyPressed == KeyEvent.VK_2) {
+                // System.out.println("Remove second item");
+                statusBar.removeItem(1);
+            }
+            if (keyPressed == KeyEvent.VK_3) {
+                // System.out.println("Remove third item");
+                statusBar.removeItem(2);
+            }
+            if (keyPressed == KeyEvent.VK_SPACE) {
 
-            for (int i = 0; i < fireballs.length; i++) {
-                if (fireballs[i] instanceof Fire) {
-                    gui.setStatus("Sending fireball!");
+                ImageTile[] fireballs = statusBar.getFireballsArray();
 
-                    ((Fire) fireballs[i]).setPosition(hero.getPosition());
-                    FireBallThread fireball = new FireBallThread(Direction.UP, (FireTile) fireballs[i]);
-                    gui.addImage(fireballs[i]);
-                    fireball.start();
+                for (int i = 0; i < fireballs.length; i++) {
+                    if (fireballs[i] instanceof Fire) {
+                        fireballMode = true;
+                        gui.setStatus("Send your fireball! Press space again to cancel.");
+                        break;
+                    }
+                }
 
-                    fireballs[i] = new Black(new Position(i, 0));
-                    break;
+                if (!fireballMode) {
+                    gui.setStatus("You don't have fireballs.");
+                }
+
+                // gui.addImage(new ArrowUp(new Position(hero.getPosition().getX(), hero.getPosition().getY() - 1)));
+
+            }
+            //
+            // save and load game
+            //
+            if (keyPressed == KeyEvent.VK_8) {
+                System.out.println("Saving game...");
+
+                try {
+                    FileOutputStream fileOut = new FileOutputStream("saves/save.dat");
+                    ObjectOutputStream out = new ObjectOutputStream(fileOut);
+                    out.writeObject(gameSingleton);
+                    out.close();
+                    fileOut.close();
+                } catch (IOException e) {
+                    System.out.println(e.getMessage());
+                    System.out.println("Erro a salvar o mapa no ficheiro!");
+                }
+
+            }
+            if (keyPressed == KeyEvent.VK_9) {
+                System.out.println("Loading game...");
+
+                try {
+                    FileInputStream fileIn = new FileInputStream("saves/save.dat");
+                    ObjectInputStream in = new ObjectInputStream(fileIn);
+                    GameSingleton savedSingleton = (GameSingleton) in.readObject();
+
+                    gameSingleton.loadGame(savedSingleton);
+                    loadRoom(gameSingleton.getRoomIndex());
+
+                    gui.setStatus("Game Loaded. You have " + hero.getHealth() + " HP and " + hero.getPower() + " power.");
+
+                    in.close();
+                    fileIn.close();
+                } catch (IOException e) {
+                    System.out.println("Erro a ler o ficheiro com o save do mapa!");
+                } catch (ClassNotFoundException e) {
+                    System.out.println("Não foi possível converter o objeto salvo no mapa!");
                 }
             }
-
-            statusBar.updateStatus();
         }
+
+        // fireball mode ON
+        else {
+            if (keyPressed == KeyEvent.VK_DOWN) {
+                // System.out.println("User pressed down key!");
+
+                ImageTile[] fireballs = statusBar.getFireballsArray();
+
+                for (int i = 0; i < fireballs.length; i++) {
+                    if (fireballs[i] instanceof Fire) {
+                        gui.setStatus("Sending fireball!");
+
+                        ((Fire) fireballs[i]).setPosition(hero.getPosition());
+                        FireBallThread fireball = new FireBallThread(Direction.DOWN, (FireTile) fireballs[i]);
+                        gui.addImage(fireballs[i]);
+                        fireball.start();
+
+                        fireballs[i] = new Black(new Position(i, 0));
+                        break;
+                    }
+                }
+
+                statusBar.updateStatus();
+                fireballMode = false;
+
+            }
+            if (keyPressed == KeyEvent.VK_UP) {
+                // System.out.println("User pressed up key!");
+
+                ImageTile[] fireballs = statusBar.getFireballsArray();
+
+                for (int i = 0; i < fireballs.length; i++) {
+                    if (fireballs[i] instanceof Fire) {
+                        gui.setStatus("Sending fireball!");
+
+                        ((Fire) fireballs[i]).setPosition(hero.getPosition());
+                        FireBallThread fireball = new FireBallThread(Direction.UP, (FireTile) fireballs[i]);
+                        gui.addImage(fireballs[i]);
+                        fireball.start();
+
+                        fireballs[i] = new Black(new Position(i, 0));
+                        break;
+                    }
+                }
+
+                statusBar.updateStatus();
+                fireballMode = false;
+
+            }
+            if (keyPressed == KeyEvent.VK_LEFT) {
+                // System.out.println("User pressed left key!");
+
+                ImageTile[] fireballs = statusBar.getFireballsArray();
+
+                for (int i = 0; i < fireballs.length; i++) {
+                    if (fireballs[i] instanceof Fire) {
+                        gui.setStatus("Sending fireball!");
+
+                        ((Fire) fireballs[i]).setPosition(hero.getPosition());
+                        FireBallThread fireball = new FireBallThread(Direction.LEFT, (FireTile) fireballs[i]);
+                        gui.addImage(fireballs[i]);
+                        fireball.start();
+
+                        fireballs[i] = new Black(new Position(i, 0));
+                        break;
+                    }
+                }
+
+                statusBar.updateStatus();
+                fireballMode = false;
+
+            }
+            if (keyPressed == KeyEvent.VK_RIGHT) {
+                // System.out.println("User pressed right key!");
+
+                ImageTile[] fireballs = statusBar.getFireballsArray();
+
+                for (int i = 0; i < fireballs.length; i++) {
+                    if (fireballs[i] instanceof Fire) {
+                        gui.setStatus("Sending fireball!");
+
+                        ((Fire) fireballs[i]).setPosition(hero.getPosition());
+                        FireBallThread fireball = new FireBallThread(Direction.RIGHT, (FireTile) fireballs[i]);
+                        gui.addImage(fireballs[i]);
+                        fireball.start();
+
+                        fireballs[i] = new Black(new Position(i, 0));
+                        break;
+                    }
+                }
+
+                statusBar.updateStatus();
+                fireballMode = false;
+
+            }
+            if (keyPressed == KeyEvent.VK_SPACE) {
+                fireballMode = false;
+                gui.setStatus("Fireball canceled.");
+            }
+        }
+
     }
 
     public void turn() {
