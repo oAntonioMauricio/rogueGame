@@ -4,6 +4,7 @@ import pt.upskill.projeto1.game.GameSingleton;
 import pt.upskill.projeto1.gui.FireTile;
 import pt.upskill.projeto1.gui.ImageMatrixGUI;
 import pt.upskill.projeto1.gui.ImageTile;
+import pt.upskill.projeto1.objects.door.Door;
 import pt.upskill.projeto1.objects.props.Wall;
 import pt.upskill.projeto1.objects.enemies.Enemy;
 import pt.upskill.projeto1.rogue.utils.Position;
@@ -38,7 +39,7 @@ public class Fire implements ImageTile, FireTile, Serializable {
 
         for (ImageTile tile : tiles) {
             if (this.position.getX() == tile.getPosition().getX() && this.position.getY() == tile.getPosition().getY()) {
-                if (tile instanceof Enemy || tile instanceof Wall) {
+                if (tile instanceof Enemy || tile instanceof Wall || tile instanceof Door) {
                     gui.setStatus("Hit on " + tile.getName());
                     if (tile instanceof Enemy) {
                         ((Enemy) tile).death(((Enemy) tile).getHealth());
