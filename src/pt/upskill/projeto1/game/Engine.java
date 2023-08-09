@@ -13,15 +13,13 @@ import pt.upskill.projeto1.objects.hero.StatusBar;
 import pt.upskill.projeto1.objects.items.GoodMeat;
 import pt.upskill.projeto1.objects.items.Hammer;
 import pt.upskill.projeto1.objects.items.Key;
-import pt.upskill.projeto1.objects.props.arrows.ArrowUp;
+import pt.upskill.projeto1.objects.props.arrows.Arrow;
 import pt.upskill.projeto1.objects.statusbar.Black;
 import pt.upskill.projeto1.objects.statusbar.Fire;
 import pt.upskill.projeto1.rogue.utils.Direction;
 import pt.upskill.projeto1.rogue.utils.Position;
 
-import javax.swing.*;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.*;
 import java.util.*;
 
@@ -141,6 +139,22 @@ public class Engine {
                 for (int i = 0; i < fireballs.length; i++) {
                     if (fireballs[i] instanceof Fire) {
                         fireballMode = true;
+
+                        Arrow arrowUp = new Arrow(new Position(hero.getPosition().getX(), hero.getPosition().getY() - 1), "ArrowUp");
+                        Arrow arrowRight = new Arrow(new Position(hero.getPosition().getX() + 1, hero.getPosition().getY()), "ArrowRight");
+                        Arrow arrowDown = new Arrow(new Position(hero.getPosition().getX(), hero.getPosition().getY() + 1), "ArrowDown");
+                        Arrow arrowLeft = new Arrow(new Position(hero.getPosition().getX() - 1, hero.getPosition().getY()), "ArrowLeft");
+
+                        tiles.add(arrowUp);
+                        tiles.add(arrowRight);
+                        tiles.add(arrowDown);
+                        tiles.add(arrowLeft);
+
+                        gui.addImage(arrowUp);
+                        gui.addImage(arrowRight);
+                        gui.addImage(arrowDown);
+                        gui.addImage(arrowLeft);
+
                         gui.setStatus("Send your fireball! Press space again to cancel.");
                         break;
                     }
@@ -149,9 +163,6 @@ public class Engine {
                 if (!fireballMode) {
                     gui.setStatus("You don't have fireballs.");
                 }
-
-                // gui.addImage(new ArrowUp(new Position(hero.getPosition().getX(), hero.getPosition().getY() - 1)));
-
             }
             //
             // save and load game
@@ -194,7 +205,9 @@ public class Engine {
             }
         }
 
-        // fireball mode ON
+        /**
+         * Fireball mode ON
+         */
         else {
             if (keyPressed == KeyEvent.VK_DOWN) {
                 // System.out.println("User pressed down key!");
@@ -216,6 +229,7 @@ public class Engine {
                 }
 
                 statusBar.updateStatus();
+                removeArrows();
                 fireballMode = false;
 
             }
@@ -239,6 +253,7 @@ public class Engine {
                 }
 
                 statusBar.updateStatus();
+                removeArrows();
                 fireballMode = false;
 
             }
@@ -262,6 +277,7 @@ public class Engine {
                 }
 
                 statusBar.updateStatus();
+                removeArrows();
                 fireballMode = false;
 
             }
@@ -285,11 +301,13 @@ public class Engine {
                 }
 
                 statusBar.updateStatus();
+                removeArrows();
                 fireballMode = false;
 
             }
             if (keyPressed == KeyEvent.VK_SPACE) {
                 fireballMode = false;
+                removeArrows();
                 gui.setStatus("Fireball canceled.");
             }
         }
@@ -589,5 +607,22 @@ public class Engine {
                 break;
             }
         }
+    }
+
+    public void removeArrows() {
+        // remove from tiles too !!
+        List<ImageTile> tilesToRemove = new ArrayList<>();
+
+        for (ImageTile tile : tiles) {
+            if (tile instanceof Arrow) {
+                tilesToRemove.add(tile);
+            }
+        }
+
+        for (ImageTile tile : tilesToRemove) {
+            tiles.remove(tile);
+            gui.removeImage(tile);
+        }
+
     }
 }

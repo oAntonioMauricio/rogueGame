@@ -5,17 +5,20 @@ import pt.upskill.projeto1.rogue.utils.Position;
 
 import java.io.Serializable;
 
-public class ArrowUp implements ImageTile, Serializable {
+public class Arrow implements ImageTile, Serializable {
 
     private Position position;
 
-    public ArrowUp(Position position) {
+    private String name;
+
+    public Arrow(Position position, String name) {
         this.position = position;
+        this.name = name;
     }
 
     @Override
     public String getName() {
-        return "ArrowUp";
+        return this.name;
     }
 
     @Override
