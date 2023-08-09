@@ -210,104 +210,28 @@ public class Engine {
          */
         else {
             if (keyPressed == KeyEvent.VK_DOWN) {
-                // System.out.println("User pressed down key!");
-
-                ImageTile[] fireballs = statusBar.getFireballsArray();
-
-                for (int i = 0; i < fireballs.length; i++) {
-                    if (fireballs[i] instanceof Fire) {
-                        gui.setStatus("Sending fireball!");
-
-                        ((Fire) fireballs[i]).setPosition(hero.getPosition());
-                        FireBallThread fireball = new FireBallThread(Direction.DOWN, (FireTile) fireballs[i]);
-                        gui.addImage(fireballs[i]);
-                        fireball.start();
-
-                        fireballs[i] = new Black(new Position(i, 0));
-                        break;
-                    }
-                }
-
-                statusBar.updateStatus();
+                hero.sendFireball(Direction.DOWN);
                 removeArrows();
                 fireballMode = false;
-
             }
             if (keyPressed == KeyEvent.VK_UP) {
-                // System.out.println("User pressed up key!");
-
-                ImageTile[] fireballs = statusBar.getFireballsArray();
-
-                for (int i = 0; i < fireballs.length; i++) {
-                    if (fireballs[i] instanceof Fire) {
-                        gui.setStatus("Sending fireball!");
-
-                        ((Fire) fireballs[i]).setPosition(hero.getPosition());
-                        FireBallThread fireball = new FireBallThread(Direction.UP, (FireTile) fireballs[i]);
-                        gui.addImage(fireballs[i]);
-                        fireball.start();
-
-                        fireballs[i] = new Black(new Position(i, 0));
-                        break;
-                    }
-                }
-
-                statusBar.updateStatus();
+                hero.sendFireball(Direction.UP);
                 removeArrows();
                 fireballMode = false;
-
             }
             if (keyPressed == KeyEvent.VK_LEFT) {
-                // System.out.println("User pressed left key!");
-
-                ImageTile[] fireballs = statusBar.getFireballsArray();
-
-                for (int i = 0; i < fireballs.length; i++) {
-                    if (fireballs[i] instanceof Fire) {
-                        gui.setStatus("Sending fireball!");
-
-                        ((Fire) fireballs[i]).setPosition(hero.getPosition());
-                        FireBallThread fireball = new FireBallThread(Direction.LEFT, (FireTile) fireballs[i]);
-                        gui.addImage(fireballs[i]);
-                        fireball.start();
-
-                        fireballs[i] = new Black(new Position(i, 0));
-                        break;
-                    }
-                }
-
-                statusBar.updateStatus();
+                hero.sendFireball(Direction.LEFT);
                 removeArrows();
                 fireballMode = false;
-
             }
             if (keyPressed == KeyEvent.VK_RIGHT) {
-                // System.out.println("User pressed right key!");
-
-                ImageTile[] fireballs = statusBar.getFireballsArray();
-
-                for (int i = 0; i < fireballs.length; i++) {
-                    if (fireballs[i] instanceof Fire) {
-                        gui.setStatus("Sending fireball!");
-
-                        ((Fire) fireballs[i]).setPosition(hero.getPosition());
-                        FireBallThread fireball = new FireBallThread(Direction.RIGHT, (FireTile) fireballs[i]);
-                        gui.addImage(fireballs[i]);
-                        fireball.start();
-
-                        fireballs[i] = new Black(new Position(i, 0));
-                        break;
-                    }
-                }
-
-                statusBar.updateStatus();
+                hero.sendFireball(Direction.RIGHT);
                 removeArrows();
                 fireballMode = false;
-
             }
             if (keyPressed == KeyEvent.VK_SPACE) {
-                fireballMode = false;
                 removeArrows();
+                fireballMode = false;
                 gui.setStatus("Fireball canceled.");
             }
         }

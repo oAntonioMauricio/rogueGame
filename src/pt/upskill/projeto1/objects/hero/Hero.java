@@ -1,11 +1,16 @@
 package pt.upskill.projeto1.objects.hero;
 
+import pt.upskill.projeto1.game.FireBallThread;
 import pt.upskill.projeto1.game.GameSingleton;
 import pt.upskill.projeto1.game.Room;
+import pt.upskill.projeto1.gui.FireTile;
 import pt.upskill.projeto1.gui.ImageMatrixGUI;
 import pt.upskill.projeto1.gui.ImageTile;
 import pt.upskill.projeto1.objects.props.Wall;
 import pt.upskill.projeto1.objects.enemies.Enemy;
+import pt.upskill.projeto1.objects.statusbar.Black;
+import pt.upskill.projeto1.objects.statusbar.Fire;
+import pt.upskill.projeto1.rogue.utils.Direction;
 import pt.upskill.projeto1.rogue.utils.Position;
 
 import java.io.Serializable;
@@ -111,6 +116,33 @@ public class Hero implements ImageTile, Serializable {
             gui.removeImage(this);
             gui.setStatus("You died in the fight." + " The enemy had " + initialEnemyHP + " HP at the start and " + enemyToFight.getPower() + " power.");
         }
+    }
+
+    public void sendFireball(Direction direction) {
+        // get singleton
+        ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
+        GameSingleton gameSingleton = GameSingleton.getInstance();
+        Hero hero = gameSingleton.getHero();
+        StatusBar statusBar = gameSingleton.getStatusBar();
+
+        ImageTile[] fireballs = statusBar.getFireballsArray();
+
+        for (int i = 0; i < fireballs.length; i++) {
+            if (fireballs[i] instanceof Fire) {
+                gui.setStatus("Sending fireball!");
+
+                ((Fire) fireballs[i]).setPosition(hero.getPosition());
+                FireBallThread fireball = new FireBallThread(direction, (FireTile) fireballs[i]);
+                gui.addImage(fireballs[i]);
+                fireball.start();
+
+                fireballs[i] = new Black(new Position(i, 0));
+                break;
+            }
+        }
+
+        // update ui at the end
+        statusBar.updateStatus();
     }
 
     public void loadHero(Hero savedHero) {
