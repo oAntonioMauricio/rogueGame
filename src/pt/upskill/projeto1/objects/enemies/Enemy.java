@@ -18,10 +18,11 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Enemy implements ImageTile, Serializable {
 
-    // properties 🔽
+    public abstract int getHealth();
+
     public abstract int getPower();
 
-    public abstract int getHealth();
+    public abstract int getPoints();
 
     public abstract void setHealth(int newHealth);
 
@@ -125,7 +126,7 @@ public abstract class Enemy implements ImageTile, Serializable {
         // get room index // this is here because it's PRIMITIVE
         int roomIndex = gameSingleton.getRoomIndex();
 
-        int enemyHP = getHealth();
+        int initialEnemyHP = getHealth();
 
         while (getHealth() > 0 && hero.getHealth() > 0) {
             // deal dmg
@@ -141,10 +142,10 @@ public abstract class Enemy implements ImageTile, Serializable {
 
         if (getHealth() <= 0) {
             // hero wins fight
-            death();
+            death(initialEnemyHP);
         } else {
             // remove hero from the game
-            gui.setStatus("You died in the fight." + " The enemy had " + enemyHP + " HP at the start and " + getPower() + " power.");
+            gui.setStatus("You died in the fight." + " The enemy had " + initialEnemyHP + " HP at the start and " + getPower() + " power.");
             hero.setPosition(new Position(-1, -1));
             tiles.remove(hero);
             gui.removeImage(hero);
@@ -153,35 +154,25 @@ public abstract class Enemy implements ImageTile, Serializable {
 
     }
 
-    public void death() {
+    public void death(int initialEnemyHP) {
         // singletons 🔽
         ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
         GameSingleton gameSingleton = GameSingleton.getInstance();
         List<ImageTile> tiles = gameSingleton.getTiles();
         List<Room> roomList = gameSingleton.getRoomList();
-
         // get room index // this is here because it's PRIMITIVE
         int roomIndex = gameSingleton.getRoomIndex();
 
         // receive points
-        int points = 0;
-
-        switch (getName()) {
-            case "Skeleton" -> points = 50;
-            case "Bat" -> points = 25;
-            case "BadGuy" -> points = 75;
-            default -> {
-            }
-        }
-
-        gameSingleton.setScore(gameSingleton.getScore() + points);
-
-        gui.setStatus("Killed " + getName() + " with " + getHealth() + " HP at the start and " + getPower() + " power. You won " + points + " points.");
+        gameSingleton.setScore(gameSingleton.getScore() + getPoints());
 
         // remove enemy
         roomList.get(roomIndex).getEnemyList().remove(this);
         tiles.remove(this);
         gui.removeImage(this);
+
+        // message
+        gui.setStatus("Killed " + getName() + " with " + initialEnemyHP + " HP at the start and " + getPower() + " power. You won " + getPoints() + " points.");
     }
 
 }

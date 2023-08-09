@@ -41,7 +41,9 @@ public class Fire implements ImageTile, FireTile, Serializable {
                 if (tile instanceof Enemy || tile instanceof Wall) {
                     gui.setStatus("Hit on " + tile.getName());
                     if (tile instanceof Enemy) {
-                        ((Enemy) tile).death();
+                        ((Enemy) tile).death(((Enemy) tile).getHealth());
+                        // update statusbar to display the new score
+                        gameSingleton.getStatusBar().updateStatus();
                     }
                     return false;
                 }

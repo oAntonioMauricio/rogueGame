@@ -5,10 +5,7 @@ import pt.upskill.projeto1.objects.door.Door;
 import pt.upskill.projeto1.objects.door.DoorClosed;
 import pt.upskill.projeto1.objects.door.DoorOpen;
 import pt.upskill.projeto1.objects.door.DoorWay;
-import pt.upskill.projeto1.objects.enemies.BadGuy;
-import pt.upskill.projeto1.objects.enemies.Bat;
-import pt.upskill.projeto1.objects.enemies.Enemy;
-import pt.upskill.projeto1.objects.enemies.Skeleton;
+import pt.upskill.projeto1.objects.enemies.*;
 import pt.upskill.projeto1.objects.hero.Hero;
 import pt.upskill.projeto1.objects.items.GoodMeat;
 import pt.upskill.projeto1.objects.items.Hammer;
@@ -97,7 +94,9 @@ public class Room implements Serializable {
                 for (int i = 0; i < 10; i++) {
                     if (Objects.equals(chars[i], "H")) {
                         hero.setPosition(new Position(i, col));
-                    } else if (Objects.equals(chars[i], "W")) {
+                    }
+                    // map props
+                    else if (Objects.equals(chars[i], "W")) {
                         propsList.add(new Wall(new Position(i, col)));
                     } else if (Objects.equals(chars[i], "R")) {
                         propsList.add(new Grass(new Position(i, col)));
@@ -105,13 +104,19 @@ public class Room implements Serializable {
                         propsList.add(new CityFloor(new Position(i, col)));
                     } else if (isNumber(chars[i])) {
                         doorList.get(Integer.parseInt(chars[i])).setPosition(new Position(i, col));
-                    } else if (Objects.equals(chars[i], "S")) {
+                    }
+                    // enemies
+                    else if (Objects.equals(chars[i], "S")) {
                         enemyList.add(new Skeleton(new Position(i, col)));
                     } else if (Objects.equals(chars[i], "B")) {
                         enemyList.add(new Bat(new Position(i, col)));
                     } else if (Objects.equals(chars[i], "G")) {
                         enemyList.add(new BadGuy(new Position(i, col)));
-                    } else if (Objects.equals(chars[i], "m")) {
+                    } else if (Objects.equals(chars[i], "T")) {
+                        enemyList.add(new Thief(new Position(i, col)));
+                    }
+                    // items
+                    else if (Objects.equals(chars[i], "m")) {
                         itemList.add(new GoodMeat(new Position(i, col)));
                     } else if (Objects.equals(chars[i], "h")) {
                         itemList.add(new Hammer(new Position(i, col)));

@@ -6,6 +6,7 @@ public class BadGuy extends Enemy {
     private Position position;
     private int health = 50;
     private int power = 50;
+    private int points = 75;
 
     public BadGuy(Position position) {
         this.position = position;
@@ -24,6 +25,11 @@ public class BadGuy extends Enemy {
     @Override
     public int getPower() {
         return this.power;
+    }
+
+    @Override
+    public int getPoints() {
+        return this.points;
     }
 
     @Override

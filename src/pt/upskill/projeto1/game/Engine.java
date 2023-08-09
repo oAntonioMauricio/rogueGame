@@ -39,8 +39,8 @@ public class Engine {
     // TODO: metodo para afastar da porta dentro do hero
     // TODO: switch case de pontos depois do fight. codigo repetido.
     // TODO: Abrir portas depois de utilizar chave
-    // TODO: Adicionar thiefs
-    // TODO: Criar atributo de points nos inimigos
+
+    // TODO: Adicionar movimentos do thief
 
     // atributes 🔽
     private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
@@ -220,7 +220,7 @@ public class Engine {
 
         if (interaction != null) {
             switch (interaction.getName()) {
-                case "Skeleton", "Bat", "BadGuy" -> {
+                case "Skeleton", "Bat", "BadGuy", "Thief" -> {
                     System.out.println("HIT ON ENEMY!");
                     // get enemy
                     int indexEnemy = roomList.get(roomIndex).getEnemyList().indexOf(interaction);

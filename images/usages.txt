@@ -1,0 +1,15 @@
+numbers - doors;
+
+C - CityFloor;
+B - Bat;
+G - BadGuy;
+h - Hammer;
+H - Hero;
+m - GoodMeat;
+k - Key;
+S - Skeleton;
+T - Thief;
+R - Grass;
+W - Wall;
+
+

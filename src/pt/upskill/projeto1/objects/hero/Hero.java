@@ -86,7 +86,7 @@ public class Hero implements ImageTile, Serializable {
         int roomIndex = gameSingleton.getRoomIndex();
 
         // values before fight
-        int enemyHP = enemyToFight.getHealth();
+        int initialEnemyHP = enemyToFight.getHealth();
 
         while (enemyToFight.getHealth() > 0 && getHealth() > 0) {
             // deal dmg
@@ -103,13 +103,13 @@ public class Hero implements ImageTile, Serializable {
         if (enemyToFight.getHealth() <= 0) {
             // win fight
             // kill enemy after fight
-            enemyToFight.death();
+            enemyToFight.death(initialEnemyHP);
         } else {
             // remove hero from the game
             setPosition(new Position(-1, -1));
             tiles.remove(this);
             gui.removeImage(this);
-            gui.setStatus("You died in the fight." + " The enemy had " + enemyHP + " HP at the start and " + enemyToFight.getPower() + " power.");
+            gui.setStatus("You died in the fight." + " The enemy had " + initialEnemyHP + " HP at the start and " + enemyToFight.getPower() + " power.");
         }
     }
 
