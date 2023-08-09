@@ -39,7 +39,6 @@ public class Engine {
     // TODO: metodo para afastar da porta dentro do hero
     // TODO: switch case de pontos depois do fight. codigo repetido.
     // TODO: Direção da bola de fogo
-    // TODO: Abrir portas depois de utilizar chave
 
     // atributes 🔽
     private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
@@ -254,11 +253,13 @@ public class Engine {
                                     gui.setStatus("You opened " + doorClosed.getName() + " with " + keyToOpenDoor);
                                     gotTheKey = true;
                                     doorClosed.setOpen(true);
+                                    doorClosed.setName("DoorOpen");
 
                                     // unlock the door in the next room
                                     int nextRoom = doorClosed.nextRoomInt();
                                     int nextDoorIndex = doorClosed.getNextIndex();
                                     roomList.get(nextRoom).getDoorList().get(nextDoorIndex).setOpen(true);
+                                    roomList.get(nextRoom).getDoorList().get(nextDoorIndex).setName("DoorOpen");
                                 }
                             }
                         }

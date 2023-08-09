@@ -19,6 +19,8 @@ public abstract class Door implements ImageTile, Serializable {
         this.open = open;
     }
 
+    public abstract void setName(String name);
+
     public int getDoorIndex() {
         return doorIndex;
     }

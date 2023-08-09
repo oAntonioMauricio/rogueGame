@@ -3,6 +3,7 @@ package pt.upskill.projeto1.objects.door;
 public class DoorClosed extends Door {
 
     private String key;
+    private String name = "DoorClosed";
 
     public DoorClosed(int doorIndex, String nextRoom, int nextIndex, boolean open, String key) {
         super(doorIndex, nextRoom, nextIndex, open);
@@ -11,7 +12,11 @@ public class DoorClosed extends Door {
 
     @Override
     public String getName() {
-        return "DoorClosed";
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getKey() {
