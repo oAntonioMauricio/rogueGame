@@ -12,18 +12,14 @@ import pt.upskill.projeto1.objects.hero.Hero;
 import pt.upskill.projeto1.objects.hero.StatusBar;
 import pt.upskill.projeto1.objects.items.GoodMeat;
 import pt.upskill.projeto1.objects.items.Hammer;
-import pt.upskill.projeto1.objects.items.Item;
 import pt.upskill.projeto1.objects.items.Key;
 import pt.upskill.projeto1.objects.statusbar.Black;
 import pt.upskill.projeto1.objects.statusbar.Fire;
-import pt.upskill.projeto1.objects.statusbar.Green;
-import pt.upskill.projeto1.objects.statusbar.Red;
 import pt.upskill.projeto1.rogue.utils.Direction;
 import pt.upskill.projeto1.rogue.utils.Position;
 
 import java.awt.event.KeyEvent;
 import java.io.*;
-import java.sql.SQLOutput;
 import java.util.*;
 
 public class Engine {
@@ -43,6 +39,7 @@ public class Engine {
     // TODO: metodo para afastar da porta dentro do hero
     // TODO: switch case de pontos depois do fight. codigo repetido.
     // TODO: Abrir portas depois de utilizar chave
+    // TODO: Adicionar thiefs
 
     // atributes 🔽
     private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
@@ -51,9 +48,6 @@ public class Engine {
     private List<ImageTile> tiles = gameSingleton.getTiles();
     private List<Room> roomList = gameSingleton.getRoomList();
     private StatusBar statusBar = gameSingleton.getStatusBar();
-
-
-    // TEST
 
     // methods 🔽
     public void init() {
@@ -411,16 +405,30 @@ public class Engine {
                         FileInputStream fileIn = new FileInputStream("scores/scores.dat");
                         ObjectInputStream in = new ObjectInputStream(fileIn);
                         LeaderBoard loadedLeaderBoard = (LeaderBoard) in.readObject();
+
                         in.close();
                         fileIn.close();
-                        System.out.println("LeaderBoard: " + loadedLeaderBoard);
 
                         // check if the score tops the leaderboard
                         for (Score score : loadedLeaderBoard.getLeaderboard()) {
                             if (playerScore > score.getPlayerScore()) {
                                 score.setPlayerName(gui.showInputDialog("You got a top score!", "Enter your name"));
                                 score.setPlayerScore(playerScore);
+
+                                // save new top score to DB
+                                try {
+                                    FileOutputStream fileOut = new FileOutputStream("scores/scores.dat");
+                                    ObjectOutputStream out = new ObjectOutputStream(fileOut);
+                                    out.writeObject(loadedLeaderBoard);
+                                    out.close();
+                                    fileOut.close();
+                                } catch (IOException e) {
+                                    System.out.println(e.getMessage());
+                                    System.out.println("Erro a salvar o leaderboard!");
+                                }
+
                                 break;
+
                             }
                         }
 
@@ -428,7 +436,7 @@ public class Engine {
                                 loadedLeaderBoard +
                                         System.getProperty("line.separator"));
 
-                        hero.setPosition(new Position(21,21));
+                        hero.setPosition(new Position(21, 21));
                         gui.setStatus("Thanks for playing :)");
 
                     } catch (IOException e) {
@@ -436,6 +444,8 @@ public class Engine {
                     } catch (ClassNotFoundException e) {
                         System.out.println("Não foi possível converter o objeto gravado no leaderboard!");
                     }
+
+
                 }
                 default -> {
                     // default case
