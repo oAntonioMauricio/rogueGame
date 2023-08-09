@@ -40,6 +40,7 @@ public class Engine {
     // TODO: switch case de pontos depois do fight. codigo repetido.
     // TODO: Abrir portas depois de utilizar chave
     // TODO: Adicionar thiefs
+    // TODO: Criar atributo de points nos inimigos
 
     // atributes 🔽
     private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();

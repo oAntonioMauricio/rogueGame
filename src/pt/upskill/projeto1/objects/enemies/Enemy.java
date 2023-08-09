@@ -141,21 +141,6 @@ public abstract class Enemy implements ImageTile, Serializable {
 
         if (getHealth() <= 0) {
             // hero wins fight
-            // receive points
-            int points = 0;
-
-            switch (getName()) {
-                case "Skeleton" -> points = 50;
-                case "Bat" -> points = 25;
-                case "BadGuy" -> points = 75;
-                default -> {
-                }
-            }
-
-            gameSingleton.setScore(gameSingleton.getScore() + points);
-            gui.setStatus("Killed " + getName() + " with " + enemyHP + " HP at the start and " + getPower() + " power. You won " + points + " points.");
-
-            // remove enemy
             death();
         } else {
             // remove hero from the game
@@ -177,6 +162,22 @@ public abstract class Enemy implements ImageTile, Serializable {
 
         // get room index // this is here because it's PRIMITIVE
         int roomIndex = gameSingleton.getRoomIndex();
+
+        // receive points
+        int points = 0;
+
+        switch (getName()) {
+            case "Skeleton" -> points = 50;
+            case "Bat" -> points = 25;
+            case "BadGuy" -> points = 75;
+            default -> {
+            }
+        }
+
+        gameSingleton.setScore(gameSingleton.getScore() + points);
+
+        gui.setStatus("Killed " + getName() + " with " + getHealth() + " HP at the start and " + getPower() + " power. You won " + points + " points.");
+
         // remove enemy
         roomList.get(roomIndex).getEnemyList().remove(this);
         tiles.remove(this);

@@ -102,21 +102,7 @@ public class Hero implements ImageTile, Serializable {
 
         if (enemyToFight.getHealth() <= 0) {
             // win fight
-            // receive points
-            int points = 0;
-
-            switch (enemyToFight.getName()) {
-                case "Skeleton" -> points = 50;
-                case "Bat" -> points = 25;
-                case "BadGuy" -> points = 75;
-                default -> {
-                }
-            }
-
-            gameSingleton.setScore(gameSingleton.getScore() + points);
-
-            gui.setStatus("Killed " + enemyToFight.getName() + " with " + enemyHP + " HP at the start and " + enemyToFight.getPower() + " power. You won " + points + " points.");
-            // delete after fight
+            // kill enemy after fight
             enemyToFight.death();
         } else {
             // remove hero from the game
