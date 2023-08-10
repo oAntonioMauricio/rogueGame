@@ -37,6 +37,7 @@ public class Engine {
     // TODO: MELHORAR RELAÇÃO ENTRE SINGLETON E ENGINE
     //
     // TODO: Rework fight mech
+    // TODO: INIMIGOS PASSAM POR ITEMS
 
     // 📍📍📍 Attributes
     private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
@@ -427,7 +428,7 @@ public class Engine {
 
                     int playerScore = gameSingleton.getScore() + 1;
 
-                    // reset leaderboard
+                    // reset scores
                     /*
                     LeaderBoard firstLeaderBoard = new LeaderBoard();
                     try {

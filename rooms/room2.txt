@@ -6,11 +6,11 @@
 # k key1
 #
 WWW2WWWWWW
-WS   G  RW
-W        W
+WRS  G RRW
+W       RW
 W  m  k  W
-W        W
-W      W W
+WR       W
+WR    RW W
 W    BRWhW
 W  RWWWW W
 0R RW   RW
