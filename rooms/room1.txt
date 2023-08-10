@@ -6,12 +6,12 @@
 # k key2
 #
 WWWW0WWWWW
-W        W
-W        W
-W   B    W
-W        W
-W      WWW
-W      WkW
-W      W W
-W      W 1
+Wt   t   W
+W  t   t W
+Wt  B    W
+W  t   ttW
+W   t tWWW
+WR    RWkW
+WRR  RRW W
+WRRR RRW 1
 WWWW2WWWWW

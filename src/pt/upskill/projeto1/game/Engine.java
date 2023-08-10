@@ -12,6 +12,7 @@ import pt.upskill.projeto1.objects.hero.StatusBar;
 import pt.upskill.projeto1.objects.items.GoodMeat;
 import pt.upskill.projeto1.objects.items.Hammer;
 import pt.upskill.projeto1.objects.items.Key;
+import pt.upskill.projeto1.objects.props.Trap;
 import pt.upskill.projeto1.objects.props.arrows.Arrow;
 import pt.upskill.projeto1.objects.statusbar.Fire;
 import pt.upskill.projeto1.rogue.utils.Direction;
@@ -413,6 +414,14 @@ public class Engine {
                     roomList.get(roomIndex).getItemList().remove(currentItem);
                     tiles.remove(currentItem);
                     gui.removeImage(currentItem);
+                }
+                case "Trap" -> {
+                    // get trap
+                    int indexTrap = roomList.get(roomIndex).getPropsList().indexOf(interaction);
+                    Trap currentTrap = (Trap) roomList.get(roomIndex).getPropsList().get(indexTrap);
+
+                    gui.setStatus("This trap caused damage!");
+                    hero.setHealth(hero.getHealth() - currentTrap.getDamage());
                 }
                 case "CityFloor" -> {
 

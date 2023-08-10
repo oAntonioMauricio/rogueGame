@@ -9,6 +9,7 @@ m - GoodMeat;
 k - Key;
 S - Skeleton;
 T - Thief;
+t - trap;
 R - Grass;
 W - Wall;
 

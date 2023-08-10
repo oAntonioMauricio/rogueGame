@@ -159,6 +159,19 @@ public class Hero implements ImageTile, Serializable {
         statusBar.updateStatus();
     }
 
+    public void death() {
+        // singletons 🔽
+        ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
+        GameSingleton gameSingleton = GameSingleton.getInstance();
+        List<ImageTile> tiles = gameSingleton.getTiles();
+
+        // remove hero from the game
+        setPosition(new Position(-1, -1));
+        tiles.remove(this);
+        gui.removeImage(this);
+        gui.setStatus("You died to the environment");
+    }
+
     public void loadHero(Hero savedHero) {
         this.position = savedHero.getPosition();
         this.health = savedHero.getHealth();

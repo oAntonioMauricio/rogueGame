@@ -13,6 +13,7 @@ import pt.upskill.projeto1.objects.items.Item;
 import pt.upskill.projeto1.objects.items.Key;
 import pt.upskill.projeto1.objects.props.CityFloor;
 import pt.upskill.projeto1.objects.props.Grass;
+import pt.upskill.projeto1.objects.props.Trap;
 import pt.upskill.projeto1.objects.props.Wall;
 import pt.upskill.projeto1.rogue.utils.Position;
 
@@ -102,6 +103,8 @@ public class Room implements Serializable {
                         propsList.add(new Grass(new Position(i, col)));
                     } else if (Objects.equals(chars[i], "C")) {
                         propsList.add(new CityFloor(new Position(i, col)));
+                    } else if (Objects.equals(chars[i], "t")) {
+                        propsList.add(new Trap(new Position(i, col)));
                     } else if (isNumber(chars[i])) {
                         doorList.get(Integer.parseInt(chars[i])).setPosition(new Position(i, col));
                     }

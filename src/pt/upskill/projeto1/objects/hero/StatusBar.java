@@ -132,6 +132,8 @@ public class StatusBar implements Serializable {
             healthArray[1] = new Red(new Position(4, 0));
             healthArray[2] = new Red(new Position(5, 0));
             healthArray[3] = new Red(new Position(6, 0));
+
+            hero.death();
         }
     }
 
