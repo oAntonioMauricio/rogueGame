@@ -18,15 +18,25 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Enemy implements ImageTile, Serializable {
 
+    private Position previousPosition;
+
     public abstract int getHealth();
 
     public abstract int getPower();
 
     public abstract int getPoints();
 
+    public Position getPreviousPosition() {
+        return previousPosition;
+    }
+
     public abstract void setHealth(int newHealth);
 
     public abstract void setPosition(Position position);
+
+    public void setPreviousPosition() {
+        this.previousPosition = getPosition();
+    }
 
     public void move(Position nextPosition) {
 
@@ -128,6 +138,15 @@ public abstract class Enemy implements ImageTile, Serializable {
 
         int initialEnemyHP = getHealth();
 
+        // deal dmg
+        hero.setHealth(hero.getHealth() - getPower());
+        System.out.println("Enemy dealt " + getPower() + " damage.");
+        gui.setStatus(getName() + " dealt " + getPower() + " damage.");
+
+        // recoil
+        move(getPreviousPosition());
+
+        /*
         while (getHealth() > 0 && hero.getHealth() > 0) {
             // deal dmg
             hero.setHealth(hero.getHealth() - getPower());
@@ -140,6 +159,14 @@ public abstract class Enemy implements ImageTile, Serializable {
             }
         }
 
+         */
+
+        if (hero.getHealth() <= 0) {
+            // remove hero from the game
+            hero.death();
+        }
+
+        /*
         if (getHealth() <= 0) {
             // hero wins fight
             death(initialEnemyHP);
@@ -150,6 +177,8 @@ public abstract class Enemy implements ImageTile, Serializable {
             tiles.remove(hero);
             gui.removeImage(hero);
         }
+
+         */
 
 
     }

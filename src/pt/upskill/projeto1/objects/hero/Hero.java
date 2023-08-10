@@ -20,6 +20,7 @@ import java.util.Objects;
 public class Hero implements ImageTile, Serializable {
     // properties 🔽
     private Position position;
+    private Position previousPosition;
     private int power = 25;
     private int health = 100;
 
@@ -35,6 +36,10 @@ public class Hero implements ImageTile, Serializable {
     @Override
     public Position getPosition() {
         return position;
+    }
+
+    public Position getPreviousPosition() {
+        return previousPosition;
     }
 
     public void move(Position nextPosition) {
@@ -59,6 +64,10 @@ public class Hero implements ImageTile, Serializable {
 
     public void setPosition(Position position) {
         this.position = position;
+    }
+
+    public void setPreviousPosition() {
+        this.previousPosition = getPosition();
     }
 
     public int getPower() {
@@ -94,6 +103,15 @@ public class Hero implements ImageTile, Serializable {
         // values before fight
         int initialEnemyHP = enemyToFight.getHealth();
 
+        // deal dmg
+        enemyToFight.setHealth(enemyToFight.getHealth() - getPower());
+        System.out.println("You dealt " + getPower() + " damage." + enemyToFight.getName() + " HP left: " + enemyToFight.getHealth());
+        gui.setStatus("You dealt " + getPower() + " damage. Enemy HP left: " + enemyToFight.getHealth());
+
+        // recoil
+        move(getPreviousPosition());
+
+        /*
         while (enemyToFight.getHealth() > 0 && getHealth() > 0) {
             // deal dmg
             enemyToFight.setHealth(enemyToFight.getHealth() - getPower());
@@ -106,17 +124,24 @@ public class Hero implements ImageTile, Serializable {
             }
         }
 
+         */
+
         if (enemyToFight.getHealth() <= 0) {
             // win fight
             // kill enemy after fight
             enemyToFight.death(initialEnemyHP);
-        } else {
+        }
+
+        /*
+        else {
             // remove hero from the game
             setPosition(new Position(-1, -1));
             tiles.remove(this);
             gui.removeImage(this);
             gui.setStatus("You died in the fight." + " The enemy had " + initialEnemyHP + " HP at the start and " + enemyToFight.getPower() + " power.");
         }
+
+         */
     }
 
     public void moveAwayFromTheDoor() {
@@ -169,7 +194,7 @@ public class Hero implements ImageTile, Serializable {
         setPosition(new Position(-1, -1));
         tiles.remove(this);
         gui.removeImage(this);
-        gui.setStatus("You died to the environment");
+        gui.setStatus("You died.");
     }
 
     public void loadHero(Hero savedHero) {

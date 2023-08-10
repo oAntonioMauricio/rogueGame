@@ -94,6 +94,7 @@ public class Engine {
         if (!fireballMode) {
             if (keyPressed == KeyEvent.VK_DOWN) {
                 // System.out.println("User pressed down key!");
+                hero.setPreviousPosition();
                 Position nextPosition = hero.getPosition().plus(Objects.requireNonNull(Direction.DOWN.asVector()));
                 hero.move(nextPosition);
 
@@ -101,6 +102,7 @@ public class Engine {
             }
             if (keyPressed == KeyEvent.VK_UP) {
                 // System.out.println("User pressed up key!");
+                hero.setPreviousPosition();
                 Position nextPosition = hero.getPosition().plus(Objects.requireNonNull(Direction.UP.asVector()));
                 hero.move(nextPosition);
 
@@ -108,6 +110,7 @@ public class Engine {
             }
             if (keyPressed == KeyEvent.VK_LEFT) {
                 // System.out.println("User pressed left key!");
+                hero.setPreviousPosition();
                 Position nextPosition = hero.getPosition().plus(Objects.requireNonNull(Direction.LEFT.asVector()));
                 hero.move(nextPosition);
 
@@ -115,6 +118,7 @@ public class Engine {
             }
             if (keyPressed == KeyEvent.VK_RIGHT) {
                 // System.out.println("User pressed right key!");
+                hero.setPreviousPosition();
                 Position nextPosition = hero.getPosition().plus(Objects.requireNonNull(Direction.RIGHT.asVector()));
                 hero.move(nextPosition);
 
@@ -280,7 +284,6 @@ public class Engine {
 
                     // fight func
                     hero.fight(currentEnemy);
-
                 }
                 case "DoorOpen", "DoorClosed", "DoorWay" -> {
                     // get door
@@ -508,7 +511,7 @@ public class Engine {
 
         // move every enemy in random direction
         for (Enemy enemy : roomList.get(roomIndex).getEnemyList()) {
-            // moveEnemy(enemy, enemy.getPosition().plus(enemy.moveToHero(hero)));
+            enemy.setPreviousPosition();
             enemy.move(enemy.getPosition().plus(enemy.moveToHero(hero)));
         }
     }
