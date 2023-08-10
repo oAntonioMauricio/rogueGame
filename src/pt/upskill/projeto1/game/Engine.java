@@ -167,13 +167,14 @@ public class Engine {
             //
             // save and load game
             //
-            if (keyPressed == KeyEvent.VK_8) {
+            if (keyPressed == KeyEvent.VK_S) {
                 System.out.println("Saving game...");
 
                 try {
                     FileOutputStream fileOut = new FileOutputStream("saves/save.dat");
                     ObjectOutputStream out = new ObjectOutputStream(fileOut);
                     out.writeObject(gameSingleton);
+                    gui.setStatus("Game Saved.");
                     out.close();
                     fileOut.close();
                 } catch (IOException e) {
@@ -182,7 +183,7 @@ public class Engine {
                 }
 
             }
-            if (keyPressed == KeyEvent.VK_9) {
+            if (keyPressed == KeyEvent.VK_L) {
                 System.out.println("Loading game...");
 
                 try {
