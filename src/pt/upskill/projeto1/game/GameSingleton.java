@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameSingleton implements Serializable {
+
+    // Attributes 📍📍📍
     private static GameSingleton instance;
     private List<ImageTile> tiles;
     // careful passing roomIndex because it's an int
@@ -20,6 +22,8 @@ public class GameSingleton implements Serializable {
     private StatusBar statusBar;
     // careful passing score because it's an int
     private int score;
+
+    // Singleton Mechanics 📍📍📍
 
     private GameSingleton() {
         tiles = new ArrayList<>();
@@ -38,7 +42,7 @@ public class GameSingleton implements Serializable {
         return instance;
     }
 
-    // Methods 🔽
+    // Methods 📍📍📍
     public void loadRoom(int nextRoom) {
         setRoomIndex(nextRoom);
 
@@ -85,7 +89,7 @@ public class GameSingleton implements Serializable {
         System.out.println("Loaded roomIndex, score, roomList, Hero and StatusBar.");
     }
 
-    // Getters 🔽
+    // Getters 📍📍📍
     public List<Room> getRoomList() {
         return roomList;
     }
@@ -110,7 +114,7 @@ public class GameSingleton implements Serializable {
         return score;
     }
 
-    // Setter 🔽
+    // Setters 🔽🔽🔽
     public void setRoomIndex(int roomIndex) {
         this.roomIndex = roomIndex;
     }

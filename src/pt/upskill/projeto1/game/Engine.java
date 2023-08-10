@@ -1,6 +1,5 @@
 package pt.upskill.projeto1.game;
 
-import pt.upskill.projeto1.gui.FireTile;
 import pt.upskill.projeto1.gui.ImageMatrixGUI;
 import pt.upskill.projeto1.gui.ImageTile;
 import pt.upskill.projeto1.leaderboard.LeaderBoard;
@@ -14,7 +13,6 @@ import pt.upskill.projeto1.objects.items.GoodMeat;
 import pt.upskill.projeto1.objects.items.Hammer;
 import pt.upskill.projeto1.objects.items.Key;
 import pt.upskill.projeto1.objects.props.arrows.Arrow;
-import pt.upskill.projeto1.objects.statusbar.Black;
 import pt.upskill.projeto1.objects.statusbar.Fire;
 import pt.upskill.projeto1.rogue.utils.Direction;
 import pt.upskill.projeto1.rogue.utils.Position;
@@ -30,37 +28,37 @@ public class Engine {
         engine.init();
     }
 
-    // scoreboard branch
+    // update_todos_branch
     //
     // PERGUNTA: Statusbar no singleton ou como atributo do heroi?
     // PENSAR: Mudar armazenamento/organização dos items? Fora do checkWhereHeroIs para statusbar? ou gamestate?
     //
     // TODO: melhorar algoritmo de perseguição https://wumbo.net/formulas/distance-between-two-points-2d/
     // TODO: MELHORAR RELAÇÃO ENTRE SINGLETON E ENGINE
-    // TODO: metodo para afastar da porta dentro do hero
-    // TODO: switch case de pontos depois do fight. codigo repetido.
-    // TODO: Eliminar repitiação de codigo no lançamento da bola de fogo
+    //
+    // TODO: Nova janela de status
+    // TODO: LINE 56. read every file with a func
 
-    // atributes 🔽
+    // 📍📍📍 Attributes
     private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
     private GameSingleton gameSingleton = GameSingleton.getInstance();
     private Hero hero = gameSingleton.getHero();
     private List<ImageTile> tiles = gameSingleton.getTiles();
     private List<Room> roomList = gameSingleton.getRoomList();
     private StatusBar statusBar = gameSingleton.getStatusBar();
+    private boolean fireballMode = false;
 
-    // teste for fireball bool
-    boolean fireballMode = false;
-
-    // methods 🔽
+    // 📍📍📍 Methods
     public void init() {
+
         gui.setEngine(this);
 
-        // new !
-        gameSingleton.addRoom("rooms/room0.txt");
-        gameSingleton.addRoom("rooms/room1.txt");
-        gameSingleton.addRoom("rooms/room2.txt");
-        gameSingleton.addRoom("rooms/room3.txt");
+        // read every file in the dir
+        File[] files = new File("rooms").listFiles();
+        for (File file : files) {
+            System.out.println(file.toString());
+            gameSingleton.addRoom(file.toString());
+        }
 
         // load room based on index
         loadRoom(0);
@@ -71,6 +69,7 @@ public class Engine {
         while (true) {
             gui.update();
         }
+
     }
 
     public void loadRoom(int nextRoom) {
@@ -238,6 +237,8 @@ public class Engine {
 
     }
 
+    // 📍📍📍 Game Turns
+
     public void turn() {
         gameSingleton.setScore(gameSingleton.getScore() - 1);
 
@@ -318,17 +319,8 @@ public class Engine {
 
                         if (!gotTheKey) {
                             gui.setStatus("You need the " + keyToOpenDoor + " to open this door.");
-
                             // move 1 step away from the door
-                            if (hero.getPosition().getY() == 9) {
-                                hero.move(hero.getPosition().plus(Objects.requireNonNull(Direction.UP.asVector())));
-                            } else if (hero.getPosition().getY() == 0) {
-                                hero.move(hero.getPosition().plus(Objects.requireNonNull(Direction.DOWN.asVector())));
-                            } else if (hero.getPosition().getX() == 0) {
-                                hero.move(hero.getPosition().plus(Objects.requireNonNull(Direction.RIGHT.asVector())));
-                            } else if (hero.getPosition().getX() == 9) {
-                                hero.move(hero.getPosition().plus(Objects.requireNonNull(Direction.LEFT.asVector())));
-                            }
+                            hero.moveAwayFromTheDoor();
                         }
 
                     }
@@ -345,15 +337,7 @@ public class Engine {
                         hero.move(roomList.get(nextRoom).getDoorList().get(nextDoorIndex).getPosition());
 
                         // move 1 step away from the door
-                        if (hero.getPosition().getY() == 9) {
-                            hero.move(hero.getPosition().plus(Objects.requireNonNull(Direction.UP.asVector())));
-                        } else if (hero.getPosition().getY() == 0) {
-                            hero.move(hero.getPosition().plus(Objects.requireNonNull(Direction.DOWN.asVector())));
-                        } else if (hero.getPosition().getX() == 0) {
-                            hero.move(hero.getPosition().plus(Objects.requireNonNull(Direction.RIGHT.asVector())));
-                        } else if (hero.getPosition().getX() == 9) {
-                            hero.move(hero.getPosition().plus(Objects.requireNonNull(Direction.LEFT.asVector())));
-                        }
+                        hero.moveAwayFromTheDoor();
                     }
 
 
@@ -436,6 +420,7 @@ public class Engine {
 
                     int playerScore = gameSingleton.getScore() + 1;
 
+                    // reset leaderboard
                     /*
                     LeaderBoard firstLeaderBoard = new LeaderBoard();
                     try {
@@ -533,6 +518,7 @@ public class Engine {
         }
     }
 
+    // 📍📍📍 UI
     public void removeArrows() {
         // remove from tiles too !!
         List<ImageTile> tilesToRemove = new ArrayList<>();

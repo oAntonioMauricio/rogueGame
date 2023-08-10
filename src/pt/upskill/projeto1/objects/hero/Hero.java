@@ -15,6 +15,7 @@ import pt.upskill.projeto1.rogue.utils.Position;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 public class Hero implements ImageTile, Serializable {
     // properties 🔽
@@ -115,6 +116,19 @@ public class Hero implements ImageTile, Serializable {
             tiles.remove(this);
             gui.removeImage(this);
             gui.setStatus("You died in the fight." + " The enemy had " + initialEnemyHP + " HP at the start and " + enemyToFight.getPower() + " power.");
+        }
+    }
+
+    public void moveAwayFromTheDoor() {
+        // move 1 step away from the door
+        if (getPosition().getY() == 9) {
+            move(getPosition().plus(Objects.requireNonNull(Direction.UP.asVector())));
+        } else if (getPosition().getY() == 0) {
+            move(getPosition().plus(Objects.requireNonNull(Direction.DOWN.asVector())));
+        } else if (getPosition().getX() == 0) {
+            move(getPosition().plus(Objects.requireNonNull(Direction.RIGHT.asVector())));
+        } else if (getPosition().getX() == 9) {
+            move(getPosition().plus(Objects.requireNonNull(Direction.LEFT.asVector())));
         }
     }
 
