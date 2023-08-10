@@ -35,7 +35,6 @@ public class Engine {
     // TODO: melhorar algoritmo de perseguição https://wumbo.net/formulas/distance-between-two-points-2d/
     // TODO: MELHORAR RELAÇÃO ENTRE SINGLETON E ENGINE
     //
-    // TODO: Nova janela de status
     // TODO: Rework fight mech
 
     // 📍📍📍 Attributes
@@ -54,6 +53,7 @@ public class Engine {
 
         // read every file in the dir
         File[] files = new File("rooms").listFiles();
+        assert files != null;
         for (File file : files) {
             System.out.println(file.toString());
             gameSingleton.addRoom(file.toString());
@@ -134,8 +134,8 @@ public class Engine {
 
                 ImageTile[] fireballs = statusBar.getFireballsArray();
 
-                for (int i = 0; i < fireballs.length; i++) {
-                    if (fireballs[i] instanceof Fire) {
+                for (ImageTile fireball : fireballs) {
+                    if (fireball instanceof Fire) {
                         fireballMode = true;
 
                         Arrow arrowUp = new Arrow(new Position(hero.getPosition().getX(), hero.getPosition().getY() - 1), "ArrowUp");
