@@ -13,7 +13,6 @@ import pt.upskill.projeto1.objects.statusbar.Green;
 import pt.upskill.projeto1.objects.statusbar.Red;
 import pt.upskill.projeto1.rogue.utils.Position;
 
-import javax.swing.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,12 +20,8 @@ import java.util.List;
 public class StatusBar implements Serializable {
     // propreties 🔽
     private List<ImageTile[]> statusBar;
-    private JLabel scoreLabel = new JLabel();
 
     public StatusBar() {
-        // singelton 🔽
-        ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
-
         this.statusBar = new ArrayList<>();
 
         ImageTile[] fireballs = {new Fire(new Position(0, 0)), new Fire(new Position(1, 0)), new Fire(new Position(2, 0))};
@@ -39,9 +34,6 @@ public class StatusBar implements Serializable {
         this.statusBar.add(health);
         // index 2
         this.statusBar.add(items);
-
-        // create score
-        gui.getInfo().add(scoreLabel);
     }
 
     // methods 🔽
@@ -63,6 +55,7 @@ public class StatusBar implements Serializable {
 
     // HP IS ALSO UPDATED IN UPDATE STATUS!
     // SCORE IS ALSO UPDATED!
+    // SECOND STATUS IS ALSO UPDATED HERE
     public void updateStatus() {
         // singelton 🔽
         GameSingleton gameSingleton = GameSingleton.getInstance();
@@ -98,7 +91,7 @@ public class StatusBar implements Serializable {
 
 
         // update score
-        scoreLabel.setText("Score: " + gameSingleton.getScore());
+        gui.setStatusTwo("Score: " + gameSingleton.getScore() + " Power: " + gameSingleton.getHero().getPower());
     }
 
     public void updateHeroHP() {

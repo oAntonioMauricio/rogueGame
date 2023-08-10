@@ -65,6 +65,9 @@ public class ImageMatrixGUI {
     private List<ImageTile> images = new ArrayList<ImageTile>();
     private List<ImageTile> statusImages = new ArrayList<ImageTile>();
     private JLabel statusLabel = new JLabel();
+    // @me
+    private JLabel statusLabelTwo = new JLabel();
+    private JPanel statusGrid = new JPanel(new GridLayout(2, 1));
 
     private int lastKeyPressed;
     private boolean keyPressed;
@@ -104,8 +107,13 @@ public class ImageMatrixGUI {
         info.setBackground(Color.BLACK);
         frame.add(panel);
         frame.add(info, BorderLayout.NORTH);
+        // @me
         statusLabel.setBorder(new EmptyBorder(10, 10, 10, 10));
-        frame.add(statusLabel, BorderLayout.SOUTH);
+        statusLabelTwo.setBorder(new EmptyBorder(10, 10, 10, 10));
+        statusGrid.add(statusLabel);
+        statusGrid.add(statusLabelTwo);
+        frame.add(statusGrid, BorderLayout.SOUTH);
+        // @me
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -174,6 +182,15 @@ public class ImageMatrixGUI {
      */
     public void setStatus(String text) {
         statusLabel.setText(text);
+    }
+
+    /**
+     * Display a text on the SECOND status portion of the game window
+     *
+     * @param text the status text to print in the GUI
+     */
+    public void setStatusTwo(String text) {
+        statusLabelTwo.setText(text);
     }
 
     /**
