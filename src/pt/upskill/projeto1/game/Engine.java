@@ -20,6 +20,7 @@ import pt.upskill.projeto1.rogue.utils.Position;
 
 import java.awt.event.KeyEvent;
 import java.io.*;
+import java.sql.SQLOutput;
 import java.util.*;
 
 public class Engine {
@@ -92,6 +93,18 @@ public class Engine {
     public void notify(int keyPressed) {
 
         if (!fireballMode) {
+            if (keyPressed == KeyEvent.VK_F1) {
+                System.out.println("Dev mode");
+
+                String userinput = gui.showInputDialog("Dev Move", "Enter command");
+
+                if (Objects.equals(userinput, "resetscores")) {
+                    LeaderBoard leaderBoardReset = new LeaderBoard();
+                    leaderBoardReset.reset();
+                    gui.showMessage("Success", "Highscores back to zero.");
+                }
+
+            }
             if (keyPressed == KeyEvent.VK_DOWN) {
                 // System.out.println("User pressed down key!");
                 hero.setPreviousPosition();
@@ -431,21 +444,6 @@ public class Engine {
                 case "CityFloor" -> {
 
                     int playerScore = gameSingleton.getScore() + 1;
-
-                    // reset scores
-                    /*
-                    LeaderBoard firstLeaderBoard = new LeaderBoard();
-                    try {
-                        FileOutputStream fileOut = new FileOutputStream("scores/scores.dat");
-                        ObjectOutputStream out = new ObjectOutputStream(fileOut);
-                        out.writeObject(firstLeaderBoard);
-                        out.close();
-                        fileOut.close();
-                    } catch (IOException e) {
-                        System.out.println(e.getMessage());
-                        System.out.println("Erro a salvar o leaderboard!");
-                    }
-                     */
 
                     gui.showMessage("Congratulations!",
                             "You finished the game with " + (playerScore) + " points.");

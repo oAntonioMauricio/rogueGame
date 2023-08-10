@@ -1,5 +1,8 @@
 package pt.upskill.projeto1.leaderboard;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Arrays;
 
@@ -9,11 +12,11 @@ public class LeaderBoard implements Serializable {
 
     public LeaderBoard() {
         this.leaderboard = new Score[]{
-                new Score("António", 5),
-                new Score("Rute", 4),
-                new Score("Francisca", 3),
-                new Score("Floribela", 2),
-                new Score("Fred", 1)};
+                new Score("No record", 0),
+                new Score("No record", 0),
+                new Score("No record", 0),
+                new Score("No record", 0),
+                new Score("No record", 0)};
     }
 
     public Score[] getLeaderboard() {
@@ -22,6 +25,19 @@ public class LeaderBoard implements Serializable {
 
     public void setLeaderboard(Score[] leaderboard) {
         this.leaderboard = leaderboard;
+    }
+
+    public void reset() {
+        try {
+            FileOutputStream fileOut = new FileOutputStream("scores/scores.dat");
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(new LeaderBoard());
+            out.close();
+            fileOut.close();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            System.out.println("Erro a salvar o leaderboard!");
+        }
     }
 
     @Override
