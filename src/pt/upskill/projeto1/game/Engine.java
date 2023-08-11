@@ -127,6 +127,10 @@ public class Engine {
                     }
                 }
 
+                if (Objects.equals(userinput, "load")) {
+                    loadRoom(Integer.parseInt(gui.showInputDialog("Room number", "Num")));
+                }
+
             }
             if (keyPressed == KeyEvent.VK_DOWN) {
                 // System.out.println("User pressed down key!");
@@ -209,6 +213,19 @@ public class Engine {
             //
             if (keyPressed == KeyEvent.VK_S) {
 
+                try {
+                    FileOutputStream fileOut = new FileOutputStream("saves/save.dat");
+                    ObjectOutputStream out = new ObjectOutputStream(fileOut);
+                    out.writeObject(gameSingleton);
+                    gui.setStatus("Game Saved.");
+                    out.close();
+                    fileOut.close();
+                } catch (IOException e) {
+                    System.out.println(e.getMessage());
+                    System.out.println("Erro a salvar o mapa no ficheiro!");
+                }
+
+                /*
                 if (hero.checkWhereHeroIs() instanceof CityFloor || gameSingleton.getRoomIndex() == 0) {
                     System.out.println("Saving game...");
 
@@ -226,6 +243,8 @@ public class Engine {
                 } else {
                     gui.setStatus("Can't save here. Sorry.");
                 }
+
+                 */
 
             }
             if (keyPressed == KeyEvent.VK_L) {
@@ -458,21 +477,7 @@ public class Engine {
                     hero.setHealth(hero.getHealth() - currentTrap.getDamage());
                 }
                 case "CityFloor" -> {
-                    System.out.println("Saving game...");
-
-                    try {
-                        FileOutputStream fileOut = new FileOutputStream("saves/save.dat");
-                        ObjectOutputStream out = new ObjectOutputStream(fileOut);
-                        out.writeObject(gameSingleton);
-                        gui.setStatus("Game Saved.");
-                        out.close();
-                        fileOut.close();
-                    } catch (IOException e) {
-                        System.out.println(e.getMessage());
-                        System.out.println("Erro a salvar o mapa no ficheiro!");
-                    }
-
-                    gui.setStatus("You found a safe spot. Your game got saved.");
+                    gui.setStatus("You found a safe spot. You can save your game here with the S key.");
 
                     /*
                     int playerScore = gameSingleton.getScore() + 1;
