@@ -12,6 +12,7 @@ import pt.upskill.projeto1.objects.hero.StatusBar;
 import pt.upskill.projeto1.objects.items.GoodMeat;
 import pt.upskill.projeto1.objects.items.Hammer;
 import pt.upskill.projeto1.objects.items.Key;
+import pt.upskill.projeto1.objects.props.CityFloor;
 import pt.upskill.projeto1.objects.props.Trap;
 import pt.upskill.projeto1.objects.props.arrows.Arrow;
 import pt.upskill.projeto1.objects.statusbar.Fire;
@@ -38,7 +39,9 @@ public class Engine {
     // TODO: MELHORAR RELAÇÃO ENTRE SINGLETON E ENGINE
     //
     // TODO: INIMIGOS PASSAM POR ITEMS
+    // TODO: SAVE EM SALA ESPECIFICA
     // TODO: CONFIRMAR SORT NO LEADERBOARD
+    // TODO: reformular onTopOf
 
     // 📍📍📍 Attributes
     private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
@@ -206,6 +209,21 @@ public class Engine {
             // save and load game
             //
             if (keyPressed == KeyEvent.VK_S) {
+
+                hero.checkWhereHeroIs();
+
+                System.out.println(hero.getOnTopOf().getName());
+
+                if (hero.getOnTopOf() instanceof CityFloor) {
+                    System.out.println("Can save");
+                } else {
+                    System.out.println("Can't save");
+                }
+
+                // gui.setStatus("You can save your game at the safe spots.");
+
+
+                /*
                 System.out.println("Saving game...");
 
                 try {
@@ -219,6 +237,8 @@ public class Engine {
                     System.out.println(e.getMessage());
                     System.out.println("Erro a salvar o mapa no ficheiro!");
                 }
+
+                 */
 
             }
             if (keyPressed == KeyEvent.VK_L) {
@@ -463,7 +483,23 @@ public class Engine {
                     hero.setHealth(hero.getHealth() - currentTrap.getDamage());
                 }
                 case "CityFloor" -> {
+                    System.out.println("Saving game...");
 
+                    try {
+                        FileOutputStream fileOut = new FileOutputStream("saves/save.dat");
+                        ObjectOutputStream out = new ObjectOutputStream(fileOut);
+                        out.writeObject(gameSingleton);
+                        gui.setStatus("Game Saved.");
+                        out.close();
+                        fileOut.close();
+                    } catch (IOException e) {
+                        System.out.println(e.getMessage());
+                        System.out.println("Erro a salvar o mapa no ficheiro!");
+                    }
+
+                    gui.setStatus("You found a safe spot. Your game got saved.");
+
+                    /*
                     int playerScore = gameSingleton.getScore() + 1;
 
                     gui.showMessage("Congratulations!",
@@ -528,6 +564,8 @@ public class Engine {
                     } catch (ClassNotFoundException e) {
                         System.out.println("Não foi possível converter o objeto gravado no leaderboard!");
                     }
+
+                     */
 
 
                 }

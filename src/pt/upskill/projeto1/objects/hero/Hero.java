@@ -6,6 +6,7 @@ import pt.upskill.projeto1.game.Room;
 import pt.upskill.projeto1.gui.FireTile;
 import pt.upskill.projeto1.gui.ImageMatrixGUI;
 import pt.upskill.projeto1.gui.ImageTile;
+import pt.upskill.projeto1.objects.props.Floor;
 import pt.upskill.projeto1.objects.props.Wall;
 import pt.upskill.projeto1.objects.enemies.Enemy;
 import pt.upskill.projeto1.objects.statusbar.Black;
@@ -21,6 +22,7 @@ public class Hero implements ImageTile, Serializable {
     // properties 🔽
     private Position position;
     private Position previousPosition;
+    private ImageTile onTopOf;
     private int power = 25;
     private int health = 100;
 
@@ -88,6 +90,41 @@ public class Hero implements ImageTile, Serializable {
 
     public void setPower(int power) {
         this.power = power;
+    }
+
+    public ImageTile getOnTopOf() {
+        return onTopOf;
+    }
+
+    public void setOnTopOf(ImageTile onTopOf) {
+        this.onTopOf = onTopOf;
+    }
+
+    public void checkWhereHeroIs() {
+        GameSingleton gameSingleton = GameSingleton.getInstance();
+        List<ImageTile> tiles = gameSingleton.getTiles();
+        // get room index // this is here because it's PRIMITIVE
+        int roomIndex = gameSingleton.getRoomIndex();
+
+        ImageTile interaction = null;
+
+        for (ImageTile tile : tiles) {
+            if (Objects.equals(tile.getName(), "Hero") || Objects.equals(tile.getName(), "Floor")) {
+                continue;
+            }
+
+            if (getPosition().getX() == tile.getPosition().getX() && getPosition().getY() == tile.getPosition().getY()) {
+                System.out.println("hero is on top of: " + tile.getName());
+                interaction = tile;
+            }
+        }
+
+        if (interaction == null) {
+            setOnTopOf(new Floor(new Position(0, 0)));
+        } else {
+            setOnTopOf(interaction);
+        }
+
     }
 
     public void fight(Enemy enemyToFight) {
