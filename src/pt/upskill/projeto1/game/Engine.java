@@ -37,8 +37,8 @@ public class Engine {
     // TODO: melhorar algoritmo de perseguição https://wumbo.net/formulas/distance-between-two-points-2d/
     // TODO: MELHORAR RELAÇÃO ENTRE SINGLETON E ENGINE
     //
-    // TODO: Rework fight mech
     // TODO: INIMIGOS PASSAM POR ITEMS
+    // TODO: CONFIRMAR SORT NO LEADERBOARD
 
     // 📍📍📍 Attributes
     private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
@@ -104,37 +104,58 @@ public class Engine {
                     gui.showMessage("Success", "Highscores back to zero.");
                 }
 
+                if (Objects.equals(userinput, "scores")) {
+                    // show leaderboard
+                    try {
+                        FileInputStream fileIn = new FileInputStream("scores/scores.dat");
+                        ObjectInputStream in = new ObjectInputStream(fileIn);
+                        LeaderBoard loadedLeaderBoard = (LeaderBoard) in.readObject();
+
+                        in.close();
+                        fileIn.close();
+
+                        for (Score score : loadedLeaderBoard.getLeaderboard()) {
+                            System.out.println(score);
+                        }
+
+                    } catch (IOException e) {
+                        System.out.println("Erro a ler o ficheiro com o leaderboard!");
+                    } catch (ClassNotFoundException e) {
+                        System.out.println("Não foi possível converter o objeto gravado no leaderboard!");
+                    }
+                }
+
             }
             if (keyPressed == KeyEvent.VK_DOWN) {
                 // System.out.println("User pressed down key!");
                 hero.setPreviousPosition();
                 Position nextPosition = hero.getPosition().plus(Objects.requireNonNull(Direction.DOWN.asVector()));
-                hero.move(nextPosition);
 
+                hero.move(nextPosition);
                 turn();
             }
             if (keyPressed == KeyEvent.VK_UP) {
                 // System.out.println("User pressed up key!");
                 hero.setPreviousPosition();
                 Position nextPosition = hero.getPosition().plus(Objects.requireNonNull(Direction.UP.asVector()));
-                hero.move(nextPosition);
 
+                hero.move(nextPosition);
                 turn();
             }
             if (keyPressed == KeyEvent.VK_LEFT) {
                 // System.out.println("User pressed left key!");
                 hero.setPreviousPosition();
                 Position nextPosition = hero.getPosition().plus(Objects.requireNonNull(Direction.LEFT.asVector()));
-                hero.move(nextPosition);
 
+                hero.move(nextPosition);
                 turn();
             }
             if (keyPressed == KeyEvent.VK_RIGHT) {
                 // System.out.println("User pressed right key!");
                 hero.setPreviousPosition();
                 Position nextPosition = hero.getPosition().plus(Objects.requireNonNull(Direction.RIGHT.asVector()));
-                hero.move(nextPosition);
 
+                hero.move(nextPosition);
                 turn();
             }
             if (keyPressed == KeyEvent.VK_1) {
@@ -457,26 +478,41 @@ public class Engine {
                         in.close();
                         fileIn.close();
 
-                        // check if the score tops the leaderboard
-                        for (Score score : loadedLeaderBoard.getLeaderboard()) {
-                            if (playerScore > score.getPlayerScore()) {
-                                score.setPlayerName(gui.showInputDialog("You got a top score!", "Enter your name"));
-                                score.setPlayerScore(playerScore);
+                        // check if it's a top score
+                        int topScore = 0;
+                        boolean changeTopScore = false;
 
-                                // save new top score to DB
-                                try {
-                                    FileOutputStream fileOut = new FileOutputStream("scores/scores.dat");
-                                    ObjectOutputStream out = new ObjectOutputStream(fileOut);
-                                    out.writeObject(loadedLeaderBoard);
-                                    out.close();
-                                    fileOut.close();
-                                } catch (IOException e) {
-                                    System.out.println(e.getMessage());
-                                    System.out.println("Erro a salvar o leaderboard!");
-                                }
-
+                        Score[] scores = loadedLeaderBoard.getLeaderboard();
+                        for (int i = 0; i < scores.length; i++) {
+                            if (playerScore > scores[i].getPlayerScore()) {
+                                topScore = i;
+                                changeTopScore = true;
                                 break;
+                            }
+                        }
 
+                        if (changeTopScore) {
+                            // loop to eliminate last score and every score go down
+                            for (int i = scores.length - 1; i > topScore; i--) {
+                                System.out.println(i);
+                                scores[i].setPlayerName(scores[i - 1].getPlayerName());
+                                scores[i].setPlayerScore(scores[i - 1].getPlayerScore());
+                            }
+
+                            // replace top score
+                            scores[topScore].setPlayerName(gui.showInputDialog("You got a top score!", "Enter your name"));
+                            scores[topScore].setPlayerScore(playerScore);
+
+                            // save new top score to DB
+                            try {
+                                FileOutputStream fileOut = new FileOutputStream("scores/scores.dat");
+                                ObjectOutputStream out = new ObjectOutputStream(fileOut);
+                                out.writeObject(loadedLeaderBoard);
+                                out.close();
+                                fileOut.close();
+                            } catch (IOException e) {
+                                System.out.println(e.getMessage());
+                                System.out.println("Erro a salvar o leaderboard!");
                             }
                         }
 
