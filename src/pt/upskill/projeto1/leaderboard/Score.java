@@ -1,8 +1,9 @@
 package pt.upskill.projeto1.leaderboard;
 
+import java.awt.desktop.PrintFilesEvent;
 import java.io.Serializable;
 
-public class Score implements Serializable {
+public class Score implements Comparable<Score>, Serializable {
     private String playerName;
     private int playerScore;
 
@@ -30,5 +31,10 @@ public class Score implements Serializable {
     @Override
     public String toString() {
         return "" + playerName + " - " + playerScore;
+    }
+
+    @Override
+    public int compareTo(Score o) {
+        return Integer.compare(o.getPlayerScore(), getPlayerScore());
     }
 }

@@ -38,8 +38,6 @@ public class Engine {
     // TODO: MELHORAR RELAÇÃO ENTRE SINGLETON E ENGINE
     //
     // TODO: INIMIGOS PASSAM POR ITEMS
-    // TODO: SAVE EM SALA ESPECIFICA
-    // TODO: CONFIRMAR SORT NO LEADERBOARD
 
     // 📍📍📍 Attributes
     private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
@@ -564,43 +562,8 @@ public class Engine {
                         in.close();
                         fileIn.close();
 
-                        // check if it's a top score
-                        int topScore = 0;
-                        boolean changeTopScore = false;
-
-                        Score[] scores = loadedLeaderBoard.getLeaderboard();
-                        for (int i = 0; i < scores.length; i++) {
-                            if (playerScore > scores[i].getPlayerScore()) {
-                                topScore = i;
-                                changeTopScore = true;
-                                break;
-                            }
-                        }
-
-                        if (changeTopScore) {
-                            // loop to eliminate last score and every score go down
-                            for (int i = scores.length - 1; i > topScore; i--) {
-                                System.out.println(i);
-                                scores[i].setPlayerName(scores[i - 1].getPlayerName());
-                                scores[i].setPlayerScore(scores[i - 1].getPlayerScore());
-                            }
-
-                            // replace top score
-                            scores[topScore].setPlayerName(gui.showInputDialog("You got a top score!", "Enter your name"));
-                            scores[topScore].setPlayerScore(playerScore);
-
-                            // save new top score to DB
-                            try {
-                                FileOutputStream fileOut = new FileOutputStream("scores/scores.dat");
-                                ObjectOutputStream out = new ObjectOutputStream(fileOut);
-                                out.writeObject(loadedLeaderBoard);
-                                out.close();
-                                fileOut.close();
-                            } catch (IOException e) {
-                                System.out.println(e.getMessage());
-                                System.out.println("Erro a salvar o leaderboard!");
-                            }
-                        }
+                        // check top scores and change if it's a highscore
+                        loadedLeaderBoard.checkTopScores(playerScore);
 
                         gui.showMessage("Top Scores",
                                 loadedLeaderBoard +
