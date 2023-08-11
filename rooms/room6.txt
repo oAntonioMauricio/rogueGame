@@ -10,5 +10,5 @@ Wtt    ttW
 WtG    GtW
 Wt      tW
 W       tW
-0 tttttttW
+0  ttttttW
 WWWWWWWWWW

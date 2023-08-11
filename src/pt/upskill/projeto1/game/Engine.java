@@ -317,9 +317,9 @@ public class Engine {
         // get room index // this is here because it's PRIMITIVE
         int roomIndex = gameSingleton.getRoomIndex();
 
-        ImageTile interaction = hero.checkWhereHeroIs();
+        ArrayList<ImageTile> interactions = hero.checkWhereHeroIs();
 
-        if (interaction != null) {
+        for (ImageTile interaction : interactions) {
             switch (interaction.getName()) {
                 case "Skeleton", "Bat", "BadGuy", "Thief" -> {
                     System.out.println("HIT ON ENEMY!");
@@ -584,6 +584,7 @@ public class Engine {
                 }
             }
         }
+
     }
 
     public void moveEveryEnemy() {

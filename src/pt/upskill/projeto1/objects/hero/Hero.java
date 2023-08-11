@@ -14,6 +14,7 @@ import pt.upskill.projeto1.rogue.utils.Direction;
 import pt.upskill.projeto1.rogue.utils.Position;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -51,12 +52,12 @@ public class Hero implements ImageTile, Serializable {
         }
     }
 
-    public ImageTile checkWhereHeroIs() {
+    public ArrayList<ImageTile> checkWhereHeroIs() {
         GameSingleton gameSingleton = GameSingleton.getInstance();
         List<ImageTile> tiles = gameSingleton.getTiles();
 
-        // floor as default
-        ImageTile interaction = new Floor(new Position(-1, -1));
+        // create interactions list
+        ArrayList<ImageTile> interactions = new ArrayList<>();
 
         for (ImageTile tile : tiles) {
             if (Objects.equals(tile.getName(), "Hero") || Objects.equals(tile.getName(), "Floor")) {
@@ -64,12 +65,17 @@ public class Hero implements ImageTile, Serializable {
             }
 
             if (getPosition().getX() == tile.getPosition().getX() && getPosition().getY() == tile.getPosition().getY()) {
-                System.out.println("hero is on top of: " + tile.getName());
-                interaction = tile;
+                interactions.add(tile);
             }
         }
 
-        return interaction;
+        // check interactions on console
+        for (ImageTile inter : interactions) {
+            System.out.println("hero is on top of: " + inter.getName());
+        }
+
+        // return interactions;
+        return interactions;
 
     }
 
