@@ -6,6 +6,7 @@ import pt.upskill.projeto1.gui.ImageMatrixGUI;
 import pt.upskill.projeto1.gui.ImageTile;
 import pt.upskill.projeto1.objects.door.Door;
 import pt.upskill.projeto1.objects.hero.Hero;
+import pt.upskill.projeto1.objects.props.Trap;
 import pt.upskill.projeto1.objects.props.Wall;
 import pt.upskill.projeto1.objects.items.Item;
 import pt.upskill.projeto1.rogue.utils.Direction;
@@ -48,7 +49,7 @@ public abstract class Enemy implements ImageTile, Serializable {
 
         for (ImageTile tile : tiles) {
             if (nextPosition.getX() == tile.getPosition().getX() && nextPosition.getY() == tile.getPosition().getY()) {
-                if (tile instanceof Wall || tile instanceof Door || tile instanceof Enemy || tile instanceof Item) {
+                if (tile instanceof Wall || tile instanceof Door || tile instanceof Enemy || tile instanceof Trap) {
                     move = !move;
                 }
             }
