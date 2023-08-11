@@ -1,6 +1,7 @@
 package pt.upskill.projeto1.game;
 
 import pt.upskill.projeto1.gui.ImageTile;
+import pt.upskill.projeto1.objects.enemies.Enemy;
 import pt.upskill.projeto1.objects.props.Floor;
 import pt.upskill.projeto1.objects.hero.Hero;
 import pt.upskill.projeto1.objects.hero.StatusBar;
@@ -12,7 +13,7 @@ import java.util.List;
 
 public class GameSingleton implements Serializable {
 
-    // 📍📍📍 Attributes
+    // 🟩 Attributes
     private static GameSingleton instance;
     private List<ImageTile> tiles;
     // careful passing roomIndex because it's an int
@@ -23,7 +24,7 @@ public class GameSingleton implements Serializable {
     // careful passing score because it's an int
     private int score;
 
-    // 📍📍📍 Singleton Mechanics
+    // 🟩 Singleton Mechanics
     private GameSingleton() {
         tiles = new ArrayList<>();
         roomIndex = 0;
@@ -41,7 +42,7 @@ public class GameSingleton implements Serializable {
         return instance;
     }
 
-    // 📍📍📍 Methods
+    // 🟩 Methods
     public void loadRoom(int nextRoom) {
         setRoomIndex(nextRoom);
 
@@ -88,7 +89,7 @@ public class GameSingleton implements Serializable {
         System.out.println("Loaded roomIndex, score, roomList, Hero and StatusBar.");
     }
 
-    // 📍📍📍 Getters
+    // 🟩 Getters
     public List<Room> getRoomList() {
         return roomList;
     }
@@ -113,7 +114,7 @@ public class GameSingleton implements Serializable {
         return score;
     }
 
-    // 📍📍📍 Setters
+    // 🟩 Setters
     public void setRoomIndex(int roomIndex) {
         this.roomIndex = roomIndex;
     }

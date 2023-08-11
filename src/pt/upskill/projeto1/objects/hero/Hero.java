@@ -15,6 +15,7 @@ import pt.upskill.projeto1.rogue.utils.Position;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -69,12 +70,14 @@ public class Hero implements ImageTile, Serializable {
             }
         }
 
+        // reverse to deal with enemies first
+        Collections.reverse(interactions);
+
         // check interactions on console
         for (ImageTile inter : interactions) {
             System.out.println("hero is on top of: " + inter.getName());
         }
 
-        // return interactions;
         return interactions;
 
     }
@@ -82,9 +85,6 @@ public class Hero implements ImageTile, Serializable {
     public void fight(Enemy enemyToFight) {
         // singletons 🔽
         ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
-
-        // values before fight
-        int initialEnemyHP = enemyToFight.getHealth();
 
         // deal dmg
         enemyToFight.setHealth(enemyToFight.getHealth() - getPower());
@@ -97,7 +97,7 @@ public class Hero implements ImageTile, Serializable {
         // win fight
         if (enemyToFight.getHealth() <= 0) {
             // kill enemy after fight
-            enemyToFight.death(initialEnemyHP);
+            enemyToFight.death(enemyToFight.getInitialHealth());
         }
     }
 

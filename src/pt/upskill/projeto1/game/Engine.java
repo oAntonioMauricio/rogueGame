@@ -38,8 +38,9 @@ public class Engine {
     // TODO: MELHORAR RELAÇÃO ENTRE SINGLETON E ENGINE
     //
     // TODO: INIMIGOS PASSAM POR ITEMS
+    // TODO: INITAL HP
 
-    // 📍📍📍 Attributes
+    // 🟩 Attributes
     private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
     private GameSingleton gameSingleton = GameSingleton.getInstance();
     private Hero hero = gameSingleton.getHero();
@@ -48,7 +49,7 @@ public class Engine {
     private StatusBar statusBar = gameSingleton.getStatusBar();
     private boolean fireballMode = false;
 
-    // 📍📍📍 Methods
+    // 🟩 Methods
     public void init() {
 
         gui.setEngine(this);
@@ -300,7 +301,7 @@ public class Engine {
 
     }
 
-    // 📍📍📍 Game Turns
+    // 🟩 Game Turns
     public void turn() {
         gameSingleton.setScore(gameSingleton.getScore() - 1);
 
@@ -583,6 +584,9 @@ public class Engine {
                 default -> {
                 }
             }
+            // break to deal with one interaction at a time
+            // usefully when there's an enemy on top of an item
+            break;
         }
 
     }
@@ -613,7 +617,7 @@ public class Engine {
         }
     }
 
-    // 📍📍📍 UI
+    // 🟩 UI
     public void removeArrows() {
         // remove from tiles too !!
         List<ImageTile> tilesToRemove = new ArrayList<>();

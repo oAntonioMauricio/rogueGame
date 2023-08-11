@@ -4,6 +4,7 @@ import pt.upskill.projeto1.game.GameSingleton;
 import pt.upskill.projeto1.game.Room;
 import pt.upskill.projeto1.gui.ImageMatrixGUI;
 import pt.upskill.projeto1.gui.ImageTile;
+import pt.upskill.projeto1.objects.enemies.Enemy;
 import pt.upskill.projeto1.objects.items.Hammer;
 import pt.upskill.projeto1.objects.items.Item;
 import pt.upskill.projeto1.objects.items.Key;
@@ -15,6 +16,7 @@ import pt.upskill.projeto1.rogue.utils.Position;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class StatusBar implements Serializable {
@@ -158,7 +160,18 @@ public class StatusBar implements Serializable {
                 // add item to room
                 roomList.get(roomIndex).getItemList().add(currentSlot);
                 tiles.add(currentSlot);
-                gui.addImage(currentSlot);
+
+                tiles.sort((obj1, obj2) -> {
+                    if (obj1 instanceof Enemy && !(obj2 instanceof Enemy)) {
+                        return 1; // obj1 is Enemy and obj2 is not, so obj1 comes after obj2
+                    } else if (!(obj1 instanceof Enemy) && obj2 instanceof Enemy) {
+                        return -1; // obj1 is not an Enemy but obj2 is, so obj1 comes before obj2
+                    }
+                    return 0; // Both objects are either Enemies or not Enemies, maintain their order
+                });
+
+                gui.clearImages();
+                gui.newImages(tiles);
 
                 if (currentSlot instanceof Key) {
                     gui.setStatus("You removed: " + ((Key) currentSlot).getKeyId());

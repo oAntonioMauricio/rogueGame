@@ -4,6 +4,7 @@ import pt.upskill.projeto1.rogue.utils.Position;
 
 public class Bat extends Enemy {
     private Position position;
+    private int initialHealth = 25;
     private int health = 25;
     private int power = 25;
 
@@ -37,6 +38,11 @@ public class Bat extends Enemy {
     @Override
     public int getHealth() {
         return this.health;
+    }
+
+    @Override
+    public int getInitialHealth() {
+        return this.initialHealth;
     }
 
     @Override

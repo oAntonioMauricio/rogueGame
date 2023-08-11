@@ -56,7 +56,7 @@ public class Fire implements ImageTile, FireTile, Serializable {
         }
 
         if (toRemove) {
-            ((Enemy) tileToRemove).death(((Enemy) tileToRemove).getHealth());
+            ((Enemy) tileToRemove).death(((Enemy) tileToRemove).getInitialHealth());
             // update statusbar to display the new score
             gameSingleton.getStatusBar().updateStatus();
             return false;

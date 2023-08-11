@@ -18,27 +18,10 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Enemy implements ImageTile, Serializable {
-
+    // 🟩 Attributes
     private Position previousPosition;
 
-    public abstract int getHealth();
-
-    public abstract int getPower();
-
-    public abstract int getPoints();
-
-    public Position getPreviousPosition() {
-        return previousPosition;
-    }
-
-    public abstract void setHealth(int newHealth);
-
-    public abstract void setPosition(Position position);
-
-    public void setPreviousPosition() {
-        this.previousPosition = getPosition();
-    }
-
+    // 🟩 Methods
     public void move(Position nextPosition) {
 
         // get singleton
@@ -203,6 +186,28 @@ public abstract class Enemy implements ImageTile, Serializable {
 
         // message
         gui.setStatus("Killed " + getName() + " with " + initialEnemyHP + " HP at the start and " + getPower() + " power. You won " + getPoints() + " points.");
+    }
+
+    // 🟩 Getters
+    public abstract int getHealth();
+
+    public abstract int getInitialHealth();
+
+    public abstract int getPower();
+
+    public abstract int getPoints();
+
+    public Position getPreviousPosition() {
+        return previousPosition;
+    }
+
+    // 🟩 Setters
+    public abstract void setHealth(int newHealth);
+
+    public abstract void setPosition(Position position);
+
+    public void setPreviousPosition() {
+        this.previousPosition = getPosition();
     }
 
 }
