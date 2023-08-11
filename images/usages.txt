@@ -1,7 +1,8 @@
 numbers - doors;
 
-C - CityFloor;
 B - Bat;
+C - CityFloor;
+f - FireBloom;
 G - BadGuy;
 h - Hammer;
 H - Hero;

@@ -5,7 +5,7 @@ WWWWWWWWWW
 W        W
 W        W
 W        W
-0        W
+0    f   W
 W        W
 W        W
 W        W
