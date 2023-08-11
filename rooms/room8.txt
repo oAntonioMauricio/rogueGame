@@ -1,0 +1,13 @@
+#
+# 0 D room7.txt 1
+#
+WWWWWWWWWW
+W        W
+W        W
+W        W
+0        W
+W        W
+W        W
+W        W
+W        W
+WWWWWWWWWW
