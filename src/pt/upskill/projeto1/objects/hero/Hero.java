@@ -19,18 +19,18 @@ import java.util.Objects;
 
 public class Hero implements ImageTile, Serializable {
 
-    // 📍📍📍 Attributes
+    // 🟩 Attributes
     private Position position;
     private Position previousPosition;
     private int power = 25;
     private int health = 100;
 
-    // 📍📍📍 Constructor
+    // 🟩 Constructor
     public Hero() {
         this.position = new Position(8, 8);
     }
 
-    // 📍📍📍 Methods
+    // 🟩 Methods
     public void move(Position nextPosition) {
         // get singleton
         GameSingleton gameSingleton = GameSingleton.getInstance();
@@ -154,7 +154,7 @@ public class Hero implements ImageTile, Serializable {
         this.power = savedHero.getPower();
     }
 
-    // 📍📍📍 Getters
+    // 🟩 Getters
     @Override
     public String getName() {
         return "Hero";
@@ -177,7 +177,7 @@ public class Hero implements ImageTile, Serializable {
         return previousPosition;
     }
 
-    // 📍📍📍 Setters
+    // 🟩 Setters
     public void setPosition(Position position) {
         this.position = position;
     }
