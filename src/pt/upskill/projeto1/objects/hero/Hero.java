@@ -2,7 +2,6 @@ package pt.upskill.projeto1.objects.hero;
 
 import pt.upskill.projeto1.game.FireBallThread;
 import pt.upskill.projeto1.game.GameSingleton;
-import pt.upskill.projeto1.game.Room;
 import pt.upskill.projeto1.gui.FireTile;
 import pt.upskill.projeto1.gui.ImageMatrixGUI;
 import pt.upskill.projeto1.gui.ImageTile;
@@ -19,30 +18,19 @@ import java.util.List;
 import java.util.Objects;
 
 public class Hero implements ImageTile, Serializable {
-    // properties 🔽
+
+    // 📍📍📍 Attributes
     private Position position;
     private Position previousPosition;
     private int power = 25;
     private int health = 100;
 
+    // 📍📍📍 Constructor
     public Hero() {
         this.position = new Position(8, 8);
     }
 
-    @Override
-    public String getName() {
-        return "Hero";
-    }
-
-    @Override
-    public Position getPosition() {
-        return position;
-    }
-
-    public Position getPreviousPosition() {
-        return previousPosition;
-    }
-
+    // 📍📍📍 Methods
     public void move(Position nextPosition) {
         // get singleton
         GameSingleton gameSingleton = GameSingleton.getInstance();
@@ -63,41 +51,11 @@ public class Hero implements ImageTile, Serializable {
         }
     }
 
-    public void setPosition(Position position) {
-        this.position = position;
-    }
-
-    public void setPreviousPosition() {
-        this.previousPosition = getPosition();
-    }
-
-    public int getPower() {
-        return power;
-    }
-
-    public int getHealth() {
-        return health;
-    }
-
-    public void setHealth(int newHealth) {
-        if (newHealth > 100) {
-            this.health = 100;
-        } else {
-            this.health = newHealth;
-        }
-    }
-
-    public void setPower(int power) {
-        this.power = power;
-    }
-
     public ImageTile checkWhereHeroIs() {
         GameSingleton gameSingleton = GameSingleton.getInstance();
         List<ImageTile> tiles = gameSingleton.getTiles();
-        // get room index // this is here because it's PRIMITIVE
-        // int roomIndex = gameSingleton.getRoomIndex();
 
-        // it's floor as default
+        // floor as default
         ImageTile interaction = new Floor(new Position(-1, -1));
 
         for (ImageTile tile : tiles) {
@@ -118,12 +76,6 @@ public class Hero implements ImageTile, Serializable {
     public void fight(Enemy enemyToFight) {
         // singletons 🔽
         ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
-        GameSingleton gameSingleton = GameSingleton.getInstance();
-        List<ImageTile> tiles = gameSingleton.getTiles();
-        List<Room> roomList = gameSingleton.getRoomList();
-
-        // get room index // this is here because it's PRIMITIVE
-        int roomIndex = gameSingleton.getRoomIndex();
 
         // values before fight
         int initialEnemyHP = enemyToFight.getHealth();
@@ -136,37 +88,11 @@ public class Hero implements ImageTile, Serializable {
         // recoil
         move(getPreviousPosition());
 
-        /*
-        while (enemyToFight.getHealth() > 0 && getHealth() > 0) {
-            // deal dmg
-            enemyToFight.setHealth(enemyToFight.getHealth() - getPower());
-            System.out.println("You dealt " + getPower() + " damage. Enemy HP left: " + enemyToFight.getHealth());
-
-            if (enemyToFight.getHealth() > 0) {
-                System.out.println("Enemy attack!");
-                setHealth(getHealth() - enemyToFight.getPower());
-                System.out.println(enemyToFight.getName() + " attacked you. You lost: " + enemyToFight.getPower() + " health.");
-            }
-        }
-
-         */
-
+        // win fight
         if (enemyToFight.getHealth() <= 0) {
-            // win fight
             // kill enemy after fight
             enemyToFight.death(initialEnemyHP);
         }
-
-        /*
-        else {
-            // remove hero from the game
-            setPosition(new Position(-1, -1));
-            tiles.remove(this);
-            gui.removeImage(this);
-            gui.setStatus("You died in the fight." + " The enemy had " + initialEnemyHP + " HP at the start and " + enemyToFight.getPower() + " power.");
-        }
-
-         */
     }
 
     public void moveAwayFromTheDoor() {
@@ -228,4 +154,43 @@ public class Hero implements ImageTile, Serializable {
         this.power = savedHero.getPower();
     }
 
+    // 📍📍📍 Getters
+    @Override
+    public String getName() {
+        return "Hero";
+    }
+
+    @Override
+    public Position getPosition() {
+        return position;
+    }
+
+    public int getPower() {
+        return power;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public Position getPreviousPosition() {
+        return previousPosition;
+    }
+
+    // 📍📍📍 Setters
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
+    public void setPreviousPosition() {
+        this.previousPosition = getPosition();
+    }
+
+    public void setHealth(int newHealth) {
+        this.health = Math.min(newHealth, 100);
+    }
+
+    public void setPower(int power) {
+        this.power = power;
+    }
 }
