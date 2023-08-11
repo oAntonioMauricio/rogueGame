@@ -36,7 +36,34 @@ public class Fire implements ImageTile, FireTile, Serializable {
         GameSingleton gameSingleton = GameSingleton.getInstance();
         List<ImageTile> tiles = gameSingleton.getTiles();
 
+        boolean toRemove = false;
+        ImageTile tileToRemove = null;
 
+        for (ImageTile tile : tiles) {
+            if (this.position.getX() == tile.getPosition().getX() && this.position.getY() == tile.getPosition().getY()) {
+                if (tile instanceof Enemy || tile instanceof Wall || tile instanceof Door) {
+                    gui.setStatus("Hit on " + tile.getName());
+                    if (tile instanceof Enemy) {
+                        toRemove = true;
+                        tileToRemove = tile;
+                        break;
+                    }
+
+                }
+            }
+        }
+
+        if (toRemove) {
+            ((Enemy) tileToRemove).death(((Enemy) tileToRemove).getHealth());
+            // update statusbar to display the new score
+            gameSingleton.getStatusBar().updateStatus();
+            return false;
+        }
+
+        return true;
+
+        // old
+        /*
         for (ImageTile tile : tiles) {
             if (this.position.getX() == tile.getPosition().getX() && this.position.getY() == tile.getPosition().getY()) {
                 if (tile instanceof Enemy || tile instanceof Wall || tile instanceof Door) {
@@ -51,7 +78,11 @@ public class Fire implements ImageTile, FireTile, Serializable {
             }
         }
 
+
+
         return true;
+
+         */
     }
 
     @Override

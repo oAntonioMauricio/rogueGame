@@ -21,7 +21,6 @@ import pt.upskill.projeto1.rogue.utils.Position;
 
 import java.awt.event.KeyEvent;
 import java.io.*;
-import java.sql.SQLOutput;
 import java.util.*;
 
 public class Engine {
@@ -41,7 +40,7 @@ public class Engine {
     // TODO: INIMIGOS PASSAM POR ITEMS
     // TODO: SAVE EM SALA ESPECIFICA
     // TODO: CONFIRMAR SORT NO LEADERBOARD
-    // TODO: reformular onTopOf
+    // TODO: reformular onTopOf / check interaction
 
     // 📍📍📍 Attributes
     private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
@@ -210,35 +209,23 @@ public class Engine {
             //
             if (keyPressed == KeyEvent.VK_S) {
 
-                hero.checkWhereHeroIs();
+                if (hero.checkWhereHeroIs() instanceof CityFloor || gameSingleton.getRoomIndex() == 0) {
+                    System.out.println("Saving game...");
 
-                System.out.println(hero.getOnTopOf().getName());
-
-                if (hero.getOnTopOf() instanceof CityFloor) {
-                    System.out.println("Can save");
+                    try {
+                        FileOutputStream fileOut = new FileOutputStream("saves/save.dat");
+                        ObjectOutputStream out = new ObjectOutputStream(fileOut);
+                        out.writeObject(gameSingleton);
+                        gui.setStatus("Game Saved.");
+                        out.close();
+                        fileOut.close();
+                    } catch (IOException e) {
+                        System.out.println(e.getMessage());
+                        System.out.println("Erro a salvar o mapa no ficheiro!");
+                    }
                 } else {
-                    System.out.println("Can't save");
+                    gui.setStatus("Can't save here. Sorry.");
                 }
-
-                // gui.setStatus("You can save your game at the safe spots.");
-
-
-                /*
-                System.out.println("Saving game...");
-
-                try {
-                    FileOutputStream fileOut = new FileOutputStream("saves/save.dat");
-                    ObjectOutputStream out = new ObjectOutputStream(fileOut);
-                    out.writeObject(gameSingleton);
-                    gui.setStatus("Game Saved.");
-                    out.close();
-                    fileOut.close();
-                } catch (IOException e) {
-                    System.out.println(e.getMessage());
-                    System.out.println("Erro a salvar o mapa no ficheiro!");
-                }
-
-                 */
 
             }
             if (keyPressed == KeyEvent.VK_L) {
@@ -301,7 +288,7 @@ public class Engine {
     public void turn() {
         gameSingleton.setScore(gameSingleton.getScore() - 1);
 
-        checkWhereHeroIs();
+        checkInteraction();
 
         moveEveryEnemy();
 
@@ -310,23 +297,11 @@ public class Engine {
         statusBar.updateStatus();
     }
 
-    public void checkWhereHeroIs() {
-
+    public void checkInteraction() {
         // get room index // this is here because it's PRIMITIVE
         int roomIndex = gameSingleton.getRoomIndex();
 
-        ImageTile interaction = null;
-
-        for (ImageTile tile : tiles) {
-            if (Objects.equals(tile.getName(), "Hero") || Objects.equals(tile.getName(), "Floor")) {
-                continue;
-            }
-
-            if (hero.getPosition().getX() == tile.getPosition().getX() && hero.getPosition().getY() == tile.getPosition().getY()) {
-                System.out.println("hero is on top of: " + tile.getName());
-                interaction = tile;
-            }
-        }
+        ImageTile interaction = hero.checkWhereHeroIs();
 
         if (interaction != null) {
             switch (interaction.getName()) {

@@ -22,7 +22,6 @@ public class Hero implements ImageTile, Serializable {
     // properties 🔽
     private Position position;
     private Position previousPosition;
-    private ImageTile onTopOf;
     private int power = 25;
     private int health = 100;
 
@@ -92,21 +91,14 @@ public class Hero implements ImageTile, Serializable {
         this.power = power;
     }
 
-    public ImageTile getOnTopOf() {
-        return onTopOf;
-    }
-
-    public void setOnTopOf(ImageTile onTopOf) {
-        this.onTopOf = onTopOf;
-    }
-
-    public void checkWhereHeroIs() {
+    public ImageTile checkWhereHeroIs() {
         GameSingleton gameSingleton = GameSingleton.getInstance();
         List<ImageTile> tiles = gameSingleton.getTiles();
         // get room index // this is here because it's PRIMITIVE
-        int roomIndex = gameSingleton.getRoomIndex();
+        // int roomIndex = gameSingleton.getRoomIndex();
 
-        ImageTile interaction = null;
+        // it's floor as default
+        ImageTile interaction = new Floor(new Position(-1, -1));
 
         for (ImageTile tile : tiles) {
             if (Objects.equals(tile.getName(), "Hero") || Objects.equals(tile.getName(), "Floor")) {
@@ -119,11 +111,7 @@ public class Hero implements ImageTile, Serializable {
             }
         }
 
-        if (interaction == null) {
-            setOnTopOf(new Floor(new Position(0, 0)));
-        } else {
-            setOnTopOf(interaction);
-        }
+        return interaction;
 
     }
 
