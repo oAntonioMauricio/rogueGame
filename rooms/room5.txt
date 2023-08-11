@@ -1,5 +1,6 @@
 #
 # 0 D room4.txt 1
+# 1 D room6.txt 0
 #
 WWWWWWWWWW
 WRR RRR RW
@@ -9,5 +10,5 @@ W S  W   W
 WWWR W   W
 W   SW   W
 WR WWWRR W
-WS RRWRRRW
+WS RRWRRR1
 WWWW0WWWWW
