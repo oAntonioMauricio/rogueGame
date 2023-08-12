@@ -38,8 +38,9 @@ public class Engine {
     // TODO: MELHORAR RELAÇÃO ENTRE SINGLETON E ENGINE
 
     // TODO: DROPS COM DIRECÃO
-    // TODO: ANIMAÇÃO DE FIGHT
     // TODO: REVER STATUS BAR HEALTH
+    // TODO: "CAN'T SAVE HERE SORRY" ESTÁ DESATIVADO
+    // TODO: METER PONTOS NOS ITENS
 
     // 🟩 Attributes
     private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
