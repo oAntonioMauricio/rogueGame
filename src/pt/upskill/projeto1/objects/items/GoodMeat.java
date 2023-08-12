@@ -11,6 +11,11 @@ public class GoodMeat extends Item {
     }
 
     @Override
+    public boolean isConsumable() {
+        return true;
+    }
+
+    @Override
     public String getName() {
         return "GoodMeat";
     }

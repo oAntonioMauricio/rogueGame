@@ -36,6 +36,8 @@ public abstract class Item implements ImageTile, Serializable {
         this.position = position;
     }
 
+    public abstract boolean isConsumable();
+
     public boolean dropItem() {
         ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
         GameSingleton gameSingleton = GameSingleton.getInstance();

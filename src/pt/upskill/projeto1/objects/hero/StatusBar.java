@@ -5,6 +5,7 @@ import pt.upskill.projeto1.game.Room;
 import pt.upskill.projeto1.gui.ImageMatrixGUI;
 import pt.upskill.projeto1.gui.ImageTile;
 import pt.upskill.projeto1.objects.enemies.Enemy;
+import pt.upskill.projeto1.objects.items.GoodMeat;
 import pt.upskill.projeto1.objects.items.Hammer;
 import pt.upskill.projeto1.objects.items.Item;
 import pt.upskill.projeto1.objects.items.Key;
@@ -152,44 +153,75 @@ public class StatusBar implements Serializable {
         if (currentSlot == null) {
             gui.setStatus("You don't have an item in the slot: " + (slot + 1));
         } else {
-            // get room index // this is here because it's PRIMITIVE
-            int roomIndex = gameSingleton.getRoomIndex();
+            // check if it's a consumable
+            if (currentSlot.isConsumable()) {
+                boolean remove = false;
 
-            // check if it can be dropped to continue
-            if (currentSlot.dropItem()) {
-                // add item to room
-                roomList.get(roomIndex).getItemList().add(currentSlot);
-                tiles.add(currentSlot);
-
-                tiles.sort((obj1, obj2) -> {
-                    if (obj1 instanceof Enemy && !(obj2 instanceof Enemy)) {
-                        return 1; // obj1 is Enemy and obj2 is not, so obj1 comes after obj2
-                    } else if (!(obj1 instanceof Enemy) && obj2 instanceof Enemy) {
-                        return -1; // obj1 is not an Enemy but obj2 is, so obj1 comes before obj2
+                if (currentSlot instanceof GoodMeat) {
+                    if (hero.getHealth() >= 100) {
+                        gui.setStatus("HP is full!");
+                    } else {
+                        hero.setHealth(hero.getHealth() + ((GoodMeat) currentSlot).getHealth());
+                        gui.setStatus("You used " + currentSlot.getName() + " and healed: " + ((GoodMeat) currentSlot).getHealth() + ".");
+                        remove = true;
                     }
-                    return 0; // Both objects are either Enemies or not Enemies, maintain their order
-                });
-
-                gui.clearImages();
-                gui.newImages(tiles);
-
-                if (currentSlot instanceof Key) {
-                    gui.setStatus("You removed: " + ((Key) currentSlot).getKeyId());
-                } else if (currentSlot instanceof Hammer) {
-                    // remove hammer power
-                    hero.setPower(hero.getPower() - ((Hammer) currentSlot).getItemPower());
-                    gui.setStatus("You removed the Hammer and lost " + ((Hammer) currentSlot).getItemPower() + ". Total power: " + hero.getPower());
-                } else {
-                    gui.setStatus("You removed: " + currentSlot.getName());
                 }
 
-                // remove item from status bar
-                this.statusBar.get(2)[slot] = null;
+                if (remove) {
+                    // remove item from status bar
+                    this.statusBar.get(2)[slot] = null;
 
-                // organize and update at the end
-                organizeItemArray();
-                updateStatus();
+                    // organize and update at the end
+                    organizeItemArray();
+                    updateStatus();
+                }
+
             }
+            // run this else if it's a passive item
+            else {
+                // check if it can be dropped to continue
+                if (currentSlot.dropItem()) {
+                    // get room index // this is here because it's PRIMITIVE
+                    int roomIndex = gameSingleton.getRoomIndex();
+
+                    // add item to room
+                    roomList.get(roomIndex).getItemList().add(currentSlot);
+                    tiles.add(currentSlot);
+
+                    // sort tiles so enemies are at the end
+                    // this is needed so enemies are at the top on the gui
+                    tiles.sort((obj1, obj2) -> {
+                        if (obj1 instanceof Enemy && !(obj2 instanceof Enemy)) {
+                            return 1; // obj1 is Enemy and obj2 is not, so obj1 comes after obj2
+                        } else if (!(obj1 instanceof Enemy) && obj2 instanceof Enemy) {
+                            return -1; // obj1 is not an Enemy but obj2 is, so obj1 comes before obj2
+                        }
+                        return 0; // Both objects are either Enemies or not Enemies, maintain their order
+                    });
+
+                    // reload gui
+                    gui.clearImages();
+                    gui.newImages(tiles);
+
+                    if (currentSlot instanceof Key) {
+                        gui.setStatus("You removed: " + ((Key) currentSlot).getKeyId());
+                    } else if (currentSlot instanceof Hammer) {
+                        // remove hammer power
+                        hero.setPower(hero.getPower() - ((Hammer) currentSlot).getItemPower());
+                        gui.setStatus("You removed the Hammer and lost " + ((Hammer) currentSlot).getItemPower() + ". Total power: " + hero.getPower());
+                    } else {
+                        gui.setStatus("You removed: " + currentSlot.getName());
+                    }
+
+                    // remove item from status bar
+                    this.statusBar.get(2)[slot] = null;
+
+                    // organize and update at the end
+                    organizeItemArray();
+                    updateStatus();
+                }
+            }
+
         }
     }
 

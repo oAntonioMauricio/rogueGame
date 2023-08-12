@@ -11,6 +11,11 @@ public class Hammer extends Item {
     }
 
     @Override
+    public boolean isConsumable() {
+        return false;
+    }
+
+    @Override
     public String getName() {
         return "Hammer";
     }

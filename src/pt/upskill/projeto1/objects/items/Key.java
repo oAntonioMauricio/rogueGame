@@ -19,4 +19,9 @@ public class Key extends Item {
     public String getKeyId() {
         return keyId;
     }
+
+    @Override
+    public boolean isConsumable() {
+        return false;
+    }
 }

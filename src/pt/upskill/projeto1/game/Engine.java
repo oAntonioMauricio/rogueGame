@@ -36,9 +36,6 @@ public class Engine {
     //
     // TODO: melhorar algoritmo de perseguição https://wumbo.net/formulas/distance-between-two-points-2d/
     // TODO: MELHORAR RELAÇÃO ENTRE SINGLETON E ENGINE
-    //
-    // TODO: INIMIGOS PASSAM POR ITEMS
-    // TODO: INITAL HP
 
     // 🟩 Attributes
     private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
@@ -457,6 +454,30 @@ public class Engine {
                     int indexItem = roomList.get(roomIndex).getItemList().indexOf(interaction);
                     GoodMeat currentItem = (GoodMeat) roomList.get(roomIndex).getItemList().get(indexItem);
 
+                    // storage
+                    ImageTile[] itemsArray = gameSingleton.getStatusBar().getItemArray();
+                    int emptyIndex = gameSingleton.getStatusBar().itemArrayEmptyIndex();
+
+                    if (emptyIndex == -1) {
+                        gui.setStatus("Inventory is full!");
+                    } else {
+                        itemsArray[emptyIndex] = currentItem;
+                        // seven is the start on the items position on the status bar
+                        currentItem.setPosition(new Position(7 + emptyIndex, 0));
+
+                        gui.setStatus("You picked GoodMeat. Use it to restore " + currentItem.getHealth() + " HP.");
+
+                        // delete item
+                        roomList.get(roomIndex).getItemList().remove(currentItem);
+                        tiles.remove(currentItem);
+                        gui.removeImage(currentItem);
+                    }
+
+                    /*
+                    // get item
+                    int indexItem = roomList.get(roomIndex).getItemList().indexOf(interaction);
+                    GoodMeat currentItem = (GoodMeat) roomList.get(roomIndex).getItemList().get(indexItem);
+
                     // effect
                     hero.setHealth(hero.getHealth() + currentItem.getHealth());
                     gui.setStatus("You ate " + currentItem.getName() + " and received " + currentItem.getHealth() + " HP. Your HP is: " + hero.getHealth());
@@ -465,6 +486,8 @@ public class Engine {
                     roomList.get(roomIndex).getItemList().remove(currentItem);
                     tiles.remove(currentItem);
                     gui.removeImage(currentItem);
+
+                     */
                 }
                 case "Trap" -> {
                     // get trap
