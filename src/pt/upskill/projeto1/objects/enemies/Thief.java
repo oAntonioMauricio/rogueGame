@@ -12,7 +12,6 @@ public class Thief extends Enemy {
     private Position position;
     private int initialHealth = 50;
     private int health = 50;
-    private int power = 50;
     private int points = 75;
 
     public Thief(Position position) {
@@ -30,8 +29,8 @@ public class Thief extends Enemy {
     }
 
     @Override
-    public int getPower() {
-        return this.power;
+    public double getPower() {
+        return this.power * 2;
     }
 
     @Override

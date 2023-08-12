@@ -6,8 +6,6 @@ public class Bat extends Enemy {
     private Position position;
     private int initialHealth = 25;
     private int health = 25;
-    private int power = 25;
-
     private int points = 25;
 
     public Bat(Position position) {
@@ -26,8 +24,8 @@ public class Bat extends Enemy {
 
 
     @Override
-    public int getPower() {
-        return this.power;
+    public double getPower() {
+        return this.power * 1;
     }
 
     @Override

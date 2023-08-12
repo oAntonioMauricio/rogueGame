@@ -24,6 +24,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public abstract class Enemy implements ImageTile, Serializable {
     // 🟩 Attributes
     private Position previousPosition;
+    protected double power = 12.5;
 
     // 🟩 Methods
     public void move(Position nextPosition) {
@@ -204,7 +205,8 @@ public abstract class Enemy implements ImageTile, Serializable {
 
     public abstract int getInitialHealth();
 
-    public abstract int getPower();
+    // implement getPower by multiplying the protected power attribute in this abstract class
+    public abstract double getPower();
 
     public abstract int getPoints();
 

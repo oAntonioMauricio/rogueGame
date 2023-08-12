@@ -12,7 +12,6 @@ import pt.upskill.projeto1.objects.hero.StatusBar;
 import pt.upskill.projeto1.objects.items.GoodMeat;
 import pt.upskill.projeto1.objects.items.Hammer;
 import pt.upskill.projeto1.objects.items.Key;
-import pt.upskill.projeto1.objects.props.CityFloor;
 import pt.upskill.projeto1.objects.props.Trap;
 import pt.upskill.projeto1.objects.props.arrows.Arrow;
 import pt.upskill.projeto1.objects.statusbar.Fire;

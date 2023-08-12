@@ -9,10 +9,7 @@ import pt.upskill.projeto1.objects.items.GoodMeat;
 import pt.upskill.projeto1.objects.items.Hammer;
 import pt.upskill.projeto1.objects.items.Item;
 import pt.upskill.projeto1.objects.items.Key;
-import pt.upskill.projeto1.objects.statusbar.Black;
-import pt.upskill.projeto1.objects.statusbar.Fire;
-import pt.upskill.projeto1.objects.statusbar.Green;
-import pt.upskill.projeto1.objects.statusbar.Red;
+import pt.upskill.projeto1.objects.statusbar.*;
 import pt.upskill.projeto1.rogue.utils.Position;
 
 import java.io.Serializable;
@@ -28,7 +25,12 @@ public class StatusBar implements Serializable {
         this.statusBar = new ArrayList<>();
 
         ImageTile[] fireballs = {new Fire(new Position(0, 0)), new Fire(new Position(1, 0)), new Fire(new Position(2, 0))};
-        ImageTile[] health = {new Green(new Position(3, 0)), new Green(new Position(4, 0)), new Green(new Position(5, 0)), new Green(new Position(6, 0))};
+        ImageTile[] health = {
+                new Green(new Position(3, 0)),
+                new Green(new Position(4, 0)),
+                new Green(new Position(5, 0)),
+                new Green(new Position(6, 0))
+        };
         ImageTile[] items = {null, null, null};
 
         // index 0
@@ -94,7 +96,7 @@ public class StatusBar implements Serializable {
 
 
         // update score
-        gui.setStatusTwo("Score: " + gameSingleton.getScore() + " Power: " + gameSingleton.getHero().getPower());
+        gui.setStatusTwo("Score: " + gameSingleton.getScore() + " Power: " + gameSingleton.getHero().getPower() + " HP: " + gameSingleton.getHero().getHealth());
     }
 
     public void updateHeroHP() {
@@ -109,10 +111,24 @@ public class StatusBar implements Serializable {
             }
         }
 
+        if (hero.getHealth() == 87.5) {
+            healthArray[0] = new Green(new Position(3, 0));
+            healthArray[1] = new Green(new Position(4, 0));
+            healthArray[2] = new Green(new Position(5, 0));
+            healthArray[3] = new RedGreen(new Position(6, 0));
+        }
+
         if (hero.getHealth() == 75) {
             healthArray[0] = new Green(new Position(3, 0));
             healthArray[1] = new Green(new Position(4, 0));
             healthArray[2] = new Green(new Position(5, 0));
+            healthArray[3] = new Red(new Position(6, 0));
+        }
+
+        if (hero.getHealth() == 62.5) {
+            healthArray[0] = new Green(new Position(3, 0));
+            healthArray[1] = new Green(new Position(4, 0));
+            healthArray[2] = new RedGreen(new Position(5, 0));
             healthArray[3] = new Red(new Position(6, 0));
         }
 
@@ -123,8 +139,22 @@ public class StatusBar implements Serializable {
             healthArray[3] = new Red(new Position(6, 0));
         }
 
+        if (hero.getHealth() == 37.5) {
+            healthArray[0] = new Green(new Position(3, 0));
+            healthArray[1] = new RedGreen(new Position(4, 0));
+            healthArray[2] = new Red(new Position(5, 0));
+            healthArray[3] = new Red(new Position(6, 0));
+        }
+
         if (hero.getHealth() == 25) {
             healthArray[0] = new Green(new Position(3, 0));
+            healthArray[1] = new Red(new Position(4, 0));
+            healthArray[2] = new Red(new Position(5, 0));
+            healthArray[3] = new Red(new Position(6, 0));
+        }
+
+        if (hero.getHealth() == 12.5) {
+            healthArray[0] = new RedGreen(new Position(3, 0));
             healthArray[1] = new Red(new Position(4, 0));
             healthArray[2] = new Red(new Position(5, 0));
             healthArray[3] = new Red(new Position(6, 0));

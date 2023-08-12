@@ -6,7 +6,6 @@ import pt.upskill.projeto1.game.GameSingleton;
 import pt.upskill.projeto1.gui.FireTile;
 import pt.upskill.projeto1.gui.ImageMatrixGUI;
 import pt.upskill.projeto1.gui.ImageTile;
-import pt.upskill.projeto1.objects.props.Floor;
 import pt.upskill.projeto1.objects.props.Wall;
 import pt.upskill.projeto1.objects.enemies.Enemy;
 import pt.upskill.projeto1.objects.props.attack.Attack;
@@ -24,7 +23,8 @@ public class Hero implements ImageTile, Serializable {
     private Position position;
     private Position previousPosition;
     private int power = 25;
-    private int health = 100;
+    // hero health can drop from 12.5 * n
+    private double health = 100.0;
 
     // 🟩 Constructor
     public Hero() {
@@ -99,7 +99,6 @@ public class Hero implements ImageTile, Serializable {
 
         // recoil
         move(getPreviousPosition());
-
 
 
         // win fight
@@ -183,7 +182,7 @@ public class Hero implements ImageTile, Serializable {
         return power;
     }
 
-    public int getHealth() {
+    public double getHealth() {
         return health;
     }
 
@@ -200,7 +199,7 @@ public class Hero implements ImageTile, Serializable {
         this.previousPosition = getPosition();
     }
 
-    public void setHealth(int newHealth) {
+    public void setHealth(double newHealth) {
         this.health = Math.min(newHealth, 100);
     }
 

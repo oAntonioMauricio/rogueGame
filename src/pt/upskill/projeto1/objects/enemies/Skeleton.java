@@ -6,7 +6,6 @@ public class Skeleton extends Enemy {
     private Position position;
     private int initialHealth = 50;
     private int health = 50;
-    private int power = 25;
     private int points = 50;
 
     public Skeleton(Position position) {
@@ -24,8 +23,8 @@ public class Skeleton extends Enemy {
     }
 
     @Override
-    public int getPower() {
-        return this.power;
+    public double getPower() {
+        return this.power * 2;
     }
 
     @Override

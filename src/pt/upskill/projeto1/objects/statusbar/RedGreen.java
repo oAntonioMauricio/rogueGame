@@ -1,30 +1,24 @@
-package pt.upskill.projeto1.objects.props;
+package pt.upskill.projeto1.objects.statusbar;
 
 import pt.upskill.projeto1.gui.ImageTile;
 import pt.upskill.projeto1.rogue.utils.Position;
 
 import java.io.Serializable;
 
-public class Trap implements ImageTile, Serializable {
+public class RedGreen implements ImageTile, Serializable {
     private Position position;
 
-    private double damage = 12.5;
-
-    public Trap(Position position) {
+    public RedGreen(Position position) {
         this.position = position;
     }
 
     @Override
     public String getName() {
-        return "Trap";
+        return "RedGreen";
     }
 
     @Override
     public Position getPosition() {
         return position;
-    }
-
-    public double getDamage() {
-        return damage;
     }
 }
