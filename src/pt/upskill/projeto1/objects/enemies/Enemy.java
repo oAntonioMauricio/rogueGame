@@ -1,5 +1,6 @@
 package pt.upskill.projeto1.objects.enemies;
 
+import pt.upskill.projeto1.game.AttackThread;
 import pt.upskill.projeto1.game.GameSingleton;
 import pt.upskill.projeto1.game.Room;
 import pt.upskill.projeto1.gui.ImageMatrixGUI;
@@ -9,12 +10,15 @@ import pt.upskill.projeto1.objects.hero.Hero;
 import pt.upskill.projeto1.objects.props.Trap;
 import pt.upskill.projeto1.objects.props.Wall;
 import pt.upskill.projeto1.objects.items.Item;
+import pt.upskill.projeto1.objects.props.attack.Attack;
+import pt.upskill.projeto1.objects.props.attack.EnemyAttack;
 import pt.upskill.projeto1.rogue.utils.Direction;
 import pt.upskill.projeto1.rogue.utils.Position;
 import pt.upskill.projeto1.rogue.utils.Vector2D;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Enemy implements ImageTile, Serializable {
@@ -126,6 +130,13 @@ public abstract class Enemy implements ImageTile, Serializable {
         hero.setHealth(hero.getHealth() - getPower());
         System.out.println("Enemy dealt " + getPower() + " damage.");
         gui.setStatus(getName() + " dealt " + getPower() + " damage.");
+
+        // animation
+        Direction direction = Direction.UP;
+        EnemyAttack attack = new EnemyAttack(hero.getPosition().plus(Objects.requireNonNull(Direction.DOWN.asVector())));
+        AttackThread animationAttack = new AttackThread(direction, attack);
+        gui.addImage(attack);
+        animationAttack.start();
 
         // recoil
         move(getPreviousPosition());

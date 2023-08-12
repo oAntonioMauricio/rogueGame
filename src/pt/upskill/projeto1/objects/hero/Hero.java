@@ -1,5 +1,6 @@
 package pt.upskill.projeto1.objects.hero;
 
+import pt.upskill.projeto1.game.AttackThread;
 import pt.upskill.projeto1.game.FireBallThread;
 import pt.upskill.projeto1.game.GameSingleton;
 import pt.upskill.projeto1.gui.FireTile;
@@ -8,16 +9,14 @@ import pt.upskill.projeto1.gui.ImageTile;
 import pt.upskill.projeto1.objects.props.Floor;
 import pt.upskill.projeto1.objects.props.Wall;
 import pt.upskill.projeto1.objects.enemies.Enemy;
+import pt.upskill.projeto1.objects.props.attack.Attack;
 import pt.upskill.projeto1.objects.statusbar.Black;
 import pt.upskill.projeto1.objects.statusbar.Fire;
 import pt.upskill.projeto1.rogue.utils.Direction;
 import pt.upskill.projeto1.rogue.utils.Position;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class Hero implements ImageTile, Serializable {
 
@@ -91,8 +90,17 @@ public class Hero implements ImageTile, Serializable {
         System.out.println("You dealt " + getPower() + " damage." + enemyToFight.getName() + " HP left: " + enemyToFight.getHealth());
         gui.setStatus("You dealt " + getPower() + " damage. Enemy HP left: " + enemyToFight.getHealth());
 
+        // animation
+        Direction direction = Direction.UP;
+        Attack attack = new Attack(enemyToFight.getPosition().plus(Objects.requireNonNull(Direction.DOWN.asVector())));
+        AttackThread animationAttack = new AttackThread(direction, attack);
+        gui.addImage(attack);
+        animationAttack.start();
+
         // recoil
         move(getPreviousPosition());
+
+
 
         // win fight
         if (enemyToFight.getHealth() <= 0) {
