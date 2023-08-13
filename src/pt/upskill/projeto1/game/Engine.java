@@ -8,7 +8,7 @@ import pt.upskill.projeto1.objects.door.Door;
 import pt.upskill.projeto1.objects.door.DoorClosed;
 import pt.upskill.projeto1.objects.enemies.Enemy;
 import pt.upskill.projeto1.objects.hero.Hero;
-import pt.upskill.projeto1.objects.hero.StatusBar;
+import pt.upskill.projeto1.objects.statusbar.StatusBar;
 import pt.upskill.projeto1.objects.items.GoodMeat;
 import pt.upskill.projeto1.objects.items.Hammer;
 import pt.upskill.projeto1.objects.items.Key;
@@ -37,7 +37,6 @@ public class Engine {
     // TODO: MELHORAR RELAÇÃO ENTRE SINGLETON E ENGINE
 
     // TODO: "CAN'T SAVE HERE SORRY" ESTÁ DESATIVADO
-    // TODO: METER PONTOS NOS ITENS
 
     // 🟩 Attributes
     private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
@@ -435,11 +434,10 @@ public class Engine {
 
                         // increment score
                         if (!currentItem.getAlreadyPickedUp()) {
-                            int points = 30;
-                            gameSingleton.setScore(gameSingleton.getScore() + points);
+                            gameSingleton.setScore(gameSingleton.getScore() + currentItem.getPoints());
                             currentItem.setAlreadyPickedUp(true);
                             // gui message
-                            gui.setStatus("You picked the Hammer and gained " + currentItem.getItemPower() + " power and " + points + " points. Total power: " + hero.getPower());
+                            gui.setStatus("You picked the Hammer and gained " + currentItem.getItemPower() + " power and " + currentItem.getPoints() + " points. Total power: " + hero.getPower());
                         } else {
                             // gui message
                             gui.setStatus("You picked the Hammer and gained " + currentItem.getItemPower() + " power. Total power: " + hero.getPower());
@@ -474,22 +472,6 @@ public class Engine {
                         tiles.remove(currentItem);
                         gui.removeImage(currentItem);
                     }
-
-                    /*
-                    // get item
-                    int indexItem = roomList.get(roomIndex).getItemList().indexOf(interaction);
-                    GoodMeat currentItem = (GoodMeat) roomList.get(roomIndex).getItemList().get(indexItem);
-
-                    // effect
-                    hero.setHealth(hero.getHealth() + currentItem.getHealth());
-                    gui.setStatus("You ate " + currentItem.getName() + " and received " + currentItem.getHealth() + " HP. Your HP is: " + hero.getHealth());
-
-                    // delete item
-                    roomList.get(roomIndex).getItemList().remove(currentItem);
-                    tiles.remove(currentItem);
-                    gui.removeImage(currentItem);
-
-                     */
                 }
                 case "Trap" -> {
                     // get trap
@@ -499,79 +481,7 @@ public class Engine {
                     gui.setStatus("This trap caused damage!");
                     hero.setHealth(hero.getHealth() - currentTrap.getDamage());
                 }
-                case "CityFloor" -> {
-                    gui.setStatus("You found a safe spot. You can save your game here with the S key.");
-
-                    /*
-                    int playerScore = gameSingleton.getScore() + 1;
-
-                    gui.showMessage("Congratulations!",
-                            "You finished the game with " + (playerScore) + " points.");
-
-                    // show leaderboard
-                    try {
-                        FileInputStream fileIn = new FileInputStream("scores/scores.dat");
-                        ObjectInputStream in = new ObjectInputStream(fileIn);
-                        LeaderBoard loadedLeaderBoard = (LeaderBoard) in.readObject();
-
-                        in.close();
-                        fileIn.close();
-
-                        // check if it's a top score
-                        int topScore = 0;
-                        boolean changeTopScore = false;
-
-                        Score[] scores = loadedLeaderBoard.getLeaderboard();
-                        for (int i = 0; i < scores.length; i++) {
-                            if (playerScore > scores[i].getPlayerScore()) {
-                                topScore = i;
-                                changeTopScore = true;
-                                break;
-                            }
-                        }
-
-                        if (changeTopScore) {
-                            // loop to eliminate last score and every score go down
-                            for (int i = scores.length - 1; i > topScore; i--) {
-                                System.out.println(i);
-                                scores[i].setPlayerName(scores[i - 1].getPlayerName());
-                                scores[i].setPlayerScore(scores[i - 1].getPlayerScore());
-                            }
-
-                            // replace top score
-                            scores[topScore].setPlayerName(gui.showInputDialog("You got a top score!", "Enter your name"));
-                            scores[topScore].setPlayerScore(playerScore);
-
-                            // save new top score to DB
-                            try {
-                                FileOutputStream fileOut = new FileOutputStream("scores/scores.dat");
-                                ObjectOutputStream out = new ObjectOutputStream(fileOut);
-                                out.writeObject(loadedLeaderBoard);
-                                out.close();
-                                fileOut.close();
-                            } catch (IOException e) {
-                                System.out.println(e.getMessage());
-                                System.out.println("Erro a salvar o leaderboard!");
-                            }
-                        }
-
-                        gui.showMessage("Top Scores",
-                                loadedLeaderBoard +
-                                        System.getProperty("line.separator"));
-
-                        hero.setPosition(new Position(21, 21));
-                        gui.setStatus("Thanks for playing :)");
-
-                    } catch (IOException e) {
-                        System.out.println("Erro a ler o ficheiro com o leaderboard!");
-                    } catch (ClassNotFoundException e) {
-                        System.out.println("Não foi possível converter o objeto gravado no leaderboard!");
-                    }
-
-                     */
-
-
-                }
+                case "CityFloor" -> gui.setStatus("You found a safe spot. You can save your game here with the S key.");
                 case "FireBloom" -> {
                     // end game
                     int playerScore = gameSingleton.getScore() + 1;
@@ -609,8 +519,10 @@ public class Engine {
                 default -> {
                 }
             }
+            //
             // break to deal with one interaction at a time when it's an enemy
             // this means you can't pick items without killing the enemy on top of it
+            //
             if (interaction instanceof Enemy) {
                 break;
             }

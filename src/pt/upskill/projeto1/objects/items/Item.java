@@ -47,11 +47,6 @@ public abstract class Item implements ImageTile, Serializable {
         int heroX = hero.getPosition().getX();
         int heroY = hero.getPosition().getY();
 
-        int dropTop = hero.getPosition().getY() - 1;
-        int dropDown = hero.getPosition().getY() + 1;
-        int dropLeft = hero.getPosition().getX() - 1;
-        int dropRight = hero.getPosition().getX() + 1;
-
         boolean dropAvailable = true;
 
         for (ImageTile tile : gameSingleton.getTiles()) {

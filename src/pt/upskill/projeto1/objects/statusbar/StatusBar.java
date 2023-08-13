@@ -1,15 +1,15 @@
-package pt.upskill.projeto1.objects.hero;
+package pt.upskill.projeto1.objects.statusbar;
 
 import pt.upskill.projeto1.game.GameSingleton;
 import pt.upskill.projeto1.game.Room;
 import pt.upskill.projeto1.gui.ImageMatrixGUI;
 import pt.upskill.projeto1.gui.ImageTile;
 import pt.upskill.projeto1.objects.enemies.Enemy;
+import pt.upskill.projeto1.objects.hero.Hero;
 import pt.upskill.projeto1.objects.items.GoodMeat;
 import pt.upskill.projeto1.objects.items.Hammer;
 import pt.upskill.projeto1.objects.items.Item;
 import pt.upskill.projeto1.objects.items.Key;
-import pt.upskill.projeto1.objects.statusbar.*;
 import pt.upskill.projeto1.rogue.utils.Position;
 
 import java.io.Serializable;

@@ -6,6 +6,8 @@ public class Hammer extends Item {
 
     private int itemPower = 25;
 
+    private int points = 30;
+
     public Hammer(Position position) {
         super(position);
     }
@@ -22,5 +24,9 @@ public class Hammer extends Item {
 
     public int getItemPower() {
         return itemPower;
+    }
+
+    public int getPoints() {
+        return points;
     }
 }

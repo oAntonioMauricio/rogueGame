@@ -9,8 +9,6 @@ import pt.upskill.projeto1.objects.door.Door;
 import pt.upskill.projeto1.objects.hero.Hero;
 import pt.upskill.projeto1.objects.props.Trap;
 import pt.upskill.projeto1.objects.props.Wall;
-import pt.upskill.projeto1.objects.items.Item;
-import pt.upskill.projeto1.objects.props.attack.Attack;
 import pt.upskill.projeto1.objects.props.attack.EnemyAttack;
 import pt.upskill.projeto1.rogue.utils.Direction;
 import pt.upskill.projeto1.rogue.utils.Position;
@@ -51,22 +49,12 @@ public abstract class Enemy implements ImageTile, Serializable {
     public Vector2D randomPosition() {
 
         int randomNum = ThreadLocalRandom.current().nextInt(0, 3 + 1);
-        Direction directionToMove;
-
-        // randomize directionToMove
-        switch (randomNum) {
-            case 1:
-                directionToMove = Direction.RIGHT;
-                break;
-            case 2:
-                directionToMove = Direction.DOWN;
-                break;
-            case 3:
-                directionToMove = Direction.LEFT;
-                break;
-            default:
-                directionToMove = Direction.UP;
-        }
+        Direction directionToMove = switch (randomNum) {
+            case 1 -> Direction.RIGHT;
+            case 2 -> Direction.DOWN;
+            case 3 -> Direction.LEFT;
+            default -> Direction.UP;
+        };
 
         return directionToMove.asVector();
     }
@@ -119,13 +107,6 @@ public abstract class Enemy implements ImageTile, Serializable {
     public void fight(Hero hero) {
         // singletons 🔽
         ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
-        GameSingleton gameSingleton = GameSingleton.getInstance();
-        List<ImageTile> tiles = gameSingleton.getTiles();
-
-        // get room index // this is here because it's PRIMITIVE
-        int roomIndex = gameSingleton.getRoomIndex();
-
-        int initialEnemyHP = getHealth();
 
         // deal dmg
         hero.setHealth(hero.getHealth() - getPower());
@@ -142,41 +123,10 @@ public abstract class Enemy implements ImageTile, Serializable {
         // recoil
         move(getPreviousPosition());
 
-        /*
-        while (getHealth() > 0 && hero.getHealth() > 0) {
-            // deal dmg
-            hero.setHealth(hero.getHealth() - getPower());
-            System.out.println("Enemy dealt " + getPower() + " damage.");
-
-            if (hero.getHealth() > 0) {
-                System.out.println("Hero attack!");
-                setHealth(getHealth() - hero.getPower());
-                System.out.println("Hero attack and dealt " + hero.getPower() + " damage. Enemy HP left: " + getHealth());
-            }
-        }
-
-         */
-
         if (hero.getHealth() <= 0) {
             // remove hero from the game
             hero.death();
         }
-
-        /*
-        if (getHealth() <= 0) {
-            // hero wins fight
-            death(initialEnemyHP);
-        } else {
-            // remove hero from the game
-            gui.setStatus("You died in the fight." + " The enemy had " + initialEnemyHP + " HP at the start and " + getPower() + " power.");
-            hero.setPosition(new Position(-1, -1));
-            tiles.remove(hero);
-            gui.removeImage(hero);
-        }
-
-         */
-
-
     }
 
     public void death(int initialEnemyHP) {

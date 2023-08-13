@@ -11,6 +11,7 @@ import pt.upskill.projeto1.objects.enemies.Enemy;
 import pt.upskill.projeto1.objects.props.attack.Attack;
 import pt.upskill.projeto1.objects.statusbar.Black;
 import pt.upskill.projeto1.objects.statusbar.Fire;
+import pt.upskill.projeto1.objects.statusbar.StatusBar;
 import pt.upskill.projeto1.rogue.utils.Direction;
 import pt.upskill.projeto1.rogue.utils.Position;
 
