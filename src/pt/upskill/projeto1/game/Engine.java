@@ -8,6 +8,8 @@ import pt.upskill.projeto1.objects.door.Door;
 import pt.upskill.projeto1.objects.door.DoorClosed;
 import pt.upskill.projeto1.objects.enemies.Enemy;
 import pt.upskill.projeto1.objects.hero.Hero;
+import pt.upskill.projeto1.objects.props.CityFloor;
+import pt.upskill.projeto1.objects.props.FireBloom;
 import pt.upskill.projeto1.objects.statusbar.StatusBar;
 import pt.upskill.projeto1.objects.items.GoodMeat;
 import pt.upskill.projeto1.objects.items.Hammer;
@@ -342,211 +344,205 @@ public class Engine {
         ArrayList<ImageTile> interactions = hero.checkWhereHeroIs();
 
         for (ImageTile interaction : interactions) {
-            switch (interaction.getName()) {
-                case "Skeleton", "Bat", "BadGuy", "Thief" -> {
-                    System.out.println("HIT ON ENEMY!");
-                    // get enemy
-                    int indexEnemy = roomList.get(roomIndex).getEnemyList().indexOf(interaction);
-                    Enemy currentEnemy = roomList.get(roomIndex).getEnemyList().get(indexEnemy);
+            if (interaction instanceof Enemy) {
+                System.out.println("HIT ON ENEMY!");
+                // get enemy
+                int indexEnemy = roomList.get(roomIndex).getEnemyList().indexOf(interaction);
+                Enemy currentEnemy = roomList.get(roomIndex).getEnemyList().get(indexEnemy);
 
-                    // fight func
-                    hero.fight(currentEnemy);
-                }
-                case "DoorOpen", "DoorClosed", "DoorWay", "DoorCityClosed", "DoorCityOpen" -> {
-                    // get door
-                    int indexDoor = roomList.get(roomIndex).getDoorList().indexOf(interaction);
-                    Door door = roomList.get(roomIndex).getDoorList().get(indexDoor);
+                // fight func
+                hero.fight(currentEnemy);
+            }
+            else if ( interaction instanceof Door) {
+                // get door
+                int indexDoor = roomList.get(roomIndex).getDoorList().indexOf(interaction);
+                Door door = roomList.get(roomIndex).getDoorList().get(indexDoor);
 
-                    // check if door needs key
-                    if (!door.isOpen()) {
-                        boolean gotTheKey = false;
+                // check if door needs key
+                if (!door.isOpen()) {
+                    boolean gotTheKey = false;
 
-                        DoorClosed doorClosed = (DoorClosed) door;
-                        String keyToOpenDoor = doorClosed.getKey();
+                    DoorClosed doorClosed = (DoorClosed) door;
+                    String keyToOpenDoor = doorClosed.getKey();
 
-                        // check inventory for the right key
-                        ImageTile[] itemArray = gameSingleton.getStatusBar().getItemArray();
+                    // check inventory for the right key
+                    ImageTile[] itemArray = gameSingleton.getStatusBar().getItemArray();
 
-                        for (ImageTile item : itemArray) {
-                            if (item instanceof Key) {
-                                System.out.println("Got a key!");
-                                System.out.println(((Key) item).getKeyId());
-                                System.out.println(keyToOpenDoor);
-                                if (Objects.equals(((Key) item).getKeyId(), keyToOpenDoor)) {
-                                    // System.out.println("You got the key to this door!");
-                                    gui.setStatus("You opened " + doorClosed.getName() + " with " + keyToOpenDoor);
-                                    gotTheKey = true;
-                                    doorClosed.setOpen(true);
+                    for (ImageTile item : itemArray) {
+                        if (item instanceof Key) {
+                            System.out.println("Got a key!");
+                            System.out.println(((Key) item).getKeyId());
+                            System.out.println(keyToOpenDoor);
+                            if (Objects.equals(((Key) item).getKeyId(), keyToOpenDoor)) {
+                                // System.out.println("You got the key to this door!");
+                                gui.setStatus("You opened " + doorClosed.getName() + " with " + keyToOpenDoor);
+                                gotTheKey = true;
+                                doorClosed.setOpen(true);
 
-                                    // mudar esta martelada
-                                    if (Objects.equals(doorClosed.getName(), "DoorClosed")) {
-                                        doorClosed.setName("DoorOpen");
-                                    } else if (Objects.equals(doorClosed.getName(), "DoorCityClosed")) {
-                                        doorClosed.setName("DoorCityOpen");
-                                    }
-
-
-                                    // unlock the door in the next room
-                                    int nextRoom = doorClosed.nextRoomInt();
-                                    int nextDoorIndex = doorClosed.getNextIndex();
-                                    roomList.get(nextRoom).getDoorList().get(nextDoorIndex).setOpen(true);
-                                    roomList.get(nextRoom).getDoorList().get(nextDoorIndex).setName("DoorOpen");
+                                // mudar esta martelada
+                                if (Objects.equals(doorClosed.getName(), "DoorClosed")) {
+                                    doorClosed.setName("DoorOpen");
+                                } else if (Objects.equals(doorClosed.getName(), "DoorCityClosed")) {
+                                    doorClosed.setName("DoorCityOpen");
                                 }
+
+
+                                // unlock the door in the next room
+                                int nextRoom = doorClosed.nextRoomInt();
+                                int nextDoorIndex = doorClosed.getNextIndex();
+                                roomList.get(nextRoom).getDoorList().get(nextDoorIndex).setOpen(true);
+                                roomList.get(nextRoom).getDoorList().get(nextDoorIndex).setName("DoorOpen");
                             }
                         }
-
-                        if (!gotTheKey) {
-                            gui.setStatus("You need the " + keyToOpenDoor + " to open this door.");
-                            // move 1 step away from the door
-                            hero.moveAwayFromTheDoor();
-                        }
-
                     }
 
-                    // this needs to run again. if you got the key this will check true right after
-                    if (door.isOpen()) {
-                        int nextRoom = door.nextRoomInt();
-                        System.out.println("next room: " + nextRoom);
-                        int nextDoorIndex = door.getNextIndex();
-
-                        loadRoom(nextRoom);
-
-                        // move to the door on the map
-                        hero.move(roomList.get(nextRoom).getDoorList().get(nextDoorIndex).getPosition());
-
+                    if (!gotTheKey) {
+                        gui.setStatus("You need the " + keyToOpenDoor + " to open this door.");
                         // move 1 step away from the door
                         hero.moveAwayFromTheDoor();
                     }
 
-
                 }
-                case "Key" -> {
-                    // get key
-                    int indexItem = roomList.get(roomIndex).getItemList().indexOf(interaction);
-                    Key currentKey = (Key) roomList.get(roomIndex).getItemList().get(indexItem);
 
-                    // storage
-                    ImageTile[] itemsArray = gameSingleton.getStatusBar().getItemArray();
-                    int emptyIndex = gameSingleton.getStatusBar().itemArrayEmptyIndex();
+                // this needs to run again. if you got the key this will check true right after
+                if (door.isOpen()) {
+                    int nextRoom = door.nextRoomInt();
+                    System.out.println("next room: " + nextRoom);
+                    int nextDoorIndex = door.getNextIndex();
 
-                    if (emptyIndex == -1) {
-                        gui.setStatus("Inventory is full!");
+                    loadRoom(nextRoom);
+
+                    // move to the door on the map
+                    hero.move(roomList.get(nextRoom).getDoorList().get(nextDoorIndex).getPosition());
+
+                    // move 1 step away from the door
+                    hero.moveAwayFromTheDoor();
+                }
+            }
+            else if (interaction instanceof Key) {
+                // get key
+                int indexItem = roomList.get(roomIndex).getItemList().indexOf(interaction);
+                Key currentKey = (Key) roomList.get(roomIndex).getItemList().get(indexItem);
+
+                // storage
+                ImageTile[] itemsArray = gameSingleton.getStatusBar().getItemArray();
+                int emptyIndex = gameSingleton.getStatusBar().itemArrayEmptyIndex();
+
+                if (emptyIndex == -1) {
+                    gui.setStatus("Inventory is full!");
+                } else {
+                    itemsArray[emptyIndex] = currentKey;
+                    // seven is the start on the items position on the status bar
+                    currentKey.setPosition(new Position(7 + emptyIndex, 0));
+                    gui.setStatus("You picked " + currentKey.getKeyId());
+
+                    // delete item
+                    roomList.get(roomIndex).getItemList().remove(currentKey);
+                    tiles.remove(currentKey);
+                    gui.removeImage(currentKey);
+                }
+            }
+            else if (interaction instanceof Hammer) {
+                // get item
+                int indexItem = roomList.get(roomIndex).getItemList().indexOf(interaction);
+                Hammer currentItem = (Hammer) roomList.get(roomIndex).getItemList().get(indexItem);
+
+                // storage
+                ImageTile[] itemsArray = gameSingleton.getStatusBar().getItemArray();
+                int emptyIndex = gameSingleton.getStatusBar().itemArrayEmptyIndex();
+
+                if (emptyIndex == -1) {
+                    gui.setStatus("Inventory is full!");
+                } else {
+                    itemsArray[emptyIndex] = currentItem;
+                    // seven is the start on the items position on the status bar
+                    currentItem.setPosition(new Position(7 + emptyIndex, 0));
+
+                    // effect
+                    hero.setPower(hero.getPower() + currentItem.getItemPower());
+
+                    // increment score
+                    if (!currentItem.getAlreadyPickedUp()) {
+                        gameSingleton.setScore(gameSingleton.getScore() + currentItem.getPoints());
+                        currentItem.setAlreadyPickedUp(true);
+                        // gui message
+                        gui.setStatus("You picked the Hammer and gained " + currentItem.getItemPower() + " power and " + currentItem.getPoints() + " points. Total power: " + hero.getPower());
                     } else {
-                        itemsArray[emptyIndex] = currentKey;
-                        // seven is the start on the items position on the status bar
-                        currentKey.setPosition(new Position(7 + emptyIndex, 0));
-                        gui.setStatus("You picked " + currentKey.getKeyId());
-
-                        // delete item
-                        roomList.get(roomIndex).getItemList().remove(currentKey);
-                        tiles.remove(currentKey);
-                        gui.removeImage(currentKey);
-                    }
-                }
-                case "Hammer" -> {
-                    // get item
-                    int indexItem = roomList.get(roomIndex).getItemList().indexOf(interaction);
-                    Hammer currentItem = (Hammer) roomList.get(roomIndex).getItemList().get(indexItem);
-
-                    // storage
-                    ImageTile[] itemsArray = gameSingleton.getStatusBar().getItemArray();
-                    int emptyIndex = gameSingleton.getStatusBar().itemArrayEmptyIndex();
-
-                    if (emptyIndex == -1) {
-                        gui.setStatus("Inventory is full!");
-                    } else {
-                        itemsArray[emptyIndex] = currentItem;
-                        // seven is the start on the items position on the status bar
-                        currentItem.setPosition(new Position(7 + emptyIndex, 0));
-
-                        // effect
-                        hero.setPower(hero.getPower() + currentItem.getItemPower());
-
-                        // increment score
-                        if (!currentItem.getAlreadyPickedUp()) {
-                            gameSingleton.setScore(gameSingleton.getScore() + currentItem.getPoints());
-                            currentItem.setAlreadyPickedUp(true);
-                            // gui message
-                            gui.setStatus("You picked the Hammer and gained " + currentItem.getItemPower() + " power and " + currentItem.getPoints() + " points. Total power: " + hero.getPower());
-                        } else {
-                            // gui message
-                            gui.setStatus("You picked the Hammer and gained " + currentItem.getItemPower() + " power. Total power: " + hero.getPower());
-                        }
-
-                        // delete item
-                        roomList.get(roomIndex).getItemList().remove(currentItem);
-                        tiles.remove(currentItem);
-                        gui.removeImage(currentItem);
-                    }
-                }
-                case "GoodMeat" -> {
-                    // get item
-                    int indexItem = roomList.get(roomIndex).getItemList().indexOf(interaction);
-                    GoodMeat currentItem = (GoodMeat) roomList.get(roomIndex).getItemList().get(indexItem);
-
-                    // storage
-                    ImageTile[] itemsArray = gameSingleton.getStatusBar().getItemArray();
-                    int emptyIndex = gameSingleton.getStatusBar().itemArrayEmptyIndex();
-
-                    if (emptyIndex == -1) {
-                        gui.setStatus("Inventory is full!");
-                    } else {
-                        itemsArray[emptyIndex] = currentItem;
-                        // seven is the start on the items position on the status bar
-                        currentItem.setPosition(new Position(7 + emptyIndex, 0));
-
-                        gui.setStatus("You picked GoodMeat. Use it to restore " + currentItem.getHealth() + " HP.");
-
-                        // delete item
-                        roomList.get(roomIndex).getItemList().remove(currentItem);
-                        tiles.remove(currentItem);
-                        gui.removeImage(currentItem);
-                    }
-                }
-                case "Trap" -> {
-                    // get trap
-                    int indexTrap = roomList.get(roomIndex).getPropsList().indexOf(interaction);
-                    Trap currentTrap = (Trap) roomList.get(roomIndex).getPropsList().get(indexTrap);
-
-                    gui.setStatus("This trap caused damage!");
-                    hero.setHealth(hero.getHealth() - currentTrap.getDamage());
-                }
-                case "CityFloor" -> gui.setStatus("You found a safe spot. You can save your game here with the S key.");
-                case "FireBloom" -> {
-                    // end game
-                    int playerScore = gameSingleton.getScore() + 1;
-
-                    gui.showMessage("Congratulations!",
-                            "You finished the game with " + (playerScore) + " points.");
-
-                    // show leaderboard
-                    try {
-                        FileInputStream fileIn = new FileInputStream("scores/scores.dat");
-                        ObjectInputStream in = new ObjectInputStream(fileIn);
-                        LeaderBoard loadedLeaderBoard = (LeaderBoard) in.readObject();
-
-                        in.close();
-                        fileIn.close();
-
-                        // check top scores and change if it's a highscore
-                        loadedLeaderBoard.checkTopScores(playerScore);
-
-                        gui.showMessage("Top Scores",
-                                loadedLeaderBoard +
-                                        System.getProperty("line.separator"));
-
-                        hero.setPosition(new Position(21, 21));
-                        gui.setStatus("Thanks for playing. Press R to play again :)");
-
-                    } catch (IOException e) {
-                        System.out.println("Erro a ler o ficheiro com o leaderboard!");
-                    } catch (ClassNotFoundException e) {
-                        System.out.println("Não foi possível converter o objeto gravado no leaderboard!");
+                        // gui message
+                        gui.setStatus("You picked the Hammer and gained " + currentItem.getItemPower() + " power. Total power: " + hero.getPower());
                     }
 
-
+                    // delete item
+                    roomList.get(roomIndex).getItemList().remove(currentItem);
+                    tiles.remove(currentItem);
+                    gui.removeImage(currentItem);
                 }
-                default -> {
+            }
+            else if (interaction instanceof GoodMeat) {
+                // get item
+                int indexItem = roomList.get(roomIndex).getItemList().indexOf(interaction);
+                GoodMeat currentItem = (GoodMeat) roomList.get(roomIndex).getItemList().get(indexItem);
+
+                // storage
+                ImageTile[] itemsArray = gameSingleton.getStatusBar().getItemArray();
+                int emptyIndex = gameSingleton.getStatusBar().itemArrayEmptyIndex();
+
+                if (emptyIndex == -1) {
+                    gui.setStatus("Inventory is full!");
+                } else {
+                    itemsArray[emptyIndex] = currentItem;
+                    // seven is the start on the items position on the status bar
+                    currentItem.setPosition(new Position(7 + emptyIndex, 0));
+
+                    gui.setStatus("You picked GoodMeat. Use it to restore " + currentItem.getHealth() + " HP.");
+
+                    // delete item
+                    roomList.get(roomIndex).getItemList().remove(currentItem);
+                    tiles.remove(currentItem);
+                    gui.removeImage(currentItem);
+                }
+            }
+            else if (interaction instanceof Trap) {
+                // get trap
+                int indexTrap = roomList.get(roomIndex).getPropsList().indexOf(interaction);
+                Trap currentTrap = (Trap) roomList.get(roomIndex).getPropsList().get(indexTrap);
+
+                gui.setStatus("This trap caused damage!");
+                hero.setHealth(hero.getHealth() - currentTrap.getDamage());
+            }
+            else if (interaction instanceof CityFloor) {
+                gui.setStatus("You found a safe spot. You can save your game here with the S key.");
+            }
+            else if (interaction instanceof FireBloom) {
+                // end game
+                int playerScore = gameSingleton.getScore() + 1;
+
+                gui.showMessage("Congratulations!",
+                        "You finished the game with " + (playerScore) + " points.");
+
+                // show leaderboard
+                try {
+                    FileInputStream fileIn = new FileInputStream("scores/scores.dat");
+                    ObjectInputStream in = new ObjectInputStream(fileIn);
+                    LeaderBoard loadedLeaderBoard = (LeaderBoard) in.readObject();
+
+                    in.close();
+                    fileIn.close();
+
+                    // check top scores and change if it's a highscore
+                    loadedLeaderBoard.checkTopScores(playerScore);
+
+                    gui.showMessage("Top Scores",
+                            loadedLeaderBoard +
+                                    System.getProperty("line.separator"));
+
+                    hero.setPosition(new Position(21, 21));
+                    gui.setStatus("Thanks for playing. Press R to play again :)");
+
+                } catch (IOException e) {
+                    System.out.println("Erro a ler o ficheiro com o leaderboard!");
+                } catch (ClassNotFoundException e) {
+                    System.out.println("Não foi possível converter o objeto gravado no leaderboard!");
                 }
             }
             //
