@@ -38,7 +38,6 @@ public class Engine {
 
     // TODO: "CAN'T SAVE HERE SORRY" ESTÁ DESATIVADO
     // TODO: Reset the same game for new game
-    // TODO: CHECKINTERACT TO INTANCE OF
 
     // 🟩 Attributes
     private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
@@ -332,8 +331,6 @@ public class Engine {
 
         moveEveryEnemy();
 
-        checkIfEnemyOnHero();
-
         statusBar.updateStatus();
     }
 
@@ -546,23 +543,10 @@ public class Engine {
         int roomIndex = gameSingleton.getRoomIndex();
 
         // move every enemy in random direction
+        // fight if the next position is the hero position
         for (Enemy enemy : roomList.get(roomIndex).getEnemyList()) {
             enemy.setPreviousPosition();
             enemy.move(enemy.getPosition().plus(enemy.moveToHero(hero)));
-        }
-    }
-
-    public void checkIfEnemyOnHero() {
-
-        // get room index
-        int roomIndex = gameSingleton.getRoomIndex();
-
-        for (Enemy enemy : roomList.get(roomIndex).getEnemyList()) {
-            if (hero.getPosition().isItSamePosition(enemy.getPosition())) {
-                System.out.println("Enemy attack!");
-                enemy.fight(hero);
-                break;
-            }
         }
     }
 

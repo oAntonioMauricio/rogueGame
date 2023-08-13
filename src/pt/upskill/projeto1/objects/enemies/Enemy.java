@@ -26,19 +26,32 @@ public abstract class Enemy implements ImageTile, Serializable {
 
     // 🟩 Methods
     public void move(Position nextPosition) {
+        // cancels moves based on the instances
+        // fight if there's the instance of enemy
 
         // get singleton
         GameSingleton gameSingleton = GameSingleton.getInstance();
         List<ImageTile> tiles = gameSingleton.getTiles();
+        Hero hero = gameSingleton.getHero();
 
         boolean move = true;
+        boolean fight = false;
 
         for (ImageTile tile : tiles) {
             if (nextPosition.getX() == tile.getPosition().getX() && nextPosition.getY() == tile.getPosition().getY()) {
                 if (tile instanceof Wall || tile instanceof Door || tile instanceof Enemy || tile instanceof Trap) {
-                    move = !move;
+                    move = false;
+                }
+                if (tile instanceof Hero) {
+                    move = false;
+                    fight = true;
                 }
             }
+        }
+
+        if (fight) {
+            System.out.println("Enemy attack!");
+            fight(hero);
         }
 
         if (move) {
