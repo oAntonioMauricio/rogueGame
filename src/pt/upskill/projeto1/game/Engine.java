@@ -29,12 +29,10 @@ public class Engine {
         engine.init();
     }
 
-    // update_todos_branch
+    // main_branch
     //
-    // PENSAR: Mudar armazenamento/organização dos items? Fora do checkWhereHeroIs para statusbar? ou gamestate?
-    //
-    // TODO: melhorar algoritmo de perseguição https://wumbo.net/formulas/distance-between-two-points-2d/
-    // TODO: MELHORAR RELAÇÃO ENTRE SINGLETON E ENGINE
+    // UPDATES: melhorar algoritmo de perseguição https://wumbo.net/formulas/distance-between-two-points-2d/
+    // UPDATES: MELHORAR RELAÇÃO ENTRE SINGLETON E ENGINE
 
     // TODO: "CAN'T SAVE HERE SORRY" ESTÁ DESATIVADO
 
