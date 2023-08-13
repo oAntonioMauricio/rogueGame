@@ -121,4 +121,20 @@ public class GameSingleton implements Serializable {
     public void setScore(int score) {
         this.score = score;
     }
+
+    public void setHero(Hero hero) {
+        this.hero = hero;
+    }
+
+    public void setTiles(List<ImageTile> tiles) {
+        this.tiles = tiles;
+    }
+
+    public void setRoomList(List<Room> roomList) {
+        this.roomList = roomList;
+    }
+
+    public void setStatusBar(StatusBar statusBar) {
+        this.statusBar = statusBar;
+    }
 }

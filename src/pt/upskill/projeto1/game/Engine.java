@@ -262,6 +262,29 @@ public class Engine {
                     System.out.println("Não foi possível converter o objeto salvo no mapa!");
                 }
             }
+            if (keyPressed == KeyEvent.VK_R) {
+
+                System.out.println("Loading new game...");
+
+                try {
+                    FileInputStream fileIn = new FileInputStream("saves/newGame.dat");
+                    ObjectInputStream in = new ObjectInputStream(fileIn);
+                    GameSingleton savedSingleton = (GameSingleton) in.readObject();
+
+                    gameSingleton.loadGame(savedSingleton);
+                    loadRoom(gameSingleton.getRoomIndex());
+
+                    gui.setStatus("Welcome again. You have " + hero.getHealth() + " HP and " + hero.getPower() + " power.");
+
+                    in.close();
+                    fileIn.close();
+                } catch (IOException e) {
+                    System.out.println("Erro a ler o ficheiro com o save do mapa!");
+                } catch (ClassNotFoundException e) {
+                    System.out.println("Não foi possível converter o objeto salvo no mapa!");
+                }
+
+            }
         }
 
         /**
@@ -504,7 +527,7 @@ public class Engine {
                                         System.getProperty("line.separator"));
 
                         hero.setPosition(new Position(21, 21));
-                        gui.setStatus("Thanks for playing :)");
+                        gui.setStatus("Thanks for playing. Press R to play again :)");
 
                     } catch (IOException e) {
                         System.out.println("Erro a ler o ficheiro com o leaderboard!");
