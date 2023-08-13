@@ -34,23 +34,7 @@ public class Hero implements ImageTile, Serializable {
 
     // 🟩 Methods
     public void move(Position nextPosition) {
-        // get singleton
-        GameSingleton gameSingleton = GameSingleton.getInstance();
-
-        boolean move = true;
-
-        for (ImageTile tile : gameSingleton.getTiles()) {
-            if (nextPosition.getX() == tile.getPosition().getX() && nextPosition.getY() == tile.getPosition().getY()) {
-                if (tile instanceof Wall) {
-                    move = false;
-                    break;
-                }
-            }
-        }
-
-        if (move) {
-            setPosition(nextPosition);
-        }
+        setPosition(nextPosition);
     }
 
     public ArrayList<ImageTile> checkWhereHeroIs() {

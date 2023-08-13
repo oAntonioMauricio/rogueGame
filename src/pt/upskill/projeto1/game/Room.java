@@ -96,6 +96,8 @@ public class Room implements Serializable {
                     // map props
                     else if (Objects.equals(chars[i], "W")) {
                         propsList.add(new Wall(new Position(i, col)));
+                    } else if (Objects.equals(chars[i], "A")) {
+                        propsList.add(new WallCity(new Position(i, col)));
                     } else if (Objects.equals(chars[i], "R")) {
                         propsList.add(new Grass(new Position(i, col)));
                     } else if (Objects.equals(chars[i], "C")) {

@@ -341,6 +341,7 @@ public class Engine {
 
         for (ImageTile interaction : interactions) {
             switch (interaction.getName()) {
+                case "Wall", "WallCity" -> hero.move(hero.getPreviousPosition());
                 case "Skeleton", "Bat", "BadGuy", "Thief" -> {
                     System.out.println("HIT ON ENEMY!");
                     // get enemy
