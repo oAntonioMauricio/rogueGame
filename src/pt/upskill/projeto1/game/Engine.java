@@ -35,6 +35,7 @@ public class Engine {
     // UPDATES: MELHORAR RELAÇÃO ENTRE SINGLETON E ENGINE
 
     // TODO: "CAN'T SAVE HERE SORRY" ESTÁ DESATIVADO
+    // TODO: Reset the same game for new game
 
     // 🟩 Attributes
     private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
@@ -351,7 +352,7 @@ public class Engine {
                     // fight func
                     hero.fight(currentEnemy);
                 }
-                case "DoorOpen", "DoorClosed", "DoorWay" -> {
+                case "DoorOpen", "DoorClosed", "DoorWay", "DoorCityOpen" -> {
                     // get door
                     int indexDoor = roomList.get(roomIndex).getDoorList().indexOf(interaction);
                     Door door = roomList.get(roomIndex).getDoorList().get(indexDoor);

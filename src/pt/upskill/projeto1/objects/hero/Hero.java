@@ -45,7 +45,7 @@ public class Hero implements ImageTile, Serializable {
         ArrayList<ImageTile> interactions = new ArrayList<>();
 
         for (ImageTile tile : tiles) {
-            if (Objects.equals(tile.getName(), "Hero") || Objects.equals(tile.getName(), "Floor")) {
+            if (Objects.equals(tile.getName(), "Hero") || Objects.equals(tile.getName(), "Floor" ) || Objects.equals(tile.getName(), "FloorCity" )) {
                 continue;
             }
 

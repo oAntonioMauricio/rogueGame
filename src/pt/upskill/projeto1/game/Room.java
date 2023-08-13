@@ -1,10 +1,7 @@
 package pt.upskill.projeto1.game;
 
 import pt.upskill.projeto1.gui.ImageTile;
-import pt.upskill.projeto1.objects.door.Door;
-import pt.upskill.projeto1.objects.door.DoorClosed;
-import pt.upskill.projeto1.objects.door.DoorOpen;
-import pt.upskill.projeto1.objects.door.DoorWay;
+import pt.upskill.projeto1.objects.door.*;
 import pt.upskill.projeto1.objects.enemies.*;
 import pt.upskill.projeto1.objects.hero.Hero;
 import pt.upskill.projeto1.objects.items.GoodMeat;
@@ -67,6 +64,10 @@ public class Room implements Serializable {
                                     // System.out.println("Create DoorOpen");
                                     doorList.add(new DoorOpen(doorIndex, nextRoom, nextIndex, true));
                                 }
+                            }
+                            case "Y" -> {
+                                // System.out.println("Create DoorCityOpen");
+                                doorList.add(new DoorCityOpen(doorIndex, nextRoom, nextIndex, true));
                             }
                             case "E" ->
                                 // System.out.println("Create DoorWay");

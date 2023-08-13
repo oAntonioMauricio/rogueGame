@@ -3,6 +3,7 @@ package pt.upskill.projeto1.game;
 import pt.upskill.projeto1.gui.ImageTile;
 import pt.upskill.projeto1.objects.props.Floor;
 import pt.upskill.projeto1.objects.hero.Hero;
+import pt.upskill.projeto1.objects.props.FloorCity;
 import pt.upskill.projeto1.objects.statusbar.StatusBar;
 import pt.upskill.projeto1.rogue.utils.Position;
 
@@ -47,10 +48,16 @@ public class GameSingleton implements Serializable {
 
         tiles.removeAll(tiles);
 
-        // System.out.println("building floor");
+        // build the type of floor here
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                tiles.add(new Floor(new Position(i, j)));
+                // paint city floor on this index's
+                if (getRoomIndex() == 9) {
+                    tiles.add(new FloorCity(new Position(i, j)));
+                } else {
+                    tiles.add(new Floor(new Position(i, j)));
+                }
+
             }
         }
 

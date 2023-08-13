@@ -1,7 +1,8 @@
 #
 # 0 D room7.txt 1
+# 1 Y room9.txt 0
 #
-AAAAAAAAAA
+AAAA1AAAAA
 W        W
 W        W
 W        W
@@ -9,5 +10,5 @@ W        W
 W        W
 W        W
 W        W
-W       fW
+W        W
 WWWWWWWWWW

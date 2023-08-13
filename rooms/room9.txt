@@ -1,0 +1,13 @@
+#
+# 0 Y room8.txt 1
+#
+AAAAAAAAAA
+A        A
+A    f   A
+A        A
+A        A
+A        A
+A        A
+A        A
+A        A
+AAAA0AAAAA

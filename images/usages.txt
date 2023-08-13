@@ -3,6 +3,7 @@ numbers - doors;
 A - WallCity;
 B - Bat;
 C - CityFloor;
+D - Door;
 f - FireBloom;
 G - BadGuy;
 h - Hammer;
@@ -12,6 +13,7 @@ k - Key;
 S - Skeleton;
 T - Thief;
 t - trap;
+Y - DoorCity
 R - Grass;
 W - Wall;
 
