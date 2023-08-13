@@ -36,8 +36,6 @@ public class Engine {
     // TODO: melhorar algoritmo de perseguição https://wumbo.net/formulas/distance-between-two-points-2d/
     // TODO: MELHORAR RELAÇÃO ENTRE SINGLETON E ENGINE
 
-    // TODO: DROPS COM DIRECÃO
-    // TODO: REVER STATUS BAR HEALTH
     // TODO: "CAN'T SAVE HERE SORRY" ESTÁ DESATIVADO
     // TODO: METER PONTOS NOS ITENS
 
@@ -611,9 +609,11 @@ public class Engine {
                 default -> {
                 }
             }
-            // break to deal with one interaction at a time
-            // usefully when there's an enemy on top of an item
-            break;
+            // break to deal with one interaction at a time when it's an enemy
+            // this means you can't pick items without killing the enemy on top of it
+            if (interaction instanceof Enemy) {
+                break;
+            }
         }
 
     }

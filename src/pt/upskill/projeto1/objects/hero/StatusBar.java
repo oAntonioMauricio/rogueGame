@@ -14,7 +14,6 @@ import pt.upskill.projeto1.rogue.utils.Position;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class StatusBar implements Serializable {
@@ -217,6 +216,10 @@ public class StatusBar implements Serializable {
                     // add item to room
                     roomList.get(roomIndex).getItemList().add(currentSlot);
                     tiles.add(currentSlot);
+
+                    // remove and add hero to stay at top
+                    tiles.remove(hero);
+                    tiles.add(hero);
 
                     // sort tiles so enemies are at the end
                     // this is needed so enemies are at the top on the gui
