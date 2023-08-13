@@ -5,6 +5,7 @@ B - Bat;
 C - CityFloor;
 D - Door;
 f - FireBloom;
+l - Flail
 G - BadGuy;
 h - Hammer;
 H - Hero;

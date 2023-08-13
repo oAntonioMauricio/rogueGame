@@ -8,6 +8,7 @@ import pt.upskill.projeto1.objects.door.Door;
 import pt.upskill.projeto1.objects.door.DoorClosed;
 import pt.upskill.projeto1.objects.enemies.Enemy;
 import pt.upskill.projeto1.objects.hero.Hero;
+import pt.upskill.projeto1.objects.items.Flail;
 import pt.upskill.projeto1.objects.props.CityFloor;
 import pt.upskill.projeto1.objects.props.FireBloom;
 import pt.upskill.projeto1.objects.statusbar.StatusBar;
@@ -22,6 +23,7 @@ import pt.upskill.projeto1.rogue.utils.Position;
 
 import java.awt.event.KeyEvent;
 import java.io.*;
+import java.sql.SQLOutput;
 import java.util.*;
 
 public class Engine {
@@ -56,6 +58,18 @@ public class Engine {
         // read every file in the dir
         File[] files = new File("rooms").listFiles();
         assert files != null;
+
+        Arrays.sort(files, Comparator.comparing(file -> {
+            String fileName = file.getName();
+            // Remove non-digit characters and parse the remaining as an integer
+            return Integer.parseInt(fileName.replaceAll("[^0-9]", ""));
+        }));
+
+        System.out.println("TESTE");
+        for (File file : files) {
+            System.out.println(file);
+        }
+
         for (File file : files) {
             System.out.println(file.toString());
             gameSingleton.addRoom(file.toString());
@@ -455,6 +469,41 @@ public class Engine {
                     } else {
                         // gui message
                         gui.setStatus("You picked the Hammer and gained " + currentItem.getItemPower() + " power. Total power: " + hero.getPower());
+                    }
+
+                    // delete item
+                    roomList.get(roomIndex).getItemList().remove(currentItem);
+                    tiles.remove(currentItem);
+                    gui.removeImage(currentItem);
+                }
+            } else if (interaction instanceof Flail) {
+                // get item
+                int indexItem = roomList.get(roomIndex).getItemList().indexOf(interaction);
+                Flail currentItem = (Flail) roomList.get(roomIndex).getItemList().get(indexItem);
+
+                // storage
+                ImageTile[] itemsArray = gameSingleton.getStatusBar().getItemArray();
+                int emptyIndex = gameSingleton.getStatusBar().itemArrayEmptyIndex();
+
+                if (emptyIndex == -1) {
+                    gui.setStatus("Inventory is full!");
+                } else {
+                    itemsArray[emptyIndex] = currentItem;
+                    // seven is the start on the items position on the status bar
+                    currentItem.setPosition(new Position(7 + emptyIndex, 0));
+
+                    // effect
+                    hero.setPower(hero.getPower() + currentItem.getItemPower());
+
+                    // increment score
+                    if (!currentItem.getAlreadyPickedUp()) {
+                        gameSingleton.setScore(gameSingleton.getScore() + currentItem.getPoints());
+                        currentItem.setAlreadyPickedUp(true);
+                        // gui message
+                        gui.setStatus("You picked the Flail and gained " + currentItem.getItemPower() + " power and " + currentItem.getPoints() + " points. Total power: " + hero.getPower());
+                    } else {
+                        // gui message
+                        gui.setStatus("You picked the Flail and gained " + currentItem.getItemPower() + " power. Total power: " + hero.getPower());
                     }
 
                     // delete item

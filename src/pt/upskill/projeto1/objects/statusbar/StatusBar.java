@@ -6,10 +6,7 @@ import pt.upskill.projeto1.gui.ImageMatrixGUI;
 import pt.upskill.projeto1.gui.ImageTile;
 import pt.upskill.projeto1.objects.enemies.Enemy;
 import pt.upskill.projeto1.objects.hero.Hero;
-import pt.upskill.projeto1.objects.items.GoodMeat;
-import pt.upskill.projeto1.objects.items.Hammer;
-import pt.upskill.projeto1.objects.items.Item;
-import pt.upskill.projeto1.objects.items.Key;
+import pt.upskill.projeto1.objects.items.*;
 import pt.upskill.projeto1.rogue.utils.Position;
 
 import java.io.Serializable;
@@ -242,7 +239,12 @@ public class StatusBar implements Serializable {
                         // remove hammer power
                         hero.setPower(hero.getPower() - ((Hammer) currentSlot).getItemPower());
                         gui.setStatus("You removed the Hammer and lost " + ((Hammer) currentSlot).getItemPower() + ". Total power: " + hero.getPower());
-                    } else {
+                    } else if (currentSlot instanceof Flail) {
+                        // remove hammer power
+                        hero.setPower(hero.getPower() - ((Flail) currentSlot).getItemPower());
+                        gui.setStatus("You removed the Hammer and lost " + ((Flail) currentSlot).getItemPower() + ". Total power: " + hero.getPower());
+                    }
+                    else {
                         gui.setStatus("You removed: " + currentSlot.getName());
                     }
 

@@ -4,10 +4,7 @@ import pt.upskill.projeto1.gui.ImageTile;
 import pt.upskill.projeto1.objects.door.*;
 import pt.upskill.projeto1.objects.enemies.*;
 import pt.upskill.projeto1.objects.hero.Hero;
-import pt.upskill.projeto1.objects.items.GoodMeat;
-import pt.upskill.projeto1.objects.items.Hammer;
-import pt.upskill.projeto1.objects.items.Item;
-import pt.upskill.projeto1.objects.items.Key;
+import pt.upskill.projeto1.objects.items.*;
 import pt.upskill.projeto1.objects.props.*;
 import pt.upskill.projeto1.rogue.utils.Position;
 
@@ -133,7 +130,10 @@ public class Room implements Serializable {
                         itemList.add(new GoodMeat(new Position(i, col)));
                     } else if (Objects.equals(chars[i], "h")) {
                         itemList.add(new Hammer(new Position(i, col)));
-                    } else if (Objects.equals(chars[i], "k")) {
+                    }
+                    else if (Objects.equals(chars[i], "l")) {
+                        itemList.add(new Flail(new Position(i, col)));
+                    }else if (Objects.equals(chars[i], "k")) {
                         // based on 1 key per room.
                         for (Item item : itemList) {
                             if (item instanceof Key) {
