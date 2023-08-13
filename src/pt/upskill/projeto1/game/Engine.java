@@ -76,6 +76,14 @@ public class Engine {
 
         gui.go();
         gui.setStatus("Welcome. You have " + hero.getHealth() + " HP and " + hero.getPower() + " power.");
+        gui.showMessage("Pixel Dugeon", "You're trying to find the secret red gem." + System.getProperty("line.separator") + "Rumors says it's hidden at the castle." + System.getProperty("line.separator") + System.getProperty("line.separator") +
+                "Use the arrows to move." + System.getProperty("line.separator") +
+                "Spacebar to send a fireball that kills instantly." + System.getProperty("line.separator") +
+                "1, 2 and 3 to drop or use items." + System.getProperty("line.separator") +
+                "S to save game at the checkpoints" + System.getProperty("line.separator") +
+                "L to load game." + System.getProperty("line.separator") +
+                "R to reset game." + System.getProperty("line.separator") +
+                "ESC to see this message again.");
 
         while (true) {
             gui.update();
@@ -102,6 +110,16 @@ public class Engine {
     public void notify(int keyPressed) {
 
         if (!fireballMode) {
+            if (keyPressed ==KeyEvent.VK_ESCAPE) {
+                gui.showMessage("Pixel Dugeon", "You're trying to find the secret red gem." + System.getProperty("line.separator") + "Rumors says it's hidden at the castle." + System.getProperty("line.separator") + System.getProperty("line.separator") +
+                        "Use the arrows to move." + System.getProperty("line.separator") +
+                        "Spacebar to send a fireball that kills instantly." + System.getProperty("line.separator") +
+                        "1, 2 and 3 to drop or use items." + System.getProperty("line.separator") +
+                        "S to save game at the checkpoints" + System.getProperty("line.separator") +
+                        "L to load game." + System.getProperty("line.separator") +
+                        "R to reset game." + System.getProperty("line.separator") +
+                        "ESC to see this message again.");
+            }
             if (keyPressed == KeyEvent.VK_F1) {
                 System.out.println("Dev mode");
 
