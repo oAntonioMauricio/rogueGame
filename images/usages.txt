@@ -4,6 +4,7 @@ A - WallCity;
 B - Bat;
 C - CityFloor;
 D - Door;
+E - StatueNormalCity;
 f - FireBloom;
 l - Flail
 G - BadGuy;

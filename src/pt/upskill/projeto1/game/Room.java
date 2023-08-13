@@ -69,7 +69,7 @@ public class Room implements Serializable {
                                     doorList.add(new DoorClosed("DoorCityClosed", doorIndex, nextRoom, nextIndex, false, chars.get(5)));
                                 } else {
                                     // System.out.println("Create DoorOpen");
-                                    doorList.add(new DoorOpen("DoorCityOpen",doorIndex, nextRoom, nextIndex, true));
+                                    doorList.add(new DoorOpen("DoorCityOpen", doorIndex, nextRoom, nextIndex, true));
                                 }
                             }
                             case "E" ->
@@ -104,6 +104,8 @@ public class Room implements Serializable {
                         propsList.add(new WallCity(new Position(i, col)));
                     } else if (Objects.equals(chars[i], "N")) {
                         propsList.add(new StatueNormal(new Position(i, col)));
+                    } else if (Objects.equals(chars[i], "E")) {
+                        propsList.add(new StatueNormalCity(new Position(i, col)));
                     } else if (Objects.equals(chars[i], "R")) {
                         propsList.add(new Grass(new Position(i, col)));
                     } else if (Objects.equals(chars[i], "C")) {
@@ -130,10 +132,9 @@ public class Room implements Serializable {
                         itemList.add(new GoodMeat(new Position(i, col)));
                     } else if (Objects.equals(chars[i], "h")) {
                         itemList.add(new Hammer(new Position(i, col)));
-                    }
-                    else if (Objects.equals(chars[i], "l")) {
+                    } else if (Objects.equals(chars[i], "l")) {
                         itemList.add(new Flail(new Position(i, col)));
-                    }else if (Objects.equals(chars[i], "k")) {
+                    } else if (Objects.equals(chars[i], "k")) {
                         // based on 1 key per room.
                         for (Item item : itemList) {
                             if (item instanceof Key) {

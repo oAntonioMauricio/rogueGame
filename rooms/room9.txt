@@ -2,12 +2,12 @@
 # 0 Y room8.txt 1 castleKey
 #
 AAAAAAAAAA
-A        A
-A    f   A
-A        A
-A        A
-A        A
-A        A
-A        A
-A        A
+A E E E EA
+AE       A
+A   f   EA
+AE       A
+A       EA
+AE       A
+A       EA
+AE E E E A
 AAAA0AAAAA

@@ -1,13 +1,15 @@
 #
 # 0 E room11.txt 1
 #
+# k castleKey
+#
 WWWWWWWWWW
-WBRWmmWRBW
-WBRRRRRRBW
-W        W
-0        W
-W        W
-W        W
-W        W
-W        W
+WGRWmmWWkW
+WRRRRRRWRW
+WR  R RWRW
+0R  RRRWRW
+WR R R WRW
+WR RR RWRW
+WG R GRWRW
+WRR RRRRRW
 WWWWWWWWWW

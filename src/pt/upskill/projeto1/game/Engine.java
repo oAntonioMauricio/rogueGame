@@ -35,11 +35,7 @@ public class Engine {
 
     // main_branch
     //
-    // UPDATES: melhorar algoritmo de perseguição https://wumbo.net/formulas/distance-between-two-points-2d/
-    // UPDATES: MELHORAR RELAÇÃO ENTRE SINGLETON E ENGINE
-
-    // TODO: "CAN'T SAVE HERE SORRY" ESTÁ DESATIVADO
-    // TODO: Reset the same game for new game
+    // UPDATES: abstract class for statues
 
     // 🟩 Attributes
     private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
@@ -223,40 +219,30 @@ public class Engine {
             // save and load game
             //
             if (keyPressed == KeyEvent.VK_S) {
+                boolean canSave = false;
 
-                try {
-                    FileOutputStream fileOut = new FileOutputStream("saves/save.dat");
-                    ObjectOutputStream out = new ObjectOutputStream(fileOut);
-                    out.writeObject(gameSingleton);
-                    gui.setStatus("Game Saved.");
-                    out.close();
-                    fileOut.close();
-                } catch (IOException e) {
-                    System.out.println(e.getMessage());
-                    System.out.println("Erro a salvar o mapa no ficheiro!");
-                }
+                for (ImageTile interaction : hero.checkWhereHeroIs()) {
+                    if (interaction instanceof CityFloor) {
+                        canSave = true;
+                        System.out.println("Saving game...");
 
-                /*
-                if (hero.checkWhereHeroIs() instanceof CityFloor || gameSingleton.getRoomIndex() == 0) {
-                    System.out.println("Saving game...");
-
-                    try {
-                        FileOutputStream fileOut = new FileOutputStream("saves/save.dat");
-                        ObjectOutputStream out = new ObjectOutputStream(fileOut);
-                        out.writeObject(gameSingleton);
-                        gui.setStatus("Game Saved.");
-                        out.close();
-                        fileOut.close();
-                    } catch (IOException e) {
-                        System.out.println(e.getMessage());
-                        System.out.println("Erro a salvar o mapa no ficheiro!");
+                        try {
+                            FileOutputStream fileOut = new FileOutputStream("saves/save.dat");
+                            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+                            out.writeObject(gameSingleton);
+                            gui.setStatus("Game Saved.");
+                            out.close();
+                            fileOut.close();
+                        } catch (IOException e) {
+                            System.out.println(e.getMessage());
+                            System.out.println("Erro a salvar o mapa no ficheiro!");
+                        }
                     }
-                } else {
-                    gui.setStatus("Can't save here. Sorry.");
                 }
 
-                 */
-
+                if (!canSave) {
+                    gui.setStatus("Can't save here.");
+                }
             }
             if (keyPressed == KeyEvent.VK_L) {
                 System.out.println("Loading game...");

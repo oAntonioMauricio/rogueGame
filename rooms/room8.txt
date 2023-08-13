@@ -3,10 +3,9 @@
 # 1 Y room9.txt 0 castleKey
 # 2 E room10.txt 0
 #
-# k castleKey
 #
 AAAA1AAAAA
-W    k   W
+W        W
 W        W
 W  N N   W
 0   C    2

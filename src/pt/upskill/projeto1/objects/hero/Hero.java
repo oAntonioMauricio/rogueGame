@@ -8,6 +8,7 @@ import pt.upskill.projeto1.gui.ImageMatrixGUI;
 import pt.upskill.projeto1.gui.ImageTile;
 import pt.upskill.projeto1.objects.enemies.Enemy;
 import pt.upskill.projeto1.objects.props.StatueNormal;
+import pt.upskill.projeto1.objects.props.StatueNormalCity;
 import pt.upskill.projeto1.objects.props.Wall;
 import pt.upskill.projeto1.objects.props.WallCity;
 import pt.upskill.projeto1.objects.props.attack.Attack;
@@ -43,8 +44,8 @@ public class Hero implements ImageTile, Serializable {
 
         // block  hero move in certain spots
         for (ImageTile tile : tiles) {
-            if (nextPosition.isItSamePosition(tile.getPosition())){
-                if (tile instanceof Wall || tile instanceof WallCity || tile instanceof StatueNormal) {
+            if (nextPosition.isItSamePosition(tile.getPosition())) {
+                if (tile instanceof Wall || tile instanceof WallCity || tile instanceof StatueNormal || tile instanceof StatueNormalCity) {
                     move = false;
                     break;
                 }
