@@ -10,8 +10,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Thief extends Enemy {
     private Position position;
-    private int initialHealth = 50;
-    private int health = 50;
+    private int initialHealth = 75;
+    private int health = 75;
     private int points = 75;
 
     public Thief(Position position) {

@@ -3,12 +3,12 @@
 # 1 D room7.txt 0
 #
 WWWW1WWWWW
-WtttGttttW
+Wttt ttttW
 Wtt    ttW
-WtG    GtW
-Wtt    ttW
-WtG    GtW
+Wt  G   tW
+Wtt  G ttW
 Wt      tW
+Wt t  tmtW
 W       tW
 0  ttttttW
 WWWWWWWWWW

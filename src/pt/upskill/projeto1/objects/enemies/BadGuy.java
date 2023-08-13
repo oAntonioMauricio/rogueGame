@@ -4,8 +4,8 @@ import pt.upskill.projeto1.rogue.utils.Position;
 
 public class BadGuy extends Enemy {
     private Position position;
-    private int initialHealth = 50;
-    private int health = 50;
+    private int initialHealth = 100;
+    private int health = 100;
     private int points = 75;
 
     public BadGuy(Position position) {
@@ -24,7 +24,7 @@ public class BadGuy extends Enemy {
 
     @Override
     public double getPower() {
-        return this.power * 4;
+        return this.power * 3;
     }
 
     @Override

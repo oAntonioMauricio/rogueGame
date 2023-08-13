@@ -1,14 +1,14 @@
 #
 # 0 E room8.txt 2
-#
+# 1 E room11.txt 0
 #
 WWWWWWWWWW
-W        W
-W        W
-WWWW     W
-0        W
-WWWW     W
-W        W
-W        W
-W        W
+WmRRRBRRRW
+WRRRBRRRBW
+WWWWWRRWWW
+0RRRRRRRR1
+WWWWWWRRWW
+WBRRBRRRRW
+WRRRRBRRBW
+WmRRRRBRRW
 WWWWWWWWWW
