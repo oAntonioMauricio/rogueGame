@@ -6,8 +6,9 @@ import pt.upskill.projeto1.game.GameSingleton;
 import pt.upskill.projeto1.gui.FireTile;
 import pt.upskill.projeto1.gui.ImageMatrixGUI;
 import pt.upskill.projeto1.gui.ImageTile;
-import pt.upskill.projeto1.objects.props.Wall;
 import pt.upskill.projeto1.objects.enemies.Enemy;
+import pt.upskill.projeto1.objects.props.Wall;
+import pt.upskill.projeto1.objects.props.WallCity;
 import pt.upskill.projeto1.objects.props.attack.Attack;
 import pt.upskill.projeto1.objects.statusbar.Black;
 import pt.upskill.projeto1.objects.statusbar.Fire;
@@ -34,7 +35,23 @@ public class Hero implements ImageTile, Serializable {
 
     // 🟩 Methods
     public void move(Position nextPosition) {
-        setPosition(nextPosition);
+        GameSingleton gameSingleton = GameSingleton.getInstance();
+        List<ImageTile> tiles = gameSingleton.getTiles();
+
+        boolean move = true;
+
+        for (ImageTile tile : tiles) {
+            if (nextPosition.isItSamePosition(tile.getPosition())){
+                if (tile instanceof Wall || tile instanceof WallCity) {
+                    move = false;
+                }
+            }
+        }
+
+        if (move) {
+            setPosition(nextPosition);
+        }
+
     }
 
     public ArrayList<ImageTile> checkWhereHeroIs() {
@@ -45,7 +62,7 @@ public class Hero implements ImageTile, Serializable {
         ArrayList<ImageTile> interactions = new ArrayList<>();
 
         for (ImageTile tile : tiles) {
-            if (Objects.equals(tile.getName(), "Hero") || Objects.equals(tile.getName(), "Floor" ) || Objects.equals(tile.getName(), "FloorCity" )) {
+            if (Objects.equals(tile.getName(), "Hero") || Objects.equals(tile.getName(), "Floor") || Objects.equals(tile.getName(), "FloorCity")) {
                 continue;
             }
 
