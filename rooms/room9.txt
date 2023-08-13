@@ -1,5 +1,5 @@
 #
-# 0 Y room8.txt 1
+# 0 Y room8.txt 1 castleKey
 #
 AAAAAAAAAA
 A        A

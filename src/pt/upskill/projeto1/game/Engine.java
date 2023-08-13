@@ -352,8 +352,7 @@ public class Engine {
 
                 // fight func
                 hero.fight(currentEnemy);
-            }
-            else if ( interaction instanceof Door) {
+            } else if (interaction instanceof Door) {
                 // get door
                 int indexDoor = roomList.get(roomIndex).getDoorList().indexOf(interaction);
                 Door door = roomList.get(roomIndex).getDoorList().get(indexDoor);
@@ -379,19 +378,10 @@ public class Engine {
                                 gotTheKey = true;
                                 doorClosed.setOpen(true);
 
-                                // mudar esta martelada
-                                if (Objects.equals(doorClosed.getName(), "DoorClosed")) {
-                                    doorClosed.setName("DoorOpen");
-                                } else if (Objects.equals(doorClosed.getName(), "DoorCityClosed")) {
-                                    doorClosed.setName("DoorCityOpen");
-                                }
-
-
                                 // unlock the door in the next room
                                 int nextRoom = doorClosed.nextRoomInt();
                                 int nextDoorIndex = doorClosed.getNextIndex();
                                 roomList.get(nextRoom).getDoorList().get(nextDoorIndex).setOpen(true);
-                                roomList.get(nextRoom).getDoorList().get(nextDoorIndex).setName("DoorOpen");
                             }
                         }
                     }
@@ -418,8 +408,7 @@ public class Engine {
                     // move 1 step away from the door
                     hero.moveAwayFromTheDoor();
                 }
-            }
-            else if (interaction instanceof Key) {
+            } else if (interaction instanceof Key) {
                 // get key
                 int indexItem = roomList.get(roomIndex).getItemList().indexOf(interaction);
                 Key currentKey = (Key) roomList.get(roomIndex).getItemList().get(indexItem);
@@ -441,8 +430,7 @@ public class Engine {
                     tiles.remove(currentKey);
                     gui.removeImage(currentKey);
                 }
-            }
-            else if (interaction instanceof Hammer) {
+            } else if (interaction instanceof Hammer) {
                 // get item
                 int indexItem = roomList.get(roomIndex).getItemList().indexOf(interaction);
                 Hammer currentItem = (Hammer) roomList.get(roomIndex).getItemList().get(indexItem);
@@ -477,8 +465,7 @@ public class Engine {
                     tiles.remove(currentItem);
                     gui.removeImage(currentItem);
                 }
-            }
-            else if (interaction instanceof GoodMeat) {
+            } else if (interaction instanceof GoodMeat) {
                 // get item
                 int indexItem = roomList.get(roomIndex).getItemList().indexOf(interaction);
                 GoodMeat currentItem = (GoodMeat) roomList.get(roomIndex).getItemList().get(indexItem);
@@ -501,19 +488,16 @@ public class Engine {
                     tiles.remove(currentItem);
                     gui.removeImage(currentItem);
                 }
-            }
-            else if (interaction instanceof Trap) {
+            } else if (interaction instanceof Trap) {
                 // get trap
                 int indexTrap = roomList.get(roomIndex).getPropsList().indexOf(interaction);
                 Trap currentTrap = (Trap) roomList.get(roomIndex).getPropsList().get(indexTrap);
 
                 gui.setStatus("This trap caused damage!");
                 hero.setHealth(hero.getHealth() - currentTrap.getDamage());
-            }
-            else if (interaction instanceof CityFloor) {
+            } else if (interaction instanceof CityFloor) {
                 gui.setStatus("You found a safe spot. You can save your game here with the S key.");
-            }
-            else if (interaction instanceof FireBloom) {
+            } else if (interaction instanceof FireBloom) {
                 // end game
                 int playerScore = gameSingleton.getScore() + 1;
 

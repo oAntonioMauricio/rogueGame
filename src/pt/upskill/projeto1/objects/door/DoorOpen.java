@@ -2,7 +2,7 @@ package pt.upskill.projeto1.objects.door;
 
 public class DoorOpen extends Door {
 
-    private String name = "DoorOpen";
+    private String name;
 
     public DoorOpen(String name, int doorIndex, String nextRoom, int nextIndex, boolean open) {
         super(doorIndex, nextRoom, nextIndex, open);

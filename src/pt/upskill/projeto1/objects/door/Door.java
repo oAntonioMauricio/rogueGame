@@ -55,6 +55,7 @@ public abstract class Door implements ImageTile, Serializable {
 
     public void setOpen(boolean open) {
         this.open = open;
+        setName(getName().replace("Closed", "Open"));
     }
 
     @Override
