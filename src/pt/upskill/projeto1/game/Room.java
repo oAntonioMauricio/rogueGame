@@ -59,15 +59,21 @@ public class Room implements Serializable {
                             case "D" -> {
                                 if (chars.size() > 5) {
                                     // System.out.println("Create DoorClosed");
-                                    doorList.add(new DoorClosed(doorIndex, nextRoom, nextIndex, false, chars.get(5)));
+                                    doorList.add(new DoorClosed("DoorClosed", doorIndex, nextRoom, nextIndex, false, chars.get(5)));
                                 } else {
                                     // System.out.println("Create DoorOpen");
-                                    doorList.add(new DoorOpen(doorIndex, nextRoom, nextIndex, true));
+                                    doorList.add(new DoorOpen("DoorOpen", doorIndex, nextRoom, nextIndex, true));
                                 }
                             }
                             case "Y" -> {
                                 // System.out.println("Create DoorCityOpen");
-                                doorList.add(new DoorCityOpen(doorIndex, nextRoom, nextIndex, true));
+                                if (chars.size() > 5) {
+                                    // System.out.println("Create DoorClosed");
+                                    doorList.add(new DoorClosed("DoorCityClosed", doorIndex, nextRoom, nextIndex, false, chars.get(5)));
+                                } else {
+                                    // System.out.println("Create DoorOpen");
+                                    doorList.add(new DoorOpen("DoorCityOpen",doorIndex, nextRoom, nextIndex, true));
+                                }
                             }
                             case "E" ->
                                 // System.out.println("Create DoorWay");
@@ -99,6 +105,8 @@ public class Room implements Serializable {
                         propsList.add(new Wall(new Position(i, col)));
                     } else if (Objects.equals(chars[i], "A")) {
                         propsList.add(new WallCity(new Position(i, col)));
+                    } else if (Objects.equals(chars[i], "N")) {
+                        propsList.add(new StatueNormal(new Position(i, col)));
                     } else if (Objects.equals(chars[i], "R")) {
                         propsList.add(new Grass(new Position(i, col)));
                     } else if (Objects.equals(chars[i], "C")) {

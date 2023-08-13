@@ -36,6 +36,7 @@ public class Engine {
 
     // TODO: "CAN'T SAVE HERE SORRY" ESTÁ DESATIVADO
     // TODO: Reset the same game for new game
+    // TODO: CHECKINTERACT TO INTANCE OF
 
     // 🟩 Attributes
     private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
@@ -351,7 +352,7 @@ public class Engine {
                     // fight func
                     hero.fight(currentEnemy);
                 }
-                case "DoorOpen", "DoorClosed", "DoorWay", "DoorCityOpen" -> {
+                case "DoorOpen", "DoorClosed", "DoorWay", "DoorCityClosed", "DoorCityOpen" -> {
                     // get door
                     int indexDoor = roomList.get(roomIndex).getDoorList().indexOf(interaction);
                     Door door = roomList.get(roomIndex).getDoorList().get(indexDoor);
@@ -376,7 +377,14 @@ public class Engine {
                                     gui.setStatus("You opened " + doorClosed.getName() + " with " + keyToOpenDoor);
                                     gotTheKey = true;
                                     doorClosed.setOpen(true);
-                                    doorClosed.setName("DoorOpen");
+
+                                    // mudar esta martelada
+                                    if (Objects.equals(doorClosed.getName(), "DoorClosed")) {
+                                        doorClosed.setName("DoorOpen");
+                                    } else if (Objects.equals(doorClosed.getName(), "DoorCityClosed")) {
+                                        doorClosed.setName("DoorCityOpen");
+                                    }
+
 
                                     // unlock the door in the next room
                                     int nextRoom = doorClosed.nextRoomInt();

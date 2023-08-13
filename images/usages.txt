@@ -9,6 +9,7 @@ G - BadGuy;
 h - Hammer;
 H - Hero;
 m - GoodMeat;
+N - StatueNormal;
 k - Key;
 S - Skeleton;
 T - Thief;

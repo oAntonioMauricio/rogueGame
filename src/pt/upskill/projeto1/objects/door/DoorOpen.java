@@ -4,8 +4,9 @@ public class DoorOpen extends Door {
 
     private String name = "DoorOpen";
 
-    public DoorOpen(int doorIndex, String nextRoom, int nextIndex, boolean open) {
+    public DoorOpen(String name, int doorIndex, String nextRoom, int nextIndex, boolean open) {
         super(doorIndex, nextRoom, nextIndex, open);
+        this.name = name;
     }
 
     @Override

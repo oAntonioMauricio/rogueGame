@@ -1,13 +1,15 @@
 #
 # 0 D room7.txt 1
-# 1 Y room9.txt 0
+# 1 Y room9.txt 0 castleKey
+#
+# k castleKey
 #
 AAAA1AAAAA
 W        W
 W        W
-W        W
-0        W
-W        W
+W  N N   W
+0   C   kW
+W  N N   W
 W        W
 W        W
 W        W
