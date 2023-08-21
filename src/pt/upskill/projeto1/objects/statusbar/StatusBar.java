@@ -238,7 +238,7 @@ public class StatusBar implements Serializable {
                     } else if (currentSlot instanceof Hammer) {
                         // remove hammer power
                         hero.setPower(hero.getPower() - ((Hammer) currentSlot).getItemPower());
-                        gui.setStatus("You removed the Hammer and lost " + ((Hammer) currentSlot).getItemPower() + ". Total power: " + hero.getPower());
+                        gui.setStatus("You removed the Hammer and lost " + ((Hammer) currentSlot).getItemPower() + " power." + " Total power: " + hero.getPower());
                     } else if (currentSlot instanceof Flail) {
                         // remove hammer power
                         hero.setPower(hero.getPower() - ((Flail) currentSlot).getItemPower());
