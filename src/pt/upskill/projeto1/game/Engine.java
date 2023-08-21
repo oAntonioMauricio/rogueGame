@@ -76,7 +76,7 @@ public class Engine {
 
         gui.go();
         gui.setStatus("Welcome. You have " + hero.getHealth() + " HP and " + hero.getPower() + " power.");
-        gui.showMessage("Pixel Dugeon", "You're trying to find the secret red gem." + System.getProperty("line.separator") + "Rumors says it's hidden at the castle." + System.getProperty("line.separator") + System.getProperty("line.separator") +
+        gui.showMessage("Pixel Dugeon", "You're trying to find the secret red gem." + System.getProperty("line.separator") + "Rumors say it's hidden at the castle." + System.getProperty("line.separator") + System.getProperty("line.separator") +
                 "Use the arrows to move." + System.getProperty("line.separator") +
                 "Spacebar to send a fireball that kills instantly." + System.getProperty("line.separator") +
                 "1, 2 and 3 to drop or use items." + System.getProperty("line.separator") +
