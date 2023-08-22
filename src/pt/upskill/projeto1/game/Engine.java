@@ -156,6 +156,11 @@ public class Engine {
                     loadRoom(Integer.parseInt(gui.showInputDialog("Room number", "Num")));
                 }
 
+                if (Objects.equals(userinput, "hp")) {
+                    hero.setHealth(100.0);
+                    statusBar.updateStatus();
+                }
+
             }
             if (keyPressed == KeyEvent.VK_DOWN) {
                 // System.out.println("User pressed down key!");
