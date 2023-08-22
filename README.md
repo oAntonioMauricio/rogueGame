@@ -2,11 +2,13 @@
 
 Find the secret red gem hidden in the castle. Explore rooms, defeat enemies and collect items.
 
+![Gif of a run of the game. From start to finish.](README.gif)
+
 ## Gameplay
 
-Use the arrow keys to move your character and navigate through the rooms. Press the spacebar to unleash a powerful
-fireball that instantly eliminates enemies in your path. Additionally:
+Use the arrow keys to move your character and navigate through the rooms. Additionally:
 
+- Press **`spacebar`** to unleash a fireball that instantly eliminates enemies
 - Press **`1`**, **`2`**, and **`3`** to drop or use items.
 - Press **`S`** to save your game at checkpoints.
 - Press **`L`** to load a saved game.
